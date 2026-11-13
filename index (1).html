@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0d0f14" />
+  <title>JobReady: Resume & CV Maker</title>
+  <link rel="manifest" href="manifest.json" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --card: #161922;
+      --card2: #1e222d;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --primary: #6366f1;
+      --accent: #ec4899;
+      --grad: linear-gradient(135deg, #6366f1, #ec4899);
+      --border: #2a2f3d;
+      --success: #10b981;
+    }
+    body.light {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --card2: #f9fafb;
+      --text: #111827;
+      --muted: #4b5563;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 120px; }
+
+    /* Top Header */
+    header { padding: 14px 16px; background: var(--card); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo-box { width: 36px; height: 36px; border-radius: 10px; background: var(--grad); display: flex; align-items: center; justify-content: center; font-weight: 800; color: #fff; font-size: 16px; }
+    .brand h1 { font-size: 16px; font-weight: 700; }
+    .brand p { font-size: 11px; color: var(--muted); }
+    .badge-plan { background: var(--card2); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; color: #fbbf24; }
+
+    /* Multi-Page System */
+    .page { display: none; padding: 16px; max-width: 600px; margin: 0 auto; animation: fadeIn 0.2s ease; }
+    .page.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Home Grid Cards */
+    .hero-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 16px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .pill { background: var(--card2); border: 1px solid var(--border); padding: 5px 10px; border-radius: 8px; font-size: 11px; color: var(--muted); }
+    
+    .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+    .tool-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; cursor: pointer; transition: transform 0.1s; }
+    .tool-box:active { transform: scale(0.97); border-color: var(--primary); }
+    .tool-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--card2); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 10px; border: 1px solid var(--border); }
+    .tool-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+    .tool-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+    /* Form & Cards */
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+    .card-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    label { display: block; font-size: 12px; color: var(--muted); margin: 10px 0 4px; font-weight: 600; }
+    input, textarea { width: 100%; background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 10px 12px; border-radius: 10px; font-size: 14px; outline: none; }
+    input:focus, textarea:focus { border-color: var(--primary); }
+
+    .smart-btn { background: rgba(99, 102, 241, 0.18); color: #818cf8; border: 1px solid rgba(99, 102, 241, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; }
+    .btn-primary { width: 100%; background: var(--grad); color: #fff; border: none; padding: 13px; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+    .btn-secondary { width: 100%; background: var(--card2); color: var(--text); border: 1px solid var(--border); padding: 11px; border-radius: 12px; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+
+    canvas#sigPad { background: #fff; border-radius: 10px; width: 100%; height: 95px; touch-action: none; border: 1px dashed var(--muted); }
+
+    /* 8 Templates Grid */
+    .tpl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .tpl-card { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 10px; cursor: pointer; position: relative; }
+    .tpl-card.selected { border-color: var(--accent); box-shadow: 0 0 12px rgba(236, 72, 153, 0.25); }
+    .tpl-preview-box { height: 115px; border-radius: 8px; margin-bottom: 8px; overflow: hidden; background: #fff; color: #111; border: 1px solid #e5e7eb; }
+    .vip-tag { position: absolute; top: 8px; right: 8px; background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; z-index: 2; }
+    .free-tag { position: absolute; top: 8px; right: 8px; background: var(--success); color: #fff; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; z-index: 2; }
+
+    /* Plans */
+    .plan-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 14px; position: relative; }
+    .plan-card.best { border: 2px solid var(--accent); }
+    .best-badge { position: absolute; top: -10px; right: 14px; background: var(--grad); color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 10px; }
+    .price { font-size: 28px; font-weight: 800; margin: 6px 0; }
+    .price span { font-size: 13px; color: var(--muted); font-weight: 400; }
+    .plan-list { list-style: none; margin: 10px 0; font-size: 13px; color: var(--muted); }
+    .plan-list li { margin-bottom: 6px; }
+
+    /* Ad Banner */
+    .ad-banner { position: fixed; bottom: 62px; left: 0; right: 0; height: 44px; background: #11131a; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; z-index: 45; font-size: 11px; }
+    .ad-banner.hidden { display: none; }
+
+    /* Bottom 5-Page Navigation Bar */
+    nav { position: fixed; bottom: 0; left: 0; right: 0; height: 62px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 50; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 11px; color: var(--muted); cursor: pointer; gap: 3px; width: 20%; }
+    .nav-item.active { color: #f59e0b; font-weight: 700; }
+    .nav-icon { font-size: 18px; }
+
+    /* Preview Modal */
+    #previewModal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100; overflow-y: auto; padding: 12px; }
+    .modal-box { max-width: 650px; margin: 0 auto; background: #fff; color: #111; border-radius: 12px; overflow: hidden; }
+    .modal-actions { background: var(--card); padding: 12px; display: flex; gap: 10px; position: sticky; top: 0; z-index: 10; }
+    
+    /* A4 Resume Output Base */
+    #resumeRender { background: #fff; color: #1f2937; min-height: 760px; position: relative; }
+    .res-std-pad { padding: 26px; }
+    .res-header { display: flex; align-items: center; gap: 14px; border-bottom: 2px solid #2563eb; padding-bottom: 12px; margin-bottom: 14px; }
+    .res-photo { width: 72px; height: 72px; border-radius: 50%; object-fit: cover; border: 2px solid #2563eb; }
+    .res-name { font-size: 23px; font-weight: 800; color: #111827; }
+    .res-role { font-size: 14px; color: #2563eb; font-weight: 600; }
+    .res-contact { font-size: 11px; color: #4b5563; margin-top: 4px; }
+    .res-sec { margin-bottom: 14px; }
+    .res-sec-title { font-size: 13px; font-weight: 800; text-transform: uppercase; color: #2563eb; border-bottom: 1px solid #e5e7eb; padding-bottom: 3px; margin-bottom: 6px; letter-spacing: 0.4px; }
+    .res-text { font-size: 12px; line-height: 1.5; white-space: pre-line; }
+    .res-footer { margin-top: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
+    .res-sig { max-height: 45px; }
+    .watermark { font-size: 10px; color: #9ca3af; }
+
+    /* 2-Column Sidebar Layout Styles */
+    .split-wrap { display: flex; min-height: 760px; }
+    .split-left { width: 34%; padding: 20px 14px; color: #fff; }
+    .split-right { width: 66%; padding: 22px 18px; background: #fff; color: #1f2937; }
+    .split-photo { width: 82px; height: 82px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.4); margin: 0 auto 12px; display: block; }
+    .split-sec-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 3px; margin: 14px 0 6px; }
+    .split-text { font-size: 11px; line-height: 1.45; color: #e2e8f0; white-space: pre-line; }
+
+    /* Theme 1: Classic Blue */
+    .theme-classic .res-header { border-bottom-color: #2563eb; }
+    .theme-classic .res-role, .theme-classic .res-sec-title { color: #2563eb; }
+
+    /* Theme 2: Minimal ATS */
+    .theme-minimal .res-header { border-bottom: 1.5px solid #111827; }
+    .theme-minimal .res-role, .theme-minimal .res-sec-title { color: #111827; }
+    .theme-minimal .res-photo { border-color: #111827; }
+
+    /* Theme 3: Sidebar Navy Pro */
+    .theme-sidebar-navy .split-left { background: #1e293b; }
+    .theme-sidebar-navy .res-name { color: #0f172a; }
+    .theme-sidebar-navy .res-role { color: #2563eb; }
+    .theme-sidebar-navy .res-sec-title { color: #1e293b; border-bottom: 2px solid #1e293b; }
+
+    /* Theme 4: Executive Dark Header */
+    .theme-exec .res-header { background: #0f172a; color: #fff; padding: 18px; border-radius: 8px; border: none; }
+    .theme-exec .res-name { color: #fff; }
+    .theme-exec .res-role { color: #38bdf8; }
+    .theme-exec .res-contact { color: #cbd5e1; }
+    .theme-exec .res-sec-title { color: #0f172a; border-bottom: 2px solid #0f172a; }
+
+    /* Theme 5: Modern Emerald */
+    .theme-emerald .res-header { border-left: 5px solid #059669; border-bottom: none; background: #ecfdf5; padding: 14px; border-radius: 6px; }
+    .theme-emerald .res-role, .theme-emerald .res-sec-title { color: #059669; border-bottom-color: #a7f3d0; }
+
+    /* Theme 6: Royal Gold Luxury */
+    .theme-gold { border: 6px solid #18181b; }
+    .theme-gold .res-header { border-bottom: 2px solid #d97706; }
+    .theme-gold .res-name { color: #18181b; }
+    .theme-gold .res-role, .theme-gold .res-sec-title { color: #b45309; border-bottom-color: #fcd34d; }
+    .theme-gold .res-photo { border-color: #d97706; }
+
+    /* Theme 7: Teal Sidebar Split */
+    .theme-sidebar-teal .split-left { background: #0f766e; }
+    .theme-sidebar-teal .res-name { color: #115e59; }
+    .theme-sidebar-teal .res-role { color: #0d9488; }
+    .theme-sidebar-teal .res-sec-title { color: #0f766e; border-bottom: 2px solid #0f766e; }
+
+    /* Theme 8: Creative Crimson */
+    .theme-crimson .res-header { background: #991b1b; color: #fff; padding: 16px; border-bottom: 4px solid #fca5a5; }
+    .theme-crimson .res-name { color: #fff; }
+    .theme-crimson .res-role { color: #fecaca; }
+    .theme-crimson .res-contact { color: #fee2e2; }
+    .theme-crimson .res-sec-title { color: #991b1b; border-bottom: 1.5px solid #991b1b; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="logo-box">JR</div>
+      <div>
+        <h1>JobReady</h1>
+        <p>Resume & CV Maker • ऑफ़लाइन</p>
+      </div>
+    </div>
+    <div class="badge-plan" id="currentPlanBadge">मुफ़्त प्लान</div>
+  </header>
+
+  <!-- PAGE 1: HOME -->
+  <div id="page-home" class="page active">
+    <div class="hero-card">
+      <div style="font-size:15px; font-weight:700;">ऑफ़लाइन, सुरक्षित और फुल HD</div>
+      <div class="pills">
+        <span class="pill">📄 8 प्रोफेशनल टेम्पलेट</span>
+        <span class="pill">🔒 डेटा फोन में सुरक्षित</span>
+        <span class="pill">⚡ बिना इंटरनेट</span>
+      </div>
+    </div>
+
+    <div style="font-size:13px; color:var(--muted); font-weight:700; margin-bottom:6px;">रिज्यूमे टूल्स</div>
+    <div class="tool-grid">
+      <div class="tool-box" onclick="switchPage('builder')">
+        <div class="tool-icon">📝</div>
+        <div class="tool-title">नया रिज्यूमे बनाएं</div>
+        <div class="tool-desc">फोटो व सिग्नेचर के साथ अपना CV तैयार करें</div>
+      </div>
+
+      <div class="tool-box" onclick="switchPage('templates')">
+        <div class="tool-icon">🎨</div>
+        <div class="tool-title">8 HD टेम्पलेट्स</div>
+        <div class="tool-desc">2-कॉलम साइडबार व VIP डिज़ाइन चुनें</div>
+      </div>
+
+      <div class="tool-box" onclick="quickDemoCV()">
+        <div class="tool-icon">⚡</div>
+        <div class="tool-title">1-क्लिक स्मार्ट CV</div>
+        <div class="tool-desc">तैयार सैंपल डेटा भरें और तुरंत एडिट करें</div>
+      </div>
+
+      <div class="tool-box" onclick="switchPage('files')">
+        <div class="tool-icon">📂</div>
+        <div class="tool-title">सेव किए गए CV</div>
+        <div class="tool-desc">पुराने बनाए गए रिज्यूमे देखें व बदलें</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUILDER SUB-PAGE -->
+  <div id="page-builder" class="page">
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+      <button onclick="switchPage('home')" style="background:var(--card); border:1px solid var(--border); color:var(--text); padding:6px 12px; border-radius:8px; font-weight:700;">← होम</button>
+      <span style="font-size:16px; font-weight:700;">रिज्यूमे फॉर्म भरें</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">1. व्यक्तिगत जानकारी</div>
+      <label>पासपोर्ट फोटो (वैकल्पिक)</label>
+      <input type="file" id="inPhoto" accept="image/*" onchange="loadPhoto(event)" />
+      
+      <label>पूरा नाम (Full Name) *</label>
+      <input type="text" id="inName" placeholder="जैसे: Rahul Sharma" />
+
+      <label>पद / जॉब टाइटल (Job Title) *</label>
+      <input type="text" id="inRole" placeholder="जैसे: Sales Executive / Computer Operator" />
+
+      <label>मोबाइल नंबर और ईमेल</label>
+      <input type="text" id="inContact" placeholder="जैसे: +91 9876543210 | rahul@email.com" />
+
+      <label>पता (City, State)</label>
+      <input type="text" id="inAddress" placeholder="जैसे: Gomti Nagar, Lucknow, UP" />
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>2. करियर उद्देश्य (Objective)</span>
+        <button class="smart-btn" onclick="fillSmartObjective()">✨ 1-क्लिक भरें</button>
+      </div>
+      <textarea id="inObj" rows="3" placeholder="अपने करियर के लक्ष्य लिखें..."></textarea>
+    </div>
+
+    <div class="card">
+      <div class="card-title">3. शिक्षा (Education)</div>
+      <textarea id="inEdu" rows="3" placeholder="• B.Com - Lucknow University (2024) - 72%&#10;• 12th (UP Board) - 2021 - 78%"></textarea>
+    </div>
+
+    <div class="card">
+      <div class="card-title">4. कार्य अनुभव (Experience)</div>
+      <textarea id="inExp" rows="3" placeholder="• Fresher (काम करने के लिए तैयार) या कंपनी का अनुभव लिखें"></textarea>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>5. कौशल (Skills)</span>
+        <button class="smart-btn" onclick="fillSmartSkills()">✨ 1-क्लिक स्किल्स</button>
+      </div>
+      <textarea id="inSkills" rows="2" placeholder="MS Office, Tally Prime, Communication"></textarea>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>6. डिजिटल सिग्नेचर</span>
+        <button class="smart-btn" onclick="clearSig()">साफ़ करें</button>
+      </div>
+      <canvas id="sigPad"></canvas>
+    </div>
+
+    <button class="btn-primary" onclick="openPreview()">⚡ फुल HD रिज्यूमे देखें और डाउनलोड करें</button>
+  </div>
+
+  <!-- PAGE 2: 8 TEMPLATES -->
+  <div id="page-templates" class="page">
+    <div class="card">
+      <div class="card-title">8 प्रोफेशनल ATS टेम्पलेट चुनें</div>
+      <p style="font-size:12px; color:var(--muted);">2 मुफ़्त और 6 प्रीमियम 2-कॉलम व आधुनिक डिज़ाइन।</p>
+    </div>
+
+    <div class="tpl-grid">
+      <!-- 1. Classic Blue (Free) -->
+      <div class="tpl-card selected" id="tpl-classic" onclick="selectTemplate('classic', false)">
+        <span class="free-tag">मुफ़्त</span>
+        <div class="tpl-preview-box" style="padding:8px; border-top:6px solid #2563eb; font-size:8px;">
+          <b style="color:#2563eb; font-size:10px;">RAHUL SHARMA</b><br>Sales Executive<hr style="margin:4px 0; border-color:#e5e7eb;">
+          <b style="color:#2563eb;">OBJECTIVE</b><br>Clean single-column corporate layout...
+        </div>
+        <div style="font-size:13px; font-weight:700;">1. Classic Blue</div>
+        <div style="font-size:11px; color:var(--muted);">सभी नौकरियों के लिए बेस्ट</div>
+      </div>
+
+      <!-- 2. ATS Clean White (Free) -->
+      <div class="tpl-card" id="tpl-minimal" onclick="selectTemplate('minimal', false)">
+        <span class="free-tag">मुफ़्त</span>
+        <div class="tpl-preview-box" style="padding:8px; border-top:6px solid #111827; font-size:8px;">
+          <b style="color:#111827; font-size:10px;">RAHUL SHARMA</b><br>Standard ATS Format<hr style="margin:4px 0; border-color:#111827;">
+          <b>EDUCATION</b><br>Simple, bold & fast reading...
+        </div>
+        <div style="font-size:13px; font-weight:700;">2. ATS Clean White</div>
+        <div style="font-size:11px; color:var(--muted);">सरकारी व प्राइवेट फॉर्म हेतु</div>
+      </div>
+
+      <!-- 3. Sidebar Navy Pro (VIP) -->
+      <div class="tpl-card" id="tpl-sidebar-navy" onclick="selectTemplate('sidebar-navy', true)">
+        <span class="vip-tag">VIP 2-COL</span>
+        <div class="tpl-preview-box" style="display:flex; font-size:7px;">
+          <div style="width:36%; background:#1e293b; color:#fff; padding:6px;">
+            <div style="width:20px; height:20px; border-radius:50%; background:#64748b; margin-bottom:4px;"></div>
+            <b>CONTACT</b><br>Skills<br>Address
+          </div>
+          <div style="width:64%; padding:6px;">
+            <b style="font-size:9px; color:#0f172a;">RAHUL</b><br><span style="color:#2563eb;">Manager</span><hr style="margin:3px 0;">Experience & Education...
+          </div>
+        </div>
+        <div style="font-size:13px; font-weight:700;">3. Sidebar Navy Pro</div>
+        <div style="font-size:11px; color:var(--muted);">इंटरनेशनल 2-कॉलम लुक</div>
+      </div>
+
+      <!-- 4. Executive Dark (VIP) -->
+      <div class="tpl-card" id="tpl-exec" onclick="selectTemplate('exec', true)">
+        <span class="vip-tag">VIP</span>
+        <div class="tpl-preview-box" style="padding:6px; font-size:8px;">
+          <div style="background:#0f172a; color:#fff; padding:6px; border-radius:4px; margin-bottom:4px;">
+            <b style="font-size:9px;">RAHUL SHARMA</b><br><span style="color:#38bdf8;">Senior Executive</span>
+          </div>
+          <b>PROFILE SUMMARY</b><br>High-impact dark header...
+        </div>
+        <div style="font-size:13px; font-weight:700;">4. Executive Dark</div>
+        <div style="font-size:11px; color:var(--muted);">मैनेजर व ऑफिस जॉब हेतु</div>
+      </div>
+
+      <!-- 5. Modern Emerald (VIP) -->
+      <div class="tpl-card" id="tpl-emerald" onclick="selectTemplate('emerald', true)">
+        <span class="vip-tag">VIP</span>
+        <div class="tpl-preview-box" style="padding:6px; font-size:8px;">
+          <div style="background:#ecfdf5; border-left:4px solid #059669; padding:5px; margin-bottom:4px;">
+            <b style="color:#065f46; font-size:9px;">RAHUL SHARMA</b><br><span style="color:#059669;">IT & Sales Pro</span>
+          </div>
+          <b style="color:#059669;">KEY SKILLS</b><br>Fresh modern emerald card...
+        </div>
+        <div style="font-size:13px; font-weight:700;">5. Modern Emerald</div>
+        <div style="font-size:11px; color:var(--muted);">IT, सेल्स व मार्केटिंग हेतु</div>
+      </div>
+
+      <!-- 6. Royal Gold Luxury (VIP) -->
+      <div class="tpl-card" id="tpl-gold" onclick="selectTemplate('gold', true)">
+        <span class="vip-tag">VIP GOLD</span>
+        <div class="tpl-preview-box" style="padding:6px; border:3px solid #18181b; font-size:8px;">
+          <b style="color:#18181b; font-size:10px;">RAHUL SHARMA</b><br><span style="color:#b45309;">Executive Director</span>
+          <hr style="margin:4px 0; border-color:#d97706;">
+          <b style="color:#b45309;">EXPERIENCE</b><br>Luxury gold border frame...
+        </div>
+        <div style="font-size:13px; font-weight:700;">6. Royal Gold Border</div>
+        <div style="font-size:11px; color:var(--muted);">प्रीमियम बॉर्डर डिज़ाइन</div>
+      </div>
+
+      <!-- 7. Teal Sidebar Split (VIP) -->
+      <div class="tpl-card" id="tpl-sidebar-teal" onclick="selectTemplate('sidebar-teal', true)">
+        <span class="vip-tag">VIP 2-COL</span>
+        <div class="tpl-preview-box" style="display:flex; font-size:7px;">
+          <div style="width:36%; background:#0f766e; color:#fff; padding:6px;">
+            <div style="width:20px; height:20px; border-radius:50%; background:#5eead4; margin-bottom:4px;"></div>
+            <b>SKILLS</b><br>MS Office<br>Tally
+          </div>
+          <div style="width:64%; padding:6px;">
+            <b style="font-size:9px; color:#115e59;">RAHUL</b><br><span style="color:#0d9488;">Accountant</span><hr style="margin:3px 0;">Clean split layout...
+          </div>
+        </div>
+        <div style="font-size:13px; font-weight:700;">7. Teal Sidebar Split</div>
+        <div style="font-size:11px; color:var(--muted);">आधुनिक टील 2-कॉलम डिज़ाइन</div>
+      </div>
+
+      <!-- 8. Creative Crimson (VIP) -->
+      <div class="tpl-card" id="tpl-crimson" onclick="selectTemplate('crimson', true)">
+        <span class="vip-tag">VIP</span>
+        <div class="tpl-preview-box" style="font-size:8px;">
+          <div style="background:#991b1b; color:#fff; padding:6px; border-bottom:3px solid #fca5a5;">
+            <b style="font-size:9px;">RAHUL SHARMA</b><br><span style="color:#fecaca;">Team Leader</span>
+          </div>
+          <div style="padding:6px;"><b style="color:#991b1b;">OBJECTIVE</b><br>Bold crimson header look...</div>
+        </div>
+        <div style="font-size:13px; font-weight:700;">8. Creative Crimson</div>
+        <div style="font-size:11px; color:var(--muted);">बोल्ड और आकर्षक हेडर</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: SAVED FILES -->
+  <div id="page-files" class="page">
+    <div class="card">
+      <div class="card-title">मेरे सेव किए गए रिज्यूमे</div>
+      <p style="font-size:12px; color:var(--muted);">आपके फोन में सुरक्षित रिज्यूमे प्रोफ़ाइल:</p>
+    </div>
+    <div id="savedList"></div>
+  </div>
+
+  <!-- PAGE 4: PLANS -->
+  <div id="page-plans" class="page">
+    <div class="plan-card">
+      <div style="font-size:16px; font-weight:700;">मुफ़्त (कभी-कभी उपयोग हेतु)</div>
+      <div class="price">₹0 <span>/ हमेशा</span></div>
+      <ul class="plan-list">
+        <li>✓ 2 प्रोफेशनल ATS टेम्पलेट्स</li>
+        <li>✓ फुल HD PDF डाउनलोड</li>
+        <li>• नीचे छोटा बैनर विज्ञापन दिखेगा</li>
+      </ul>
+      <button class="btn-secondary" onclick="activatePlan('free')">मुफ़्त प्लान चुनें</button>
+    </div>
+
+    <div class="plan-card">
+      <div style="font-size:16px; font-weight:700;">स्मार्ट पास (1 महीना)</div>
+      <div class="price">₹49 <span>/ महीना</span></div>
+      <ul class="plan-list">
+        <li>✓ सभी 6 VIP टेम्पलेट्स (2-कॉलम सहित) अनलॉक</li>
+        <li>✓ बिना वॉटरमार्क के HD PDF</li>
+        <li>✓ केवल छोटे बैनर विज्ञापन</li>
+      </ul>
+      <button class="btn-primary" onclick="activatePlan('monthly')">₹49 प्लान चालू करें</button>
+    </div>
+
+    <div class="plan-card best">
+      <span class="best-badge">सबसे किफ़ायती • NO ADS</span>
+      <div style="font-size:16px; font-weight:700;">VIP लाइफटाइम (असीमित)</div>
+      <div class="price">₹99 <span>/ एक बार (हमेशा के लिए)</span></div>
+      <ul class="plan-list">
+        <li>✓ <b>100% विज्ञापन बंद (No Ads)</b></li>
+        <li>✓ सभी 8 VIP व प्रोफेशनल टेम्पलेट्स अनलॉक</li>
+        <li>✓ बिना वॉटरमार्क अनलिमिटेड HD PDF</li>
+      </ul>
+      <button class="btn-primary" onclick="activatePlan('lifetime')">₹99 लाइफटाइम अनलॉक करें</button>
+    </div>
+  </div>
+
+  <!-- PAGE 5: SETTINGS -->
+  <div id="page-settings" class="page">
+    <div class="card">
+      <div class="card-title">ऐप सेटिंग्स</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0;">
+        <span>हल्की थीम (Light Mode)</span>
+        <input type="checkbox" style="width:20px; height:20px;" onchange="document.body.classList.toggle('light')" />
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">जानकारी</div>
+      <p style="font-size:13px; color:var(--muted); line-height:1.6;">
+        <b>ऐप:</b> JobReady: Resume & CV Maker<br>
+        <b>संस्करण:</b> 1.2 (8 Pro Templates • Full HD)<br>
+        <b>गोपनीयता:</b> आपका डेटा केवल आपके फोन में सुरक्षित रहता है।
+      </p>
+    </div>
+  </div>
+
+  <!-- Banner Ad -->
+  <div class="ad-banner" id="bannerAd">
+    <div>
+      <span style="background:#f59e0b; color:#000; font-size:9px; font-weight:800; padding:1px 4px; border-radius:3px;">AD</span>
+      <span style="color:var(--muted); margin-left:6px;">विज्ञापन हटाने के लिए ₹99 VIP प्लान लें</span>
+    </div>
+    <button onclick="switchPage('plans')" style="background:var(--primary); color:#fff; border:none; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:600;">हटाएं</button>
+  </div>
+
+  <!-- Bottom 5-Tab Nav -->
+  <nav>
+    <div class="nav-item active" id="nav-home" onclick="switchPage('home')">
+      <span class="nav-icon">🏠</span><span>होम</span>
+    </div>
+    <div class="nav-item" id="nav-templates" onclick="switchPage('templates')">
+      <span class="nav-icon">🎨</span><span>टेम्पलेट</span>
+    </div>
+    <div class="nav-item" id="nav-files" onclick="switchPage('files')">
+      <span class="nav-icon">📂</span><span>फ़ाइलें</span>
+    </div>
+    <div class="nav-item" id="nav-plans" onclick="switchPage('plans')">
+      <span class="nav-icon">💎</span><span>प्लान</span>
+    </div>
+    <div class="nav-item" id="nav-settings" onclick="switchPage('settings')">
+      <span class="nav-icon">⚙️</span><span>सेटिंग</span>
+    </div>
+  </nav>
+
+  <!-- HD Preview Modal -->
+  <div id="previewModal">
+    <div class="modal-box">
+      <div class="modal-actions">
+        <button onclick="document.getElementById('previewModal').style.display='none'" style="background:#374151; color:#fff; border:none; padding:10px 14px; border-radius:8px; font-weight:600;">← वापस</button>
+        <button onclick="downloadHDPDF()" style="flex:1; background:var(--grad); color:#fff; border:none; padding:10px; border-radius:8px; font-weight:700;">⬇️ फुल HD PDF डाउनलोड करें</button>
+      </div>
+      <div id="resumeRender"></div>
+    </div>
+  </div>
+
+  <script>
+    let currentTemplate = 'classic';
+    let userPlan = localStorage.getItem('jr_plan') || 'free';
+    let uploadedPhoto = '';
+
+    function updatePlanUI() {
+      const badge = document.getElementById('currentPlanBadge');
+      const ad = document.getElementById('bannerAd');
+      if (userPlan === 'lifetime') { badge.innerText = 'VIP लाइफटाइम'; ad.classList.add('hidden'); }
+      else if (userPlan === 'monthly') { badge.innerText = 'स्मार्ट पास ₹49'; ad.classList.remove('hidden'); }
+      else { badge.innerText = 'मुफ़्त प्लान'; ad.classList.remove('hidden'); }
+    }
+    updatePlanUI();
+
+    function activatePlan(plan) {
+      userPlan = plan;
+      localStorage.setItem('jr_plan', plan);
+      updatePlanUI();
+      alert(plan === 'lifetime' ? 'बधाई हो! ₹99 VIP लाइफटाइम प्लान चालू हो गया (सभी 8 टेम्पलेट्स अनलॉक व विज्ञापन बंद)।' : 'प्लान सक्रिय हो गया!');
+    }
+
+    function switchPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + pageId).classList.add('active');
+      const navEl = document.getElementById('nav-' + (pageId === 'builder' ? 'home' : pageId));
+      if (navEl) navEl.classList.add('active');
+      if (pageId === 'files') renderSavedFiles();
+      window.scrollTo(0, 0);
+    }
+
+    function quickDemoCV() {
+      document.getElementById('inName').value = "Rahul Sharma";
+      document.getElementById('inRole').value = "Sales & Office Executive";
+      document.getElementById('inContact').value = "+91 9876543210 | rahul.sharma@email.com";
+      document.getElementById('inAddress').value = "Gomti Nagar, Lucknow, UP";
+      fillSmartObjective();
+      document.getElementById('inEdu').value = "• B.Com - Lucknow University (2024) - 74%\n• 12th (UP Board) - 2021 - 79%";
+      document.getElementById('inExp').value = "• Fresher (सीखने और काम करने के लिए पूरी तरह तैयार)";
+      fillSmartSkills();
+      switchPage('builder');
+    }
+
+    function fillSmartObjective() {
+      document.getElementById('inObj').value = "To work in a challenging and dynamic environment where I can utilize my skills and contribute to the growth of the organization while enhancing my professional knowledge.";
+    }
+
+    function fillSmartSkills() {
+      document.getElementById('inSkills').value = "• MS Office (Word, Excel, PowerPoint)\n• Good Communication & Customer Handling\n• Time Management & Problem Solving";
+    }
+
+    function loadPhoto(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        uploadedPhoto = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    const canvas = document.getElementById('sigPad');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      const cy = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: (cx - rect.left) * (canvas.width / rect.width), y: (cy - rect.top) * (canvas.height / rect.height) };
+    }
+    canvas.addEventListener('mousedown', e => { drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); });
+    canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.strokeStyle = '#111'; ctx.lineTo(p.x, p.y); ctx.stroke(); });
+    canvas.addEventListener('mouseup', () => drawing = false);
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; ctx.beginPath(); const p = getPos(e); ctx.moveTo(p.x, p.y); });
+    canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineWidth = 2.5; ctx.lineCap = 'round'; ctx.strokeStyle = '#111'; ctx.lineTo(p.x, p.y); ctx.stroke(); });
+    canvas.addEventListener('touchend', () => drawing = false);
+    function clearSig() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+    function selectTemplate(tpl, isVip) {
+      if (isVip && userPlan === 'free') {
+        alert('यह VIP प्रोफेशनल टेम्पलेट है। इसे खोलने के लिए ₹49 या ₹99 प्लान चुनें।');
+        switchPage('plans');
+        return;
+      }
+      currentTemplate = tpl;
+      document.querySelectorAll('.tpl-card').forEach(c => c.classList.remove('selected'));
+      document.getElementById('tpl-' + tpl).classList.add('selected');
+      alert('टेम्पलेट चुन लिया गया है! अब अपना रिज्यूमे प्रीव्यू देखें।');
+    }
+
+    function openPreview() {
+      const name = document.getElementById('inName').value.trim();
+      if (!name) { alert('कृपया अपना नाम ज़रूर लिखें!'); return; }
+
+      const role = document.getElementById('inRole').value || 'Professional Candidate';
+      const contact = document.getElementById('inContact').value || '+91 0000000000';
+      const addr = document.getElementById('inAddress').value || 'India';
+      const obj = document.getElementById('inObj').value || 'Dedicated professional seeking growth opportunities.';
+      const edu = document.getElementById('inEdu').value || 'Details available on request.';
+      const exp = document.getElementById('inExp').value || 'Fresher';
+      const skills = document.getElementById('inSkills').value || 'Communication, Teamwork, Computer Basics';
+      const sigData = canvas.toDataURL();
+      const wmHtml = (userPlan === 'free') ? '<div class="watermark">Created with JobReady App</div>' : '<div></div>';
+
+      const render = document.getElementById('resumeRender');
+      render.className = 'theme-' + currentTemplate;
+
+      if (currentTemplate === 'sidebar-navy' || currentTemplate === 'sidebar-teal') {
+        const photoTag = uploadedPhoto ? `<img src="${uploadedPhoto}" class="split-photo" />` : '';
+        render.innerHTML = `
+          <div class="split-wrap">
+            <div class="split-left">
+              ${photoTag}
+              <div class="split-sec-title">Contact</div>
+              <div class="split-text">${contact}\n${addr}</div>
+              <div class="split-sec-title">Key Skills</div>
+              <div class="split-text">${skills}</div>
+            </div>
+            <div class="split-right">
+              <div class="res-name">${name}</div>
+              <div class="res-role" style="margin-bottom:14px;">${role}</div>
+              <div class="res-sec"><div class="res-sec-title">Career Objective</div><div class="res-text">${obj}</div></div>
+              <div class="res-sec"><div class="res-sec-title">Education</div><div class="res-text">${edu}</div></div>
+              <div class="res-sec"><div class="res-sec-title">Work Experience</div><div class="res-text">${exp}</div></div>
+              <div class="res-footer">
+                ${wmHtml}
+                <div style="text-align:center;">
+                  <img src="${sigData}" class="res-sig" />
+                  <div style="font-size:10px; color:#4b5563; border-top:1px solid #9ca3af; padding-top:2px;">Signature</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        const photoTag = uploadedPhoto ? `<img src="${uploadedPhoto}" class="res-photo" />` : '';
+        render.innerHTML = `
+          <div class="res-std-pad">
+            <div class="res-header">
+              ${photoTag}
+              <div>
+                <div class="res-name">${name}</div>
+                <div class="res-role">${role}</div>
+                <div class="res-contact">${[contact, addr].filter(Boolean).join(' • ')}</div>
+              </div>
+            </div>
+            <div class="res-sec"><div class="res-sec-title">Career Objective</div><div class="res-text">${obj}</div></div>
+            <div class="res-sec"><div class="res-sec-title">Education Qualification</div><div class="res-text">${edu}</div></div>
+            <div class="res-sec"><div class="res-sec-title">Work Experience</div><div class="res-text">${exp}</div></div>
+            <div class="res-sec"><div class="res-sec-title">Key Skills</div><div class="res-text">${skills}</div></div>
+            <div class="res-footer">
+              ${wmHtml}
+              <div style="text-align:center;">
+                <img src="${sigData}" class="res-sig" />
+                <div style="font-size:10px; color:#4b5563; border-top:1px solid #9ca3af; padding-top:2px;">Signature</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      let list = JSON.parse(localStorage.getItem('jr_files') || '[]');
+      list.unshift({ name, role, contact, address: addr, obj, edu, exp, skills, date: new Date().toLocaleDateString('hi-IN') });
+      localStorage.setItem('jr_files', JSON.stringify(list.slice(0, 10)));
+      document.getElementById('previewModal').style.display = 'block';
+    }
+
+    function downloadHDPDF() {
+      const element = document.getElementById('resumeRender');
+      const name = document.getElementById('inName').value.trim() || 'Resume';
+      html2pdf().set({
+        margin: 0,
+        filename: name.replace(/\s+/g, '_') + '_JobReady_CV.pdf',
+        image: { type: 'jpeg', quality: 1.0 },
+        html2canvas: { scale: 3, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      }).from(element).save();
+    }
+
+    function renderSavedFiles() {
+      const container = document.getElementById('savedList');
+      const list = JSON.parse(localStorage.getItem('jr_files') || '[]');
+      if (!list.length) {
+        container.innerHTML = '<div class="card" style="text-align:center; color:var(--muted);">अभी तक कोई रिज्यूमे सेव नहीं है।</div>';
+        return;
+      }
+      container.innerHTML = list.map((item, idx) => `
+        <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+          <div><div style="font-weight:700;">${item.name}</div><div style="font-size:12px; color:var(--muted);">${item.role || 'CV'} • ${item.date}</div></div>
+          <button class="smart-btn" onclick="loadSaved(${idx})">खोलें</button>
+        </div>
+      `).join('');
+    }
+
+    function loadSaved(idx) {
+      const item = JSON.parse(localStorage.getItem('jr_files') || '[]')[idx];
+      if (!item) return;
+      document.getElementById('inName').value = item.name || '';
+      document.getElementById('inRole').value = item.role || '';
+      document.getElementById('inContact').value = item.contact || '';
+      document.getElementById('inAddress').value = item.address || '';
+      document.getElementById('inObj').value = item.obj || '';
+      document.getElementById('inEdu').value = item.edu || '';
+      document.getElementById('inExp').value = item.exp || '';
+      document.getElementById('inSkills').value = item.skills || '';
+      switchPage('builder');
+    }
+  </script>
+</body>
+</html>

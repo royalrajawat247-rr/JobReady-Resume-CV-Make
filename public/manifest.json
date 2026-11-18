@@ -1,0 +1,26 @@
+{
+  "id": "/",
+  "name": "JobReady: Resume & CV Maker",
+  "short_name": "JobReady",
+  "description": "100% Offline-First Resume & CV Maker with HD PDF Export, Pro Templates, Local Vault & Instant Backup",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1d4ed8",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

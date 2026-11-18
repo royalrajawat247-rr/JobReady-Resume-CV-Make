@@ -1,8 +1,11 @@
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
+
+execFileSync(process.execPath, [path.join(__dirname, 'generate-icons.js')], { stdio: 'inherit' });
 
 fs.rmSync(dist, { recursive: true, force: true });
 fs.mkdirSync(dist, { recursive: true });
@@ -17,13 +20,7 @@ for (const file of staticFiles) {
 
 const publicDir = path.join(root, 'public');
 if (fs.existsSync(publicDir)) {
-  for (const entry of fs.readdirSync(publicDir)) {
-    const src = path.join(publicDir, entry);
-    const dest = path.join(dist, entry);
-    if (fs.statSync(src).isFile() && !fs.existsSync(dest)) {
-      fs.copyFileSync(src, dest);
-    }
-  }
+  fs.cpSync(publicDir, dist, { recursive: true, force: true });
 }
 
 console.log('Static build complete -> dist/');

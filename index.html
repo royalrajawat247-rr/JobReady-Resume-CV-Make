@@ -3,10 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#ffffff">
+<meta name="theme-color" content="#1d4ed8">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="JobReady">
 <meta name="description" content="100% Offline-First Resume & CV Maker with HD PDF Export, Pro Templates, Local Vault & Instant Backup">
 <title>JobReady: Resume & CV Maker</title>
-<link rel="manifest" href="manifest.json">
+<link rel="manifest" href="/manifest.json" />
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
 <style>
 :root{
   --bg:#f8fafc;--card:#ffffff;--card2:#f1f5f9;--input-bg:#ffffff;--line:#e2e8f0;--text:#0f172a;--muted:#475569;
@@ -2706,7 +2712,7 @@ fillCv({});
 applyLang();
 ensureHomeAd();
 if(isPinEnabled()) openPinModal("unlock");
-if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
+if("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(()=>{});
 </script>
 </body>
 </html>

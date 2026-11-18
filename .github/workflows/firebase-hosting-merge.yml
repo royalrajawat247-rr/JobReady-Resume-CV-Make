@@ -14,12 +14,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install; fi
-          npm run build
+          cache: 'npm'
+      - run: npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_JOBREADY_RESUME_CV_MAKER }}'
           channelId: live
           projectId: jobready-resume-cv-maker

@@ -95,6 +95,7 @@ nav button.on{color:var(--gold);font-weight:700}
 .ad-slot-wrap{display:flex;flex-direction:column;align-items:center;margin:16px auto 10px;width:100%}
 .ad-slot-lbl{font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.03em;margin-top:7px;text-align:center}
 .ad-box-300x250{width:300px;max-width:100%;height:250px;border-radius:14px;border:1px solid var(--line);background:var(--card2);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:var(--shadow);margin:0 auto}
+.ad-box-300x250 iframe{border:0;width:300px;height:250px;display:block;overflow:hidden;background:transparent}
 .field select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%;font-size:13px}
 .field{display:flex;flex-direction:column;gap:4px;margin-bottom:9px}
 .field label{font-size:12px;color:var(--muted)}
@@ -166,7 +167,7 @@ nav button.on{color:var(--gold);font-weight:700}
 /* Modal Animations */
 @keyframes modalFadeIn{from{opacity:0}to{opacity:1}}
 @keyframes modalSlideUp{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-@media(prefers-reduced-motion:reduce){.pin-ov.on,.pin-ov.on .pin-box,.unlock-ov.on,.unlock-ov.on .unlock-box{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.pin-ov.on,.pin-ov.on .pin-box,.unlock-ov.on,.unlock-ov.on .unlock-box,.qr-ov.on,.qr-ov.on .qr-box{animation:none!important}}
 /* PIN Modal */
 .pin-ov{position:fixed;inset:0;z-index:50;background:rgba(11,14,20,.86);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px}
 .pin-ov.on{display:flex;animation:modalFadeIn .2s ease-out}
@@ -197,6 +198,18 @@ nav button.on{color:var(--gold);font-weight:700}
 .unlock-timer{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--gold);min-width:44px;text-align:right}
 .unlock-prog-track{width:100%;height:6px;border-radius:999px;background:var(--line);overflow:hidden}
 .unlock-prog-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--a1),var(--gold));transition:width .35s linear}
+/* Resume QR Code Share & Import Modal */
+.qr-ov{position:fixed;inset:0;z-index:50;background:rgba(11,14,20,.84);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.qr-ov.on{display:flex;animation:modalFadeIn .2s ease-out}
+.qr-box{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 16px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.qr-ov.on .qr-box{animation:modalSlideUp .26s cubic-bezier(.16,1,.3,1)}
+.qr-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:10.5px;font-weight:800;letter-spacing:.04em;margin-bottom:8px}
+.qr-box h3{margin:0 0 4px;font-size:16px;font-weight:800;color:var(--text)}
+.qr-meta{margin:0 0 12px;font-size:12px;color:var(--muted);line-height:1.4}
+.qr-canvas-wrap{display:inline-flex;align-items:center;justify-content:center;background:#ffffff;padding:12px;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);margin:0 auto 12px}
+.qr-canvas-wrap canvas{display:block;width:220px;height:220px;image-rendering:pixelated}
+.qr-json-pre{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;line-height:1.45;color:var(--muted);text-align:left;max-height:84px;overflow:auto;word-break:break-all;margin:0 0 10px;white-space:pre-wrap}
+.qr-import-ta{width:100%;min-height:110px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;resize:vertical;margin-bottom:10px}
 /* ===== CV sheet (A4 proportion, 600px base) ===== */
 .sheet{width:600px;height:848px;background:#fff;color:#111;font-size:13px;line-height:1.45;overflow:hidden;position:relative;display:flex;flex-direction:column}
 .sheet .bd{padding:26px 30px;flex:1}
@@ -274,9 +287,10 @@ nav button.on{color:var(--gold);font-weight:700}
   <div class="card">
     <h2 id="filesHeadT">मेरे सेव किए गए रिज्यूमे</h2>
     <p class="muted" style="margin:0" id="saveCount"></p>
-    <div class="files-bar" id="filesSelectBar" style="display:none">
-      <button type="button" class="btn ghost sm" id="selectAllCvsBtn">Select All</button>
+    <div class="files-bar" id="filesSelectBar">
+      <button type="button" class="btn ghost sm" id="selectAllCvsBtn" style="display:none">Select All</button>
       <button type="button" class="btn ghost sm" id="clearSelCvsBtn" style="display:none">Clear</button>
+      <button type="button" class="btn soft sm" id="importQrBtn" style="margin-left:auto">Import QR JSON</button>
     </div>
   </div>
   <div class="bulk-bar" id="bulkBar">
@@ -627,7 +641,7 @@ nav button.on{color:var(--gold);font-weight:700}
     <div class="kw" id="kwOut"></div>
   </div>
   <div class="row"><button class="btn ghost" id="save">सेव करें</button><button class="btn" id="pdf">PDF डाउनलोड</button></div>
-  <div class="row"><button class="btn dk" id="waCv">WhatsApp</button><button class="btn ghost" id="smsCv">SMS</button><button class="btn ghost" id="shCv">शेयर</button></div>
+  <div class="row"><button class="btn dk" id="waCv">WhatsApp</button><button class="btn ghost" id="smsCv">SMS</button><button class="btn soft" id="qrCv">QR Code</button><button class="btn ghost" id="shCv">शेयर</button></div>
   <div class="fit" id="preview"></div>
 </section>
 
@@ -681,6 +695,38 @@ nav button.on{color:var(--gold);font-weight:700}
       <div class="unlock-prog-track"><div class="unlock-prog-fill" id="unlockProg"></div></div>
     </div>
     <button type="button" class="btn ghost" id="unlockCancelBtn">Cancel</button>
+  </div>
+</div>
+
+<!-- RESUME QR CODE SHARE MODAL -->
+<div class="qr-ov" id="qrOv" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle">
+  <div class="qr-box">
+    <span class="qr-pill" id="qrPill">COMPACT JSON QR</span>
+    <h3 id="qrModalTitle">Share Resume via QR Code</h3>
+    <p class="qr-meta" id="qrMeta"></p>
+    <div class="qr-canvas-wrap">
+      <canvas id="qrCanvas" width="220" height="220"></canvas>
+    </div>
+    <pre class="qr-json-pre" id="qrJsonPre"></pre>
+    <div class="row" style="margin-top:0">
+      <button type="button" class="btn" id="qrDlBtn">Download QR PNG</button>
+      <button type="button" class="btn soft" id="qrCopyBtn">Copy JSON</button>
+    </div>
+    <button type="button" class="btn ghost" id="qrCloseBtn" style="margin-top:8px">Close</button>
+  </div>
+</div>
+
+<!-- IMPORT RESUME FROM QR JSON MODAL -->
+<div class="qr-ov" id="qrImportOv" role="dialog" aria-modal="true" aria-labelledby="qrImportTitle">
+  <div class="qr-box">
+    <span class="qr-pill" id="qrImportPill">QR JSON IMPORT</span>
+    <h3 id="qrImportTitle">Import Resume from QR JSON</h3>
+    <p class="qr-meta" id="qrImportSub">Paste the compact JSON scanned from any JobReady QR code to save &amp; edit it offline.</p>
+    <textarea class="qr-import-ta" id="qrImportTa" placeholder='{"v":1,"n":"Rahul Sharma",...}'></textarea>
+    <div class="row" style="margin-top:0">
+      <button type="button" class="btn" id="qrImportApplyBtn">Import &amp; Open CV</button>
+      <button type="button" class="btn ghost" id="qrImportCancelBtn">Cancel</button>
+    </div>
   </div>
 </div>
 
@@ -780,6 +826,21 @@ const I18N = {
     kwAll: "All top keywords are in your CV ✓", kwEmpty: "Paste a job description first.",
     sampleLoaded: "Sample data filled",
     linkCopied: "Link copied", shareUnsupported: "Sharing not supported here",
+    // QR Code Share & Import
+    qrBtn: "QR Code", qrItemBtn: "QR",
+    qrPill: "COMPACT JSON QR", qrModalTitle: "Share Resume via QR Code",
+    qrMetaFmt: (name, bytes, ver) => `${name} • ${bytes} bytes • QR v${ver}`,
+    qrDlBtn: "Download QR PNG", qrCopyBtn: "Copy JSON", qrCloseBtn: "Close",
+    qrCopiedToast: "Compact resume JSON copied",
+    qrDownloadedToast: "QR PNG downloaded",
+    qrNeedData: "Enter at least your name or resume details first",
+    qrTooLarge: "Resume text exceeds max QR capacity (2,953 bytes)",
+    qrImportBtn: "Import QR JSON", qrImportPill: "QR JSON IMPORT",
+    qrImportTitle: "Import Resume from QR JSON",
+    qrImportSub: "Paste compact JSON scanned from a JobReady QR code to save & open it offline.",
+    qrImportApply: "Import & Open CV", qrImportCancel: "Cancel",
+    qrImportBad: "Invalid compact resume JSON",
+    qrImportedToast: name => `Imported CV: ${name}`,
     // Settings
     stPillTx: "100% Offline • On-Device",
     stTitle: "Settings & Privacy",
@@ -901,6 +962,21 @@ const I18N = {
     kwAll: "सभी मुख्य कीवर्ड आपके CV में हैं ✓", kwEmpty: "नौकरी का विवरण पेस्ट करें।",
     sampleLoaded: "सैंपल डेटा भरा गया",
     linkCopied: "लिंक कॉपी हो गया", shareUnsupported: "शेयर सपोर्टेड नहीं है",
+    // QR Code Share & Import
+    qrBtn: "QR कोड", qrItemBtn: "QR",
+    qrPill: "COMPACT JSON QR", qrModalTitle: "QR कोड से रिज़्यूमे शेयर करें",
+    qrMetaFmt: (name, bytes, ver) => `${name} • ${bytes} बाइट्स • QR v${ver}`,
+    qrDlBtn: "QR PNG डाउनलोड", qrCopyBtn: "JSON कॉपी", qrCloseBtn: "बंद करें",
+    qrCopiedToast: "कॉम्पैक्ट रिज़्यूमे JSON कॉपी हो गया",
+    qrDownloadedToast: "QR PNG डाउनलोड हो गया",
+    qrNeedData: "कृपया पहले नाम या रिज़्यूमे विवरण भरें",
+    qrTooLarge: "रिज़्यूमे डेटा QR की अधिकतम सीमा (2,953 बाइट्स) से अधिक है",
+    qrImportBtn: "QR JSON इम्पोर्ट", qrImportPill: "QR JSON इम्पोर्ट",
+    qrImportTitle: "QR JSON से रिज़्यूमे इम्पोर्ट करें",
+    qrImportSub: "JobReady QR कोड से स्कैन किया गया कॉम्पैक्ट JSON यहाँ पेस्ट करें।",
+    qrImportApply: "इम्पोर्ट व खोलें", qrImportCancel: "रद्द करें",
+    qrImportBad: "अमान्य कॉम्पैक्ट रिज़्यूमे JSON",
+    qrImportedToast: name => `CV इम्पोर्ट हुआ: ${name}`,
     // Settings
     stPillTx: "100% ऑफ़लाइन • ऑन-डिवाइस",
     stTitle: "सेटिंग्स और गोपनीयता",
@@ -1073,11 +1149,44 @@ function renderTpls(){
   $$("#tplGrid .thumb").forEach(fitBox);
 }
 
+/* ===== Sandboxed Adsterra 300x250 Iframe Loader (Strictly Hub + Unlock Modal) ===== */
+const ADSTERRA_300X250_SRCDOC = [
+  "<!doctype html><html><head><meta charset=\"utf-8\">",
+  "<style>html,body{margin:0;padding:0;width:300px;height:250px;overflow:hidden;background:transparent;display:flex;align-items:center;justify-content:center;}<\/style>",
+  "</head><body>",
+  "<script>",
+  "  atOptions = {",
+  "    'key' : '14f6a83347de3c4b26ce9fec4a239cd0',",
+  "    'format' : 'iframe',",
+  "    'height' : 250,",
+  "    'width' : 300,",
+  "    'params' : {}",
+  "  };",
+  "<\/script>",
+  "<script src=\"https://bauval.org\"><\/script>",
+  "</body></html>"
+].join("\n");
+
+function mountAdsterraFrame(slotEl, title){
+  if(!slotEl) return;
+  slotEl.innerHTML = "";
+  const ifr = document.createElement("iframe");
+  ifr.width = "300";
+  ifr.height = "250";
+  ifr.title = title || "Sponsored Banner";
+  ifr.setAttribute("scrolling", "no");
+  ifr.setAttribute("sandbox", "allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms allow-same-origin");
+  ifr.srcdoc = ADSTERRA_300X250_SRCDOC;
+  slotEl.appendChild(ifr);
+}
+
 /* ===== Pro Template 30s Sponsor Unlock Modal ===== */
 let unlockTimerId = null, unlockTargetTpl = null;
 function closeUnlockModal(){
   if(unlockTimerId){ clearInterval(unlockTimerId); unlockTimerId = null; }
   unlockTargetTpl = null;
+  const slot = $("#adsterra-unlock-300x250");
+  if(slot) slot.innerHTML = "";
   $("#unlockOv").classList.remove("on");
 }
 function openUnlockModal(t){
@@ -1093,6 +1202,7 @@ function openUnlockModal(t){
   $("#unlockCancelBtn").textContent = tx.unlockCancel;
   $("#unlockTimer").textContent = sec + "s";
   $("#unlockProg").style.width = "0%";
+  mountAdsterraFrame($("#adsterra-unlock-300x250"), "Sponsored Pro Template Unlock");
   $("#unlockOv").classList.add("on");
   unlockTimerId = setInterval(()=>{
     sec -= 1;
@@ -1160,12 +1270,12 @@ function updateBulkUI(list){
   const validIds = new Set(list.map(x=>String(x.id)));
   selectedIds = new Set([...selectedIds].filter(id=>validIds.has(id)));
   const count = selectedIds.size;
-  const bar = $("#filesSelectBar");
-  if(bar) bar.style.display = list.length ? "flex" : "none";
   const allSelected = list.length > 0 && count === list.length;
+  $("#selectAllCvsBtn").style.display = list.length ? "inline-flex" : "none";
   $("#selectAllCvsBtn").textContent = allSelected ? tx.deselectAll : tx.selectAll;
   $("#clearSelCvsBtn").style.display = count > 0 ? "inline-flex" : "none";
   $("#clearSelCvsBtn").textContent = tx.clearSel;
+  $("#importQrBtn").textContent = tx.qrImportBtn;
   $("#bulkBar").classList.toggle("on", count > 0);
   $("#bulkCountLbl").textContent = tx.selectedCount(count);
   $("#bulkExportPdfBtn").textContent = tx.bulkExportPdf;
@@ -1183,7 +1293,7 @@ function renderFiles(){
     return `<div class="item ${chk?'selected':''}">
       <label class="cv-chk-wrap"><input type="checkbox" class="cv-chk" data-sel="${sid}" ${chk?'checked':''} aria-label="Select ${esc(x.cv.name)}"></label>
       <div><b>${esc(x.cv.name)}</b><br><small>${esc(x.cv.title)} • ${x.date}</small></div>
-      <button class="btn ghost sm" data-open="${sid}">${tx.openBtn}</button><button class="btn ghost sm" data-del="${sid}">${tx.delBtn}</button>
+      <button class="btn soft sm" data-qr="${sid}" title="${tx.qrBtn}">${tx.qrItemBtn}</button><button class="btn ghost sm" data-open="${sid}">${tx.openBtn}</button><button class="btn ghost sm" data-del="${sid}">${tx.delBtn}</button>
     </div>`;
   }).join("") : `<div class="empty">${tx.filesEmpty}</div>`;
 }
@@ -1204,7 +1314,8 @@ $("#fileList").addEventListener("change", e=>{
   updateBulkUI(LS.get("jr_cvs", []));
 });
 $("#fileList").addEventListener("click", e=>{
-  const o=e.target.closest("[data-open]"), d=e.target.closest("[data-del]");
+  const q=e.target.closest("[data-qr]"), o=e.target.closest("[data-open]"), d=e.target.closest("[data-del]");
+  if(q){ const x=LS.get("jr_cvs",[]).find(y=>String(y.id)===q.dataset.qr); if(x) openQrModal(x.cv, x.tpl); }
   if(o){ const x=LS.get("jr_cvs",[]).find(y=>String(y.id)===o.dataset.open); if(x){ curTpl=x.tpl; fillCv(x.cv); openForm(); } }
   if(d){
     const tx = T();
@@ -1297,6 +1408,381 @@ $("#copyAppLink").onclick = async ()=>{
 $("#waCv").onclick = ()=>window.open(waLink(cvText(readCv())),"_blank");
 $("#smsCv").onclick = ()=>location.href=smsLink(cvText(readCv()));
 $("#shCv").onclick = ()=>nativeShare(cvText(readCv()));
+
+/* ===== Offline ISO-18004 QR Encoder & Compact JSON Resume Sharing ===== */
+const QR_EC_L = [
+  null,
+  [7,1],[10,1],[15,1],[20,1],[26,1],[18,2],[20,2],[24,2],[30,2],[18,4],
+  [20,4],[24,4],[26,4],[30,4],[22,6],[24,6],[28,6],[30,6],[28,7],[28,8],
+  [28,8],[28,9],[30,9],[30,10],[26,12],[28,12],[30,12],[30,13],[30,14],[30,15],
+  [30,16],[30,17],[30,18],[30,19],[30,19],[30,20],[30,21],[30,22],[30,24],[30,25]
+];
+const QR_AP = [
+  [],[],[6,18],[6,22],[6,26],[6,30],[6,34],
+  [6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],
+  [6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],
+  [6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],
+  [6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],
+  [6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]
+];
+const GF_EXP = new Uint8Array(512), GF_LOG = new Uint8Array(256);
+(()=>{ let x=1; for(let i=0;i<255;i++){ GF_EXP[i]=x; GF_EXP[i+255]=x; GF_LOG[x]=i; x<<=1; if(x&256) x^=0x11d; } })();
+const gfMul = (a,b) => (a && b) ? GF_EXP[GF_LOG[a]+GF_LOG[b]] : 0;
+function rsGenPoly(deg){
+  let p = [1];
+  for(let i=0;i<deg;i++){
+    const next = new Array(p.length+1).fill(0);
+    for(let j=0;j<p.length;j++){ next[j] ^= p[j]; next[j+1] ^= gfMul(p[j], GF_EXP[i]); }
+    p = next;
+  }
+  return p;
+}
+function rsRemainder(data, ecLen){
+  const gen = rsGenPoly(ecLen);
+  const res = new Uint8Array(ecLen);
+  for(let i=0;i<data.length;i++){
+    const factor = data[i] ^ res[0];
+    res.copyWithin(0, 1);
+    res[ecLen-1] = 0;
+    for(let j=0;j<ecLen;j++) res[j] ^= gfMul(gen[j+1], factor);
+  }
+  return res;
+}
+function qrTotalCodewords(v){
+  const m = 4*v + 17;
+  let bits = m*m - 192 - 2*(m-16) - 31 - (v>=7 ? 36 : 0);
+  const k = QR_AP[v].length;
+  if(k>0) bits -= (k*k - 3)*25 - (k-2)*10;
+  return bits >> 3;
+}
+function bchFormat(ecBits, mask){
+  const d = (ecBits << 3) | mask;
+  let r = d << 10;
+  for(let i=14;i>=10;i--) if((r>>i)&1) r ^= (0x537 << (i-10));
+  return ((d << 10) | r) ^ 0x5412;
+}
+function bchVersion(v){
+  let r = v << 12;
+  for(let i=17;i>=12;i--) if((r>>i)&1) r ^= (0x1f25 << (i-12));
+  return (v << 12) | r;
+}
+function encodeQR(text){
+  const bytes = new TextEncoder().encode(text);
+  let ver = 0;
+  for(let v=1;v<=40;v++){
+    const [ec, blk] = QR_EC_L[v];
+    const dataCapBytes = qrTotalCodewords(v) - ec*blk;
+    const hdrBits = 4 + (v<10 ? 8 : 16);
+    if(hdrBits + bytes.length*8 <= dataCapBytes*8){ ver = v; break; }
+  }
+  if(!ver) throw new Error("TOO_LARGE");
+
+  const [ecPerBlk, numBlks] = QR_EC_L[ver];
+  const totalCW = qrTotalCodewords(ver);
+  const totalDataCW = totalCW - ecPerBlk*numBlks;
+  const bits = [];
+  const pushBits = (val, len) => { for(let i=len-1;i>=0;i--) bits.push((val>>i)&1); };
+  pushBits(4, 4); // Byte mode
+  pushBits(bytes.length, ver<10 ? 8 : 16);
+  for(let i=0;i<bytes.length;i++) pushBits(bytes[i], 8);
+  const maxBits = totalDataCW*8;
+  for(let i=0;i<4 && bits.length<maxBits;i++) bits.push(0);
+  while(bits.length%8 !== 0) bits.push(0);
+  const pads = [0xec, 0x11];
+  for(let pi=0; bits.length<maxBits; pi++) pushBits(pads[pi&1], 8);
+
+  const dataCW = new Uint8Array(totalDataCW);
+  for(let i=0;i<totalDataCW;i++){
+    let b=0; for(let j=0;j<8;j++) b=(b<<1)|bits[i*8+j];
+    dataCW[i]=b;
+  }
+  const g1Len = Math.floor(totalDataCW / numBlks);
+  const g2Blks = totalDataCW % numBlks;
+  const g1Blks = numBlks - g2Blks;
+  const blocks = [], ecs = [];
+  let off = 0;
+  for(let b=0;b<numBlks;b++){
+    const len = g1Len + (b >= g1Blks ? 1 : 0);
+    const slice = dataCW.subarray(off, off+len);
+    off += len;
+    blocks.push(slice);
+    ecs.push(rsRemainder(slice, ecPerBlk));
+  }
+  const finalCW = [];
+  for(let i=0;i<g1Len+1;i++) for(let b=0;b<numBlks;b++) if(i<blocks[b].length) finalCW.push(blocks[b][i]);
+  for(let i=0;i<ecPerBlk;i++) for(let b=0;b<numBlks;b++) finalCW.push(ecs[b][i]);
+
+  const m = 4*ver + 17;
+  const base = Array.from({length:m}, ()=>new Int8Array(m));
+  const func = Array.from({length:m}, ()=>new Uint8Array(m));
+  const setF = (r,c,v)=>{ if(r>=0&&r<m&&c>=0&&c<m){ base[r][c]=v?1:0; func[r][c]=1; } };
+  const drawFinder = (r0,c0)=>{
+    for(let dr=-1;dr<=7;dr++) for(let dc=-1;dc<=7;dc++){
+      const r=r0+dr, c=c0+dc;
+      if(r<0||r>=m||c<0||c>=m) continue;
+      const on = (dr>=0&&dr<=6&&dc>=0&&dc<=6) && (dr===0||dr===6||dc===0||dc===6||(dr>=2&&dr<=4&&dc>=2&&dc<=4));
+      setF(r,c,on);
+    }
+  };
+  drawFinder(0,0); drawFinder(0,m-7); drawFinder(m-7,0);
+  const ap = QR_AP[ver];
+  for(let i=0;i<ap.length;i++) for(let j=0;j<ap.length;j++){
+    if((i===0&&j===0)||(i===0&&j===ap.length-1)||(i===ap.length-1&&j===0)) continue;
+    const r0=ap[i], c0=ap[j];
+    for(let dr=-2;dr<=2;dr++) for(let dc=-2;dc<=2;dc++){
+      const d = Math.max(Math.abs(dr), Math.abs(dc));
+      setF(r0+dr, c0+dc, d===2||d===0);
+    }
+  }
+  for(let i=8;i<m-8;i++){ setF(6,i,(i&1)===0); setF(i,6,(i&1)===0); }
+  setF(m-8, 8, 1);
+  // Reserve format info
+  for(let i=0;i<=8;i++){ if(i!==6){ func[8][i]=1; func[i][8]=1; } }
+  for(let i=0;i<8;i++) func[8][m-1-i]=1;
+  for(let i=0;i<7;i++) func[m-1-i][8]=1;
+  // Version info
+  if(ver>=7){
+    const vi = bchVersion(ver);
+    for(let i=0;i<18;i++){
+      const bit = (vi>>i)&1, a = Math.floor(i/3), b = m-11+(i%3);
+      setF(a,b,bit); setF(b,a,bit);
+    }
+  }
+  // Place codewords in zigzag
+  let cwIdx=0, bitIdx=0, dir=-1;
+  for(let col=m-1; col>0; col-=2){
+    if(col===6) col--;
+    for(let row=(dir===-1?m-1:0); row>=0&&row<m; row+=dir){
+      for(let dc=0;dc<2;dc++){
+        const c = col-dc;
+        if(!func[row][c]){
+          let bit = 0;
+          if(cwIdx < finalCW.length){
+            bit = (finalCW[cwIdx] >> (7 - bitIdx)) & 1;
+            bitIdx++;
+            if(bitIdx===8){ bitIdx=0; cwIdx++; }
+          }
+          base[row][c] = bit;
+        }
+      }
+    }
+    dir = -dir;
+  }
+  const maskFn = [
+    (r,c)=>(r+c)%2===0,
+    (r,c)=>r%2===0,
+    (r,c)=>c%3===0,
+    (r,c)=>(r+c)%3===0,
+    (r,c)=>(Math.floor(r/2)+Math.floor(c/3))%2===0,
+    (r,c)=>((r*c)%2+(r*c)%3)===0,
+    (r,c)=>(((r*c)%2+(r*c)%3)%2)===0,
+    (r,c)=>(((r+c)%2+(r*c)%3)%2)===0
+  ];
+  const penalty = g => {
+    let sc = 0;
+    for(let r=0;r<m;r++){
+      let run=1;
+      for(let c=1;c<m;c++){
+        if(g[r][c]===g[r][c-1]) run++;
+        else{ if(run>=5) sc+=3+(run-5); run=1; }
+      }
+      if(run>=5) sc+=3+(run-5);
+    }
+    for(let c=0;c<m;c++){
+      let run=1;
+      for(let r=1;r<m;r++){
+        if(g[r][c]===g[r-1][c]) run++;
+        else{ if(run>=5) sc+=3+(run-5); run=1; }
+      }
+      if(run>=5) sc+=3+(run-5);
+    }
+    for(let r=0;r<m-1;r++) for(let c=0;c<m-1;c++){
+      const v=g[r][c]; if(v===g[r][c+1]&&v===g[r+1][c]&&v===g[r+1][c+1]) sc+=3;
+    }
+    const p1="10111010000", p2="00001011101";
+    for(let r=0;r<m;r++){
+      const row=g[r].join("");
+      for(let i=0;i<=m-11;i++) if(row.startsWith(p1,i)||row.startsWith(p2,i)) sc+=40;
+    }
+    for(let c=0;c<m;c++){
+      let col=""; for(let r=0;r<m;r++) col+=g[r][c];
+      for(let i=0;i<=m-11;i++) if(col.startsWith(p1,i)||col.startsWith(p2,i)) sc+=40;
+    }
+    let dark=0; for(let r=0;r<m;r++) for(let c=0;c<m;c++) dark+=g[r][c];
+    sc += Math.floor(Math.abs(dark*100/(m*m) - 50)/5)*10;
+    return sc;
+  };
+  let bestGrid = null, bestScore = Infinity;
+  for(let mk=0;mk<8;mk++){
+    const g = base.map((row,r)=>row.map((v,c)=>func[r][c]?v:(v^(maskFn[mk](r,c)?1:0))));
+    const fmt = bchFormat(1, mk); // EC L = 01
+    for(let i=0;i<6;i++) g[8][i] = (fmt>>(14-i))&1;
+    g[8][7] = (fmt>>8)&1; g[8][8] = (fmt>>7)&1; g[7][8] = (fmt>>6)&1;
+    for(let i=9;i<15;i++) g[14-i][8] = (fmt>>(14-i))&1;
+    for(let i=0;i<8;i++) g[8][m-1-i] = (fmt>>i)&1;
+    for(let i=0;i<7;i++) g[m-1-i][8] = (fmt>>(14-i))&1;
+    const sc = penalty(g);
+    if(sc < bestScore){ bestScore = sc; bestGrid = g; }
+  }
+  return { version: ver, size: m, matrix: bestGrid, byteLength: bytes.length };
+}
+
+function drawQRToCanvas(canvas, text){
+  const qr = encodeQR(text);
+  const quiet = 4;
+  const totalMods = qr.size + quiet*2;
+  const targetPx = 440;
+  const modPx = Math.max(2, Math.floor(targetPx / totalMods));
+  const px = totalMods * modPx;
+  canvas.width = px;
+  canvas.height = px;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, px, px);
+  ctx.fillStyle = "#0b0e14";
+  for(let r=0;r<qr.size;r++){
+    for(let c=0;c<qr.size;c++){
+      if(qr.matrix[r][c]) ctx.fillRect((c+quiet)*modPx, (r+quiet)*modPx, modPx, modPx);
+    }
+  }
+  return qr;
+}
+
+function buildCompactResumeJson(cv, tplId){
+  const o = { v: 1 };
+  if(cv.name) o.n = cv.name;
+  if(cv.title) o.t = cv.title;
+  if(cv.email) o.e = cv.email;
+  if(cv.phone) o.p = cv.phone;
+  if(cv.addr) o.a = cv.addr;
+  if(cv.sum) o.s = cv.sum;
+  if(cv.skills) o.k = cv.skills;
+  if(cv.exp) o.x = cv.exp;
+  if(cv.edu) o.d = cv.edu;
+  if(cv.lang) o.l = cv.lang;
+  if(tplId) o.tp = tplId;
+  let json = JSON.stringify(o);
+  const enc = new TextEncoder();
+  if(enc.encode(json).length > 2850){
+    ["x","s","d","k"].forEach(k=>{
+      if(o[k] && enc.encode(JSON.stringify(o)).length > 2850){
+        o[k] = o[k].slice(0, 260) + "…";
+      }
+    });
+    json = JSON.stringify(o);
+  }
+  return json;
+}
+
+function parseCompactResumeJson(raw){
+  const d = typeof raw === "string" ? JSON.parse(raw) : raw;
+  if(!d || typeof d !== "object") return null;
+  if(d.cv && typeof d.cv === "object") return { cv: d.cv, tpl: d.tpl || "classic" };
+  if("n" in d || "t" in d || "e" in d || "k" in d || "x" in d){
+    return {
+      cv: {
+        name: String(d.n || ""), title: String(d.t || ""), email: String(d.e || ""),
+        phone: String(d.p || ""), addr: String(d.a || ""), sum: String(d.s || ""),
+        skills: String(d.k || ""), exp: String(d.x || ""), edu: String(d.d || ""),
+        lang: String(d.l || ""), photo: "", sign: ""
+      },
+      tpl: String(d.tp || "classic")
+    };
+  }
+  if("name" in d || "title" in d || "skills" in d){
+    return {
+      cv: {
+        name: String(d.name || ""), title: String(d.title || ""), email: String(d.email || ""),
+        phone: String(d.phone || ""), addr: String(d.addr || ""), sum: String(d.sum || ""),
+        skills: String(d.skills || ""), exp: String(d.exp || ""), edu: String(d.edu || ""),
+        lang: String(d.lang || ""), photo: "", sign: ""
+      },
+      tpl: String(d.tpl || "classic")
+    };
+  }
+  return null;
+}
+
+let activeQrJson = "", activeQrName = "resume";
+function openQrModal(cv, tplId){
+  const tx = T();
+  const hasAny = ["name","title","email","phone","sum","skills","exp","edu"].some(k=>cv[k] && String(cv[k]).trim());
+  if(!hasAny){ toast(tx.qrNeedData); return; }
+  const compact = buildCompactResumeJson(cv, tplId || curTpl);
+  try{
+    const qr = drawQRToCanvas($("#qrCanvas"), compact);
+    activeQrJson = compact;
+    activeQrName = (cv.name || "resume").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"") || "resume";
+    $("#qrPill").textContent = tx.qrPill;
+    $("#qrModalTitle").textContent = tx.qrModalTitle;
+    $("#qrMeta").textContent = tx.qrMetaFmt(cv.name || "Resume", qr.byteLength, qr.version);
+    $("#qrJsonPre").textContent = compact;
+    $("#qrDlBtn").textContent = tx.qrDlBtn;
+    $("#qrCopyBtn").textContent = tx.qrCopyBtn;
+    $("#qrCloseBtn").textContent = tx.qrCloseBtn;
+    $("#qrOv").classList.add("on");
+  }catch(e){
+    toast(tx.qrTooLarge);
+  }
+}
+function closeQrModal(){ $("#qrOv").classList.remove("on"); }
+$("#qrCv").onclick = ()=>openQrModal(readCv(), curTpl);
+$("#qrCloseBtn").onclick = closeQrModal;
+$("#qrOv").addEventListener("click", e=>{ if(e.target === $("#qrOv")) closeQrModal(); });
+$("#qrCopyBtn").onclick = async ()=>{
+  if(!activeQrJson) return;
+  try{ await navigator.clipboard.writeText(activeQrJson); toast(T().qrCopiedToast); }
+  catch(e){ toast(T().shareUnsupported); }
+};
+$("#qrDlBtn").onclick = ()=>{
+  const a = document.createElement("a");
+  a.href = $("#qrCanvas").toDataURL("image/png");
+  a.download = `jobready-qr-${activeQrName}.png`;
+  document.body.appendChild(a); a.click(); a.remove();
+  toast(T().qrDownloadedToast);
+};
+
+function openQrImportModal(){
+  const tx = T();
+  $("#qrImportPill").textContent = tx.qrImportPill;
+  $("#qrImportTitle").textContent = tx.qrImportTitle;
+  $("#qrImportSub").textContent = tx.qrImportSub;
+  $("#qrImportApplyBtn").textContent = tx.qrImportApply;
+  $("#qrImportCancelBtn").textContent = tx.qrImportCancel;
+  $("#qrImportTa").value = "";
+  $("#qrImportOv").classList.add("on");
+}
+function closeQrImportModal(){ $("#qrImportOv").classList.remove("on"); }
+$("#importQrBtn").onclick = openQrImportModal;
+$("#qrImportCancelBtn").onclick = closeQrImportModal;
+$("#qrImportOv").addEventListener("click", e=>{ if(e.target === $("#qrImportOv")) closeQrImportModal(); });
+$("#qrImportApplyBtn").onclick = ()=>{
+  const tx = T();
+  try{
+    const parsed = parseCompactResumeJson($("#qrImportTa").value.trim());
+    if(!parsed || (!parsed.cv.name && !parsed.cv.title && !parsed.cv.skills)) throw new Error("Invalid");
+    const tplObj = TPL.find(t=>t.id===parsed.tpl);
+    const applyTpl = (tplObj && isTplUnlocked(tplObj)) ? parsed.tpl : "classic";
+    const list = LS.get("jr_cvs", []);
+    list.unshift({ id: Date.now(), cv: parsed.cv, tpl: applyTpl, date: new Date().toLocaleDateString("en-GB") });
+    LS.set("jr_cvs", list);
+    curTpl = applyTpl;
+    fillCv(parsed.cv);
+    renderFiles();
+    refreshHubSources();
+    closeQrImportModal();
+    openForm();
+    toast(tx.qrImportedToast(parsed.cv.name || "CV"));
+  }catch(e){
+    toast(tx.qrImportBad);
+  }
+};
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape"){
+    if($("#qrOv").classList.contains("on")) closeQrModal();
+    if($("#qrImportOv").classList.contains("on")) closeQrImportModal();
+  }
+});
 
 /* ===== PDF: सिर्फ़ CV प्रिंट + PDF quality setting ===== */
 $("#pdf").onclick = ()=>{
@@ -1617,7 +2103,12 @@ function applyLang(){
 
   setTxt("#fmBack", tx.fmBack); setTxt("#fmTitle", tx.fmTitle);
   ["name","title","email","phone","addr","sum","skills","exp","edu","lang","photo","sign","jd"].forEach(k=>setTxt("#lb_"+k, tx["lb_"+k]));
-  setTxt("#kwBtn", tx.kwBtn); setTxt("#save", tx.saveBtn); setTxt("#pdf", tx.pdfBtn); setTxt("#shCv", tx.shBtn);
+  setTxt("#kwBtn", tx.kwBtn); setTxt("#save", tx.saveBtn); setTxt("#pdf", tx.pdfBtn); setTxt("#qrCv", tx.qrBtn); setTxt("#shCv", tx.shBtn);
+  setTxt("#importQrBtn", tx.qrImportBtn);
+  setTxt("#qrPill", tx.qrPill); setTxt("#qrModalTitle", tx.qrModalTitle);
+  setTxt("#qrDlBtn", tx.qrDlBtn); setTxt("#qrCopyBtn", tx.qrCopyBtn); setTxt("#qrCloseBtn", tx.qrCloseBtn);
+  setTxt("#qrImportPill", tx.qrImportPill); setTxt("#qrImportTitle", tx.qrImportTitle); setTxt("#qrImportSub", tx.qrImportSub);
+  setTxt("#qrImportApplyBtn", tx.qrImportApply); setTxt("#qrImportCancelBtn", tx.qrImportCancel);
 
   // Settings view
   setTxt("#stPillTx", tx.stPillTx);
@@ -1816,6 +2307,18 @@ $("#restoreFile").addEventListener("change", async e=>{
   if(!file) return;
   try{
     const data = JSON.parse(await file.text());
+    const singleQr = parseCompactResumeJson(data);
+    if(singleQr && !Array.isArray(data.cvs)){
+      const existing = LS.get("jr_cvs", []);
+      const tplObj = TPL.find(t=>t.id===singleQr.tpl);
+      const applyTpl = (tplObj && isTplUnlocked(tplObj)) ? singleQr.tpl : "classic";
+      existing.unshift({ id: Date.now(), cv: singleQr.cv, tpl: applyTpl, date: new Date().toLocaleDateString("en-GB") });
+      LS.set("jr_cvs", existing);
+      renderFiles();
+      refreshHubSources();
+      toast(T().qrImportedToast(singleQr.cv.name || "CV"));
+      return;
+    }
     if(!data || !Array.isArray(data.cvs)) throw new Error("Invalid");
     const existing = LS.get("jr_cvs", []);
     const seen = new Set(existing.map(x=>x.id));
@@ -1867,7 +2370,12 @@ function show(name){
   $$("nav button").forEach(b=>b.classList.toggle("on", b.dataset.go===name));
   if(name==="files") renderFiles();
   if(name==="tpl") fitAll();
-  if(name==="hub"){ refreshHubSources(); renderQaList(); }
+  if(name==="hub"){
+    refreshHubSources();
+    renderQaList();
+    const hubSlot = $("#adsterra-hub-300x250");
+    if(hubSlot && !hubSlot.querySelector("iframe")) mountAdsterraFrame(hubSlot, "Career Hub Sponsored Banner");
+  }
   window.scrollTo(0,0);
 }
 function openForm(){ $("#formOv").classList.add("on"); renderPreview(); window.scrollTo(0,0); }

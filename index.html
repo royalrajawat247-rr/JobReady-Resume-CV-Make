@@ -3,42 +3,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0f1115">
+<meta name="theme-color" content="#0b0e14">
+<meta name="description" content="100% Offline-First Resume & CV Maker with HD PDF Export, Pro Templates, Local Vault & Instant Backup">
 <title>JobReady: Resume & CV Maker</title>
 <link rel="manifest" href="manifest.json">
 <style>
-:root{--bg:#0f1115;--card:#161a22;--line:#262c38;--text:#f3f5f8;--muted:#98a2b3;--a1:#4f46e5;--a2:#7c3aed;--gold:#e6b450;--ok:#22c55e;--r:12px}
-:root.light{--bg:#f4f5f8;--card:#ffffff;--line:#e3e6ec;--text:#111827;--muted:#5b6474}
+:root{
+  --bg:#0b0e14;--card:#141923;--card2:#1a2130;--line:#242c3d;--text:#f3f5f8;--muted:#94a3b8;
+  --a1:#4f46e5;--a2:#7c3aed;--accent:#6366f1;--accent-soft:rgba(99,102,241,.16);
+  --gold:#e6b450;--ok:#22c55e;--ok-soft:rgba(34,197,94,.14);--danger:#ef4444;
+  --switch-bg:#2b3447;--shadow:0 1px 2px rgba(0,0,0,.35);--r:14px
+}
+:root.light{
+  --bg:#f3f5f9;--card:#ffffff;--card2:#f8fafc;--line:#e2e8f0;--text:#0f172a;--muted:#475569;
+  --accent:#4f46e5;--accent-soft:rgba(79,70,229,.10);
+  --ok:#16a34a;--ok-soft:rgba(22,163,74,.10);
+  --switch-bg:#cbd5e1;--shadow:0 1px 3px rgba(15,23,42,.06)
+}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,"Noto Sans Devanagari",sans-serif;font-size:13px;-webkit-tap-highlight-color:transparent}
-body{min-height:100vh;padding-bottom:128px;overflow-x:hidden}
-button,input,textarea{font:inherit}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Devanagari",sans-serif;font-size:13.5px;-webkit-tap-highlight-color:transparent;transition:background-color .18s ease,color .18s ease}
+body{min-height:100vh;padding-bottom:78px;overflow-x:hidden}
+button,input,textarea,select{font:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .hdr{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--line)}
-.logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:12px}
-.hdr h1{font-size:15px;margin:0}.hdr small{color:var(--muted);font-size:11px}
-.badge{margin-left:auto;padding:4px 10px;border-radius:999px;border:1px solid var(--gold);color:var(--gold);font-size:11px;font-weight:700}
-.badge.vip{background:var(--gold);color:#111}
-main{padding:12px}
+.logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:12px;flex:none}
+.hdr h1{font-size:15px;margin:0}.hdr small{color:var(--muted);font-size:11px;display:block}
+.badge{margin-left:auto;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+main{padding:12px;max-width:760px;margin:0 auto}
 .screen{display:none}.screen.on{display:block}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
 .card h2{font-size:15px;margin:0 0 8px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:11px;color:var(--muted)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;text-align:left;color:var(--text);cursor:pointer}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;text-align:left;color:var(--text);cursor:pointer;box-shadow:var(--shadow)}
 .tile .ic{width:34px;height:34px;border-radius:9px;background:rgba(79,70,229,.2);display:grid;place-items:center;font-size:17px;margin-bottom:8px}
 .tile b{display:block;margin-bottom:3px;font-size:13px}.tile span{color:var(--muted);font-size:11px;line-height:1.35}
 .muted{color:var(--muted);font-size:12px}
-.btn{width:100%;border:0;border-radius:10px;padding:10px;font-weight:700;font-size:13px;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));cursor:pointer;margin-top:6px}
+.btn{width:100%;min-height:42px;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));cursor:pointer;margin-top:6px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;transition:opacity .15s ease,transform .12s ease}
+.btn:active{transform:scale(.99)}
 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
-.btn.sm{width:auto;padding:6px 10px;margin:0;font-size:12px}
-.btn.dk{background:#1f2937;color:#fff}
+.btn.sm{width:auto;min-height:36px;padding:6px 12px;margin:0;font-size:12px}
+.btn.dk{background:#1e293b;color:#fff}
+.btn.soft{background:var(--accent-soft);color:var(--accent);border:1px solid transparent}
+.btn.danger{background:rgba(239,68,68,.14);color:var(--danger);border:1px solid rgba(239,68,68,.3)}
 .link{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:12px;cursor:pointer;margin:10px auto 0;display:block}
-.banner{position:fixed;left:0;right:0;bottom:56px;z-index:6;display:flex;align-items:center;gap:8px;background:var(--card);border-top:1px solid var(--line);padding:7px 12px;font-size:12px}
-.banner .ad{background:var(--gold);color:#111;font-size:10px;font-weight:800;padding:1px 5px;border-radius:4px}
-.banner button{margin-left:auto;background:var(--a1);color:#fff;border:0;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px}
 nav{position:fixed;left:0;right:0;bottom:0;z-index:7;display:grid;grid-template-columns:repeat(5,1fr);background:var(--card);border-top:1px solid var(--line);padding:4px 0 calc(4px + env(safe-area-inset-bottom))}
-nav button{background:none;border:0;color:var(--muted);font-size:10.5px;padding:4px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
+nav button{background:none;border:0;color:var(--muted);font-size:10.5px;padding:4px 0;min-height:46px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
 nav button i{font-size:17px;font-style:normal}
 nav button.on{color:var(--gold);font-weight:700}
 /* templates grid with real thumbnails */
@@ -48,27 +59,144 @@ nav button.on{color:var(--gold);font-weight:700}
 .thumb{width:100%;aspect-ratio:210/297;overflow:hidden;background:#fff;border-radius:6px;position:relative}
 .thumb .sheet{position:absolute;left:0;top:0;transform-origin:0 0}
 .tp b{display:block;margin-top:6px;font-size:12px}.tp small{color:var(--muted);font-size:10.5px}
-.lbl{position:absolute;top:6px;right:6px;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:999px;z-index:2}
-.lbl.free{background:var(--ok);color:#06210f}.lbl.vip{background:var(--gold);color:#111}
-.lock{position:absolute;bottom:8px;right:8px;font-size:11px;z-index:2}
-/* plans */
-.plan{border:1px solid var(--line);background:var(--card);border-radius:var(--r);padding:12px;margin-bottom:10px;position:relative}
-.plan.hot{border:1px solid var(--gold)}
-.plan .tag{position:absolute;top:-9px;right:12px;background:var(--gold);color:#111;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px}
-.price{font-size:24px;font-weight:800;margin:4px 0}.price small{font-size:12px;color:var(--muted);font-weight:400}
-.plan ul{list-style:none;padding:0;margin:6px 0;font-size:12.5px;line-height:1.75}
+.lbl{position:absolute;top:6px;right:6px;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:999px;z-index:2;letter-spacing:.03em}
+.lbl.free{background:var(--ok);color:#06210f}
+.lbl.pro{background:var(--gold);color:#111}
+.tp .lock{position:absolute;bottom:8px;right:8px;font-size:12px;z-index:2;line-height:1}
+/* Multi-select Saved Resumes */
+.files-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.bulk-bar{display:none;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:10px 12px;margin-bottom:10px}
+.bulk-bar.on{display:flex}
+.bulk-bar .bulk-cnt{font-size:12.5px;font-weight:700;color:var(--accent);margin-right:auto}
+.item.selected{border-color:var(--accent);background:var(--accent-soft)}
+.cv-chk-wrap{display:flex;align-items:center;justify-content:center;min-width:32px;min-height:36px;cursor:pointer}
+.cv-chk{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+/* Career Hub */
+.hub-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);padding:5px;border-radius:14px;margin-bottom:12px}
+.hub-tab{min-height:42px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;padding:6px 4px;transition:background-color .15s ease,color .15s ease}
+.hub-tab.on{background:var(--a1);color:#fff}
+.hub-pane{display:none}.hub-pane.on{display:block}
+.cl-preview{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:12.5px;line-height:1.65;white-space:pre-wrap;margin-top:10px;color:var(--text)}
+.qa-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.qa-chip{min-height:36px;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer}
+.qa-chip.on{background:var(--a1);border-color:var(--a1);color:#fff}
+.qa-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.qa-q{font-size:13.5px;font-weight:700;color:var(--text);margin:0 0 8px}
+.qa-a{font-size:12.5px;color:var(--muted);line-height:1.6;margin:0 0 10px}
+.ats-top{display:flex;align-items:center;gap:14px;margin:8px 0 12px}
+.ats-ring{position:relative;width:84px;height:84px;flex:none;display:grid;place-items:center}
+.ats-ring svg{transform:rotate(-90deg);width:84px;height:84px}
+.ats-ring-num{position:absolute;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--text)}
+.ats-tips{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.ats-tip{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;border-radius:10px;background:var(--card2);border:1px solid var(--line);font-size:12.5px;line-height:1.45}
+.ats-tip.ok{border-color:rgba(34,197,94,.3);background:var(--ok-soft)}
+.ats-tip.warn{border-color:rgba(230,180,80,.35)}
+/* Adsterra 300x250 Container */
+.ad-slot-wrap{display:flex;flex-direction:column;align-items:center;margin:16px auto 10px;width:100%}
+.ad-slot-lbl{font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.03em;margin-top:7px;text-align:center}
+.ad-box-300x250{width:300px;max-width:100%;height:250px;border-radius:14px;border:1px solid var(--line);background:var(--card2);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:var(--shadow);margin:0 auto}
+.field select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%;font-size:13px}
 .field{display:flex;flex-direction:column;gap:4px;margin-bottom:9px}
 .field label{font-size:12px;color:var(--muted)}
 .field input,.field textarea{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%;font-size:13px}
 .field textarea{min-height:58px;resize:vertical}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.row .btn{flex:1;min-width:110px;margin-top:0}
-.toggle{display:flex;justify-content:space-between;align-items:center;font-size:13px}
-.toggle input{width:18px;height:18px}
 .list{display:flex;flex-direction:column;gap:8px}
 .item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
 .item div{flex:1}.item small{color:var(--muted);font-size:11px}
 .empty{color:var(--muted);text-align:center;padding:24px 0}
 .kw{font-size:12px;line-height:1.6}
+/* ===== Enterprise Mobile Settings UI ===== */
+.st-stack{display:flex;flex-direction:column;gap:12px;padding-bottom:12px}
+.st-head{padding:4px 2px 2px}
+.st-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;background:var(--ok-soft);color:var(--ok);font-size:11.5px;font-weight:700;letter-spacing:.01em;margin-bottom:10px}
+.st-head h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;color:var(--text)}
+.st-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.pro-hero{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 48%,#4338ca 100%);color:#f8fafc;border-radius:16px;padding:16px;position:relative;overflow:hidden;border:1px solid rgba(129,140,248,.28);box-shadow:0 8px 24px rgba(30,27,75,.28)}
+.pro-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.pro-hero-title{font-size:15px;font-weight:800;letter-spacing:-.01em;margin:0 0 3px;color:#fff}
+.pro-hero-sub{font-size:12px;color:rgba(226,232,240,.85);margin:0}
+.pro-hero-badge{background:rgba(255,255,255,.16);color:#fde68a;border:1px solid rgba(253,230,138,.35);padding:4px 9px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+.pro-feats{display:grid;grid-template-columns:1fr 1fr;gap:7px 10px}
+.pro-feat{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#f1f5f9;background:rgba(15,23,42,.26);padding:7px 9px;border-radius:10px;border:1px solid rgba(255,255,255,.08)}
+.pro-feat svg{width:15px;height:15px;flex:none;color:#a5b4fc}
+.st-sec-lbl{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.03em;margin:4px 2px -4px}
+.st-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+.st-row{display:flex;align-items:center;gap:12px;min-height:44px}
+.st-row-btn{width:100%;background:none;border:0;color:inherit;padding:0;text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px;min-height:44px}
+.st-ic{width:38px;height:38px;border-radius:11px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;flex:none}
+.st-ic.ok{background:var(--ok-soft);color:var(--ok)}
+.st-ic.gold{background:rgba(230,180,80,.15);color:var(--gold)}
+.st-ic svg{width:19px;height:19px}
+.st-meta{flex:1;min-width:0}
+.st-meta b{display:block;font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
+.st-meta span{display:block;font-size:12px;color:var(--muted);line-height:1.38}
+/* Native Switch */
+.sw{position:relative;width:48px;height:28px;border-radius:999px;background:var(--switch-bg);border:0;padding:0;cursor:pointer;flex:none;transition:background-color .18s ease}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .18s cubic-bezier(.16,1,.3,1)}
+.sw[aria-checked="true"]{background:var(--a1)}
+.sw[aria-checked="true"]::after{transform:translateX(20px)}
+/* Segmented Language Switcher */
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--card2);border:1px solid var(--line);padding:4px;border-radius:12px;margin-top:12px}
+.seg button{min-height:40px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;transition:background-color .15s ease,color .15s ease}
+.seg button.on{background:var(--a1);color:#fff;box-shadow:0 2px 6px rgba(79,70,229,.28)}
+/* PDF Quality Selectable Cards */
+.q-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:12px}
+@media(min-width:560px){.q-grid{grid-template-columns:repeat(3,1fr)}}
+.q-opt{display:flex;align-items:center;gap:10px;width:100%;min-height:54px;padding:11px 12px;border-radius:12px;background:var(--card2);border:1.5px solid var(--line);color:var(--text);text-align:left;cursor:pointer;transition:border-color .15s ease,background-color .15s ease}
+.q-opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.q-opt-tx{flex:1;min-width:0}
+.q-opt-tx b{display:block;font-size:13px;font-weight:700;margin-bottom:2px}
+.q-opt-tx small{display:block;font-size:11.5px;color:var(--muted);line-height:1.3}
+.q-chk{width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;flex:none;color:transparent;font-size:12px;font-weight:800}
+.q-opt.sel .q-chk{background:var(--accent);border-color:var(--accent);color:#fff}
+.st-sub-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.st-sub-actions .btn{flex:1;min-width:120px;margin-top:0}
+.st-divider{height:1px;background:var(--line);margin:12px 0}
+/* FAQ Accordion */
+.faq-wrap{margin-top:12px;border-top:1px solid var(--line);padding-top:8px}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item:last-child{border-bottom:0}
+.faq-q{width:100%;min-height:46px;background:none;border:0;color:var(--text);padding:10px 0;display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;font-size:13px;font-weight:600;cursor:pointer}
+.faq-q svg{width:16px;height:16px;flex:none;color:var(--muted);transition:transform .18s ease}
+.faq-item.open .faq-q svg{transform:rotate(180deg);color:var(--accent)}
+.faq-a{display:none;padding:0 0 12px;font-size:12.5px;color:var(--muted);line-height:1.55}
+.faq-item.open .faq-a{display:block}
+.st-footer{text-align:center;color:var(--muted);font-size:11.5px;padding:6px 0 4px}
+/* Modal Animations */
+@keyframes modalFadeIn{from{opacity:0}to{opacity:1}}
+@keyframes modalSlideUp{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.pin-ov.on,.pin-ov.on .pin-box,.unlock-ov.on,.unlock-ov.on .unlock-box{animation:none!important}}
+/* PIN Modal */
+.pin-ov{position:fixed;inset:0;z-index:50;background:rgba(11,14,20,.86);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px}
+.pin-ov.on{display:flex;animation:modalFadeIn .2s ease-out}
+.pin-box{width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.pin-ov.on .pin-box{animation:modalSlideUp .26s cubic-bezier(.16,1,.3,1)}
+.pin-box h3{margin:10px 0 4px;font-size:17px;font-weight:800;color:var(--text)}
+.pin-box p{margin:0 0 16px;font-size:12.5px;color:var(--muted);line-height:1.45}
+.pin-dots{display:flex;justify-content:center;gap:12px;margin-bottom:16px}
+.pin-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--line);transition:background-color .12s ease,border-color .12s ease}
+.pin-dot.fill{background:var(--accent);border-color:var(--accent)}
+.pin-err{min-height:18px;font-size:12px;color:var(--danger);font-weight:600;margin-bottom:10px}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pin-key{min-height:50px;border-radius:12px;border:1px solid var(--line);background:var(--card2);color:var(--text);font-size:18px;font-weight:700;cursor:pointer;display:grid;place-items:center}
+.pin-key:active{background:var(--accent-soft)}
+.pin-key.muted-k{font-size:13px;font-weight:600;color:var(--muted)}
+/* Pro Template 30s Sponsor Unlock Modal */
+.unlock-ov{position:fixed;inset:0;z-index:50;background:rgba(11,14,20,.84);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.unlock-ov.on{display:flex;animation:modalFadeIn .2s ease-out}
+.unlock-box{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 16px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.unlock-ov.on .unlock-box{animation:modalSlideUp .26s cubic-bezier(.16,1,.3,1)}
+.unlock-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:var(--gold);color:#111;font-size:10.5px;font-weight:800;letter-spacing:.04em;margin-bottom:8px}
+.unlock-box h3{margin:0 0 4px;font-size:15.5px;font-weight:800;line-height:1.35;color:var(--text)}
+.unlock-tpl{margin:0 0 12px;font-size:12.5px;font-weight:600;color:var(--accent)}
+.unlock-ad-wrap{display:flex;flex-direction:column;align-items:center;margin:0 auto 14px}
+.unlock-timer-box{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.unlock-timer-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.unlock-timer-lbl{font-size:12px;font-weight:600;color:var(--muted);text-align:left}
+.unlock-timer{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--gold);min-width:44px;text-align:right}
+.unlock-prog-track{width:100%;height:6px;border-radius:999px;background:var(--line);overflow:hidden}
+.unlock-prog-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--a1),var(--gold));transition:width .35s linear}
 /* ===== CV sheet (A4 proportion, 600px base) ===== */
 .sheet{width:600px;height:848px;background:#fff;color:#111;font-size:13px;line-height:1.45;overflow:hidden;position:relative;display:flex;flex-direction:column}
 .sheet .bd{padding:26px 30px;flex:1}
@@ -108,115 +236,393 @@ nav button.on{color:var(--gold);font-weight:700}
 .ov.on{display:block}
 .fit{width:100%;aspect-ratio:210/297;position:relative;overflow:hidden;border-radius:6px;background:#fff;margin-top:8px}
 .fit .sheet{position:absolute;left:0;top:0;transform-origin:0 0}
-.toast{position:fixed;left:50%;bottom:140px;transform:translateX(-50%);background:#111827;color:#fff;padding:8px 14px;border-radius:9px;font-size:12px;z-index:30;display:none;max-width:90%;text-align:center}
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#111827;color:#fff;padding:9px 16px;border-radius:10px;font-size:12.5px;font-weight:600;z-index:60;display:none;max-width:90%;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .toast.on{display:block}
 </style>
 </head>
 <body>
 <header class="hdr">
   <div class="logo">JR</div>
-  <div><h1>JobReady</h1><small>Resume &amp; CV Maker • ऑफ़लाइन</small></div>
-  <span class="badge" id="planBadge">मुफ़्त प्लान</span>
+  <div><h1>JobReady</h1><small id="hdrSub">Resume &amp; CV Maker • Offline</small></div>
+  <span class="badge" id="planBadge">Offline v1.0</span>
 </header>
 
 <main>
 <!-- HOME -->
 <section class="screen on" id="s-home">
   <div class="card">
-    <h2>ऑफ़लाइन, सुरक्षित और फुल HD</h2>
-    <div class="chips"><span class="chip">📄 ATS-Friendly PDF</span><span class="chip">🔒 डेटा फोन में सुरक्षित</span><span class="chip">⚡ बिना इंटरनेट</span></div>
+    <h2 id="homeHeroT">ऑफ़लाइन, सुरक्षित और फुल HD</h2>
+    <div class="chips" id="homeChips"><span class="chip">📄 ATS-Friendly PDF</span><span class="chip">🔒 डेटा फोन में सुरक्षित</span><span class="chip">⚡ बिना इंटरनेट</span></div>
   </div>
-  <p class="muted" style="margin:4px 2px 8px">रिज्यूमे टूल्स</p>
+  <p class="muted" id="homeToolsLbl" style="margin:4px 2px 8px">रिज्यूमे टूल्स</p>
   <div class="grid2">
-    <button class="tile" data-go="form"><div class="ic">📝</div><b>नया रिज्यूमे बनाएं</b><span>फोटो व सिग्नेचर के साथ CV बनाएं</span></button>
-    <button class="tile" data-go="tpl"><div class="ic">🎨</div><b>HD टेम्प्लेट्स</b><span>4 मुफ़्त + 10 VIP डिज़ाइन</span></button>
-    <button class="tile" id="sample"><div class="ic">⚡</div><b>1-क्लिक स्मार्ट CV</b><span>सैंपल डेटा भरें और एडिट करें</span></button>
-    <button class="tile" data-go="files"><div class="ic">📂</div><b>सेव किए गए CV</b><span>पुराने रिज्यूमे देखें व बदलें</span></button>
+    <button class="tile" data-go="form"><div class="ic">📝</div><b id="tNewT">नया रिज्यूमे बनाएं</b><span id="tNewD">फोटो व सिग्नेचर के साथ CV बनाएं</span></button>
+    <button class="tile" data-go="tpl"><div class="ic">🎨</div><b id="tTplT">HD टेम्प्लेट्स</b><span id="tTplD">4 मुफ़्त + 12 प्रो (ऐड से अनलॉक)</span></button>
+    <button class="tile" id="sample"><div class="ic">⚡</div><b id="tSampleT">1-क्लिक स्मार्ट CV</b><span id="tSampleD">सैंपल डेटा भरें और एडिट करें</span></button>
+    <button class="tile" data-go="files"><div class="ic">📂</div><b id="tFilesT">सेव किए गए CV</b><span id="tFilesD">पुराने रिज्यूमे देखें व बदलें</span></button>
   </div>
 </section>
 
 <!-- TEMPLATES -->
 <section class="screen" id="s-tpl">
-  <div class="card"><h2>टेम्प्लेट चुनें</h2><p class="muted" style="margin:0">चुना गया टेम्प्लेट अगले PDF में लागू होगा।</p></div>
+  <div class="card"><h2 id="tplHeadT">टेम्प्लेट चुनें</h2><p class="muted" id="tplHeadD" style="margin:0">4 टेम्प्लेट मुफ़्त हैं। किसी भी 12 प्रो टेम्प्लेट को 30 सेकंड स्पॉन्सर व्यू से मुफ़्त अनलॉक करें।</p></div>
   <div class="tpls" id="tplGrid"></div>
 </section>
 
-<!-- FILES -->
+<!-- FILES (with Multi-Select Bulk Export & Delete) -->
 <section class="screen" id="s-files">
-  <div class="card"><h2>मेरे सेव किए गए रिज्यूमे</h2><p class="muted" style="margin:0" id="saveCount"></p></div>
+  <div class="card">
+    <h2 id="filesHeadT">मेरे सेव किए गए रिज्यूमे</h2>
+    <p class="muted" style="margin:0" id="saveCount"></p>
+    <div class="files-bar" id="filesSelectBar" style="display:none">
+      <button type="button" class="btn ghost sm" id="selectAllCvsBtn">Select All</button>
+      <button type="button" class="btn ghost sm" id="clearSelCvsBtn" style="display:none">Clear</button>
+    </div>
+  </div>
+  <div class="bulk-bar" id="bulkBar">
+    <span class="bulk-cnt" id="bulkCountLbl">0 selected</span>
+    <button type="button" class="btn soft sm" id="bulkExportPdfBtn">Export PDF</button>
+    <button type="button" class="btn ghost sm" id="bulkExportJsonBtn">Export JSON</button>
+    <button type="button" class="btn danger sm" id="bulkDeleteBtn">Delete</button>
+  </div>
   <div class="list" id="fileList"></div>
 </section>
 
-<!-- PLANS -->
-<section class="screen" id="s-plan">
-  <div class="plan">
-    <b style="font-size:14px">मुफ़्त</b>
-    <div class="price">₹0 <small>/ हमेशा</small></div>
-    <ul><li>✓ 4 प्रोफेशनल टेम्प्लेट्स</li><li>✓ फुल HD PDF</li><li>✓ 3 CV तक सेव</li><li>• नीचे छोटा बैनर विज्ञापन</li></ul>
+<!-- CAREER HUB (Replaces Plans Tab) -->
+<section class="screen" id="s-hub">
+  <div class="card">
+    <h2 id="hubHeadT">Career Hub • 100% Free Tools</h2>
+    <p class="muted" id="hubHeadD" style="margin:0">Offline Cover Letter PDF, Interview Q&amp;A &amp; Live ATS Resume Score</p>
   </div>
-  <div class="plan">
-    <b style="font-size:14px">स्मार्ट पास (1 महीना)</b>
-    <div class="price">₹49 <small>/ महीना</small></div>
-    <ul>
-      <li>✓ सभी 10 VIP टेम्प्लेट्स</li>
-      <li>✓ बिना वॉटरमार्क HD PDF</li>
-      <li>✓ अनलिमिटेड सेव्ड CV</li>
-      <li>✓ ATS कीवर्ड चेक (नौकरी के विवरण से)</li>
-      <li>• छोटे बैनर विज्ञापन रहेंगे</li>
-    </ul>
-    <button class="btn" data-pay="weekly">₹49 प्लान चालू करें</button>
+
+  <div class="hub-tabs" role="tablist">
+    <button type="button" class="hub-tab on" data-hub="cl" id="htCl">Cover Letter</button>
+    <button type="button" class="hub-tab" data-hub="qa" id="htQa">Interview Q&amp;A</button>
+    <button type="button" class="hub-tab" data-hub="ats" id="htAts">ATS Score</button>
   </div>
-  <div class="plan hot">
-    <span class="tag">सबसे किफ़ायती • NO ADS</span>
-    <b style="font-size:14px">VIP लाइफटाइम (असीमित)</b>
-    <div class="price">₹99 <small>/ एक बार, हमेशा के लिए</small></div>
-    <ul>
-      <li>✓ 100% विज्ञापन बंद (No Ads)</li>
-      <li>✓ सभी 10 VIP टेम्प्लेट्स</li>
-      <li>✓ बिना वॉटरमार्क अनलिमिटेड HD PDF</li>
-      <li>✓ अनलिमिटेड सेव्ड CV</li>
-      <li>✓ ATS कीवर्ड चेक</li>
-      <li>✓ कोई मासिक कटौती नहीं</li>
-    </ul>
-    <button class="btn" data-pay="lifetime">₹99 लाइफटाइम अनलॉक करें</button>
+
+  <!-- Tool A: Instant Cover Letter Generator -->
+  <div class="hub-pane on" id="hp-cl">
+    <div class="card">
+      <h2 id="clTitle">Instant Cover Letter Generator</h2>
+      <p class="muted" id="clSub" style="margin:0 0 10px">Auto-fills your name, role &amp; skills from your resume to download a matching PDF in 1 tap.</p>
+      <div class="field"><label id="clSrcLbl">Load Resume Data</label><select id="clSource"></select></div>
+      <div class="field"><label id="clCompLbl">Target Company Name</label><input id="cl_company" placeholder="e.g. TCS / HDFC / Reliance"></div>
+      <div class="field"><label id="clMgrLbl">Hiring Manager</label><input id="cl_mgr" value="Hiring Manager"></div>
+      <div class="field"><label id="clRoleLbl">Target Role</label><input id="cl_role"></div>
+      <div class="cl-preview" id="clPreview"></div>
+      <div class="row">
+        <button type="button" class="btn" id="clPdfBtn">Download Cover Letter PDF</button>
+        <button type="button" class="btn ghost" id="clCopyBtn">Copy Text</button>
+      </div>
+    </div>
   </div>
-  <p class="muted" id="payNote" style="text-align:center">पेमेंट UPI/कार्ड से होगा।</p>
-  <button class="link" id="restore">पिछली खरीद रिकवर करें</button>
+
+  <!-- Tool B: Top Interview Q&A Guide (EN & HI) -->
+  <div class="hub-pane" id="hp-qa">
+    <div class="card">
+      <h2 id="qaTitle">Top Interview Q&amp;A Guide</h2>
+      <p class="muted" id="qaSub" style="margin:0 0 10px">Smart, ready-to-speak answers in English &amp; Hindi across top job tracks.</p>
+      <div class="qa-chips" id="qaCats">
+        <button type="button" class="qa-chip on" data-qacat="fresher" id="qc_fresher">Fresher</button>
+        <button type="button" class="qa-chip" data-qacat="sales" id="qc_sales">Sales</button>
+        <button type="button" class="qa-chip" data-qacat="office" id="qc_office">Office</button>
+        <button type="button" class="qa-chip" data-qacat="it" id="qc_it">IT</button>
+        <button type="button" class="qa-chip" data-qacat="banking" id="qc_banking">Banking</button>
+      </div>
+    </div>
+    <div id="qaList"></div>
+  </div>
+
+  <!-- Tool C: Live ATS Resume Score & Tips -->
+  <div class="hub-pane" id="hp-ats">
+    <div class="card">
+      <h2 id="atsTitle">Live ATS Resume Score &amp; Tips</h2>
+      <p class="muted" id="atsSub" style="margin:0 0 10px">Analyzes your resume out of 100% and gives actionable fixes to get shortlisted faster.</p>
+      <div class="field"><label id="atsSrcLbl">Select Resume to Analyze</label><select id="atsSource"></select></div>
+      <div class="ats-top">
+        <div class="ats-ring">
+          <svg viewBox="0 0 84 84">
+            <circle cx="42" cy="42" r="35" fill="none" stroke="var(--line)" stroke-width="8"/>
+            <circle id="atsArc" cx="42" cy="42" r="35" fill="none" stroke="var(--ok)" stroke-width="8" stroke-linecap="round" stroke-dasharray="219.9" stroke-dashoffset="219.9"/>
+          </svg>
+          <span class="ats-ring-num" id="atsScoreNum">0%</span>
+        </div>
+        <div>
+          <b style="font-size:15px;display:block;margin-bottom:3px" id="atsGrade">Analyzing...</b>
+          <span class="muted" id="atsSummary">Checking sections, skills &amp; impact structure</span>
+        </div>
+      </div>
+      <div class="ats-tips" id="atsTips"></div>
+      <button type="button" class="btn soft" id="atsEditBtn" style="margin-top:10px">Edit Resume to Boost Score</button>
+    </div>
+  </div>
+
+  <!-- Career Tips & Quick Guide Card -->
+  <div class="card" id="hubTipsCard">
+    <h2 id="hubFaqTitle">Smart Hiring Tips &amp; Quick Guide</h2>
+    <p class="muted" id="hubFaqBody" style="margin:0;line-height:1.65">1. Aim for an ATS Score of 80%+ before applying.<br>2. Attach a matching Cover Letter PDF for higher recruiter callbacks.<br>3. Select "Portal Ready" in Settings for PDFs under 500 KB on Naukri &amp; LinkedIn.</p>
+  </div>
+
+  <!-- Adsterra 300x250 Ad Container (Bottom of Career Hub) -->
+  <div class="ad-slot-wrap">
+    <div class="ad-box-300x250" id="adsterra-hub-300x250" data-ad-zone="300x250" aria-label="Sponsored advertisement"></div>
+    <div class="ad-slot-lbl" id="adHubLbl">Sponsored · RR Tech Labs</div>
+  </div>
 </section>
 
-<!-- SETTINGS -->
+<!-- SETTINGS (Enterprise Mobile Settings & Privacy UI) -->
 <section class="screen" id="s-settings">
-  <div class="card"><h2>ऐप सेटिंग्स</h2>
-    <label class="toggle">हल्की थीम (Light Mode) <input type="checkbox" id="lightT"></label></div>
-  <div class="card"><h2>ऐप शेयर करें</h2>
-    <div class="row">
-      <button class="btn" id="shareApp">शेयर करें</button>
-      <button class="btn dk" id="waApp">WhatsApp</button>
-      <button class="btn ghost" id="smsApp">SMS</button>
-    </div></div>
-  <div class="card"><h2>जानकारी</h2>
-    <p class="muted" style="margin:0;line-height:1.8"><b>ऐप:</b> JobReady: Resume &amp; CV Maker<br><b>संस्करण:</b> 1.0 (Offline)<br><b>गोपनीयता:</b> आपका डेटा केवल आपके फोन में सुरक्षित रहता है।</p></div>
+  <div class="st-stack">
+    <!-- 1. Clean Settings Header & Offline Status Pill -->
+    <div class="st-head">
+      <div class="st-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        <span id="stPillTx">100% Offline • On-Device</span>
+      </div>
+      <h2 id="stTitle">Settings &amp; Privacy</h2>
+      <p id="stSub">100% Login-Free &amp; Offline-First. Customize theme, HD resume export quality, language &amp; backups.</p>
+    </div>
+
+    <!-- 2. Premium Status Card -->
+    <div class="pro-hero">
+      <div class="pro-hero-top">
+        <div>
+          <h3 class="pro-hero-title" id="stProTitle">JobReady Pro Engine • 100% Offline Ready</h3>
+          <p class="pro-hero-sub" id="stProSub">Private resume studio running locally on your device</p>
+        </div>
+        <span class="pro-hero-badge" id="stProTier">Offline Vault</span>
+      </div>
+      <div class="pro-feats">
+        <div class="pro-feat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span id="pf1">HD PDF Resumes</span>
+        </div>
+        <div class="pro-feat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          <span id="pf2">16+ Pro Templates</span>
+        </div>
+        <div class="pro-feat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span id="pf3">Zero Login</span>
+        </div>
+        <div class="pro-feat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span id="pf4">Local Vault</span>
+        </div>
+        <div class="pro-feat" style="grid-column:1 / -1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span id="pf5">Instant Backup</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Enterprise Controls & Toggles -->
+    <div class="st-sec-lbl" id="stSecPref">Appearance &amp; Export</div>
+
+    <!-- Dark Mode Toggle -->
+    <div class="st-card">
+      <div class="st-row">
+        <div class="st-ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="stDarkT">Dark Mode</b>
+          <span id="stDarkD">Switch cleanly between Light and Dark theme</span>
+        </div>
+        <button type="button" class="sw" id="darkT" role="switch" aria-checked="true" aria-labelledby="stDarkT"></button>
+      </div>
+    </div>
+
+    <!-- Default Resume PDF Quality -->
+    <div class="st-card">
+      <div class="st-row">
+        <div class="st-ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M9 15h6"/><path d="M9 11h2"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="stQualT">Default Resume PDF Quality</b>
+          <span id="stQualD">Applied automatically when exporting resumes</span>
+        </div>
+      </div>
+      <div class="q-grid" id="pdfQGrid">
+        <button type="button" class="q-opt sel" data-pdfq="high">
+          <div class="q-opt-tx"><b id="pqHighT">High HD</b><small id="pqHighD">Full sharp print clarity</small></div>
+          <span class="q-chk" aria-hidden="true">✓</span>
+        </button>
+        <button type="button" class="q-opt" data-pdfq="balanced">
+          <div class="q-opt-tx"><b id="pqBalT">Balanced</b><small id="pqBalD">Crisp &amp; fast</small></div>
+          <span class="q-chk" aria-hidden="true">✓</span>
+        </button>
+        <button type="button" class="q-opt" data-pdfq="compact">
+          <div class="q-opt-tx"><b id="pqCompT">Portal Ready</b><small id="pqCompD">Under 500 KB (Best for Naukri/LinkedIn)</small></div>
+          <span class="q-chk" aria-hidden="true">✓</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- App Language Switcher -->
+    <div class="st-card">
+      <div class="st-row">
+        <div class="st-ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="stLangT">App Language</b>
+          <span id="stLangD">Switch interface language instantaneously</span>
+        </div>
+      </div>
+      <div class="seg" role="group" aria-label="App Language">
+        <button type="button" data-setlang="en" class="on">English</button>
+        <button type="button" data-setlang="hi">हिंदी</button>
+      </div>
+    </div>
+
+    <!-- App Security Lock (4-Digit PIN) -->
+    <div class="st-card">
+      <div class="st-row">
+        <div class="st-ic gold" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="stPinT">App Security Lock (4-Digit PIN)</b>
+          <span id="stPinD">Protect saved resumes &amp; CVs on this device</span>
+        </div>
+        <button type="button" class="sw" id="pinToggle" role="switch" aria-checked="false" aria-labelledby="stPinT"></button>
+      </div>
+      <div class="st-sub-actions" id="pinActions" style="display:none">
+        <button type="button" class="btn ghost sm" id="pinChangeBtn">Change PIN</button>
+        <button type="button" class="btn soft sm" id="pinLockNowBtn">Lock Vault Now</button>
+      </div>
+    </div>
+
+    <!-- 4. Backup, Share & Support -->
+    <div class="st-sec-lbl" id="stSecData">Backup &amp; Sharing</div>
+
+    <!-- Backup & Restore Card -->
+    <div class="st-card">
+      <div class="st-row">
+        <div class="st-ic ok" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="stBakT">Backup &amp; Restore</b>
+          <span id="stBakD">Save or transfer your saved CV data offline as a file</span>
+        </div>
+      </div>
+      <div class="st-sub-actions">
+        <button type="button" class="btn soft" id="exportBackupBtn">Export Resume Backup</button>
+        <button type="button" class="btn ghost" id="restoreBackupBtn">Restore Backup</button>
+        <input type="file" id="restoreFile" accept=".json,application/json" style="display:none">
+      </div>
+    </div>
+
+    <!-- Share Card -->
+    <div class="st-card">
+      <div class="st-row">
+        <div class="st-ic" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="stShareT">Share JobReady App</b>
+          <span id="stShareD">Invite friends to build ATS-ready resumes offline</span>
+        </div>
+      </div>
+      <div class="st-sub-actions">
+        <button type="button" class="btn" id="shareApp">Share JobReady App</button>
+        <button type="button" class="btn dk" id="waApp">WhatsApp</button>
+        <button type="button" class="btn ghost" id="copyAppLink">Copy Link</button>
+      </div>
+    </div>
+
+    <div class="st-sec-lbl" id="stSecTrust">Privacy &amp; Support</div>
+
+    <!-- 100% Local On-Device Privacy Policy -->
+    <div class="st-card">
+      <div class="st-row">
+        <div class="st-ic ok" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="stPrivT">100% Local On-Device Privacy Policy</b>
+          <span id="stPrivD">Zero server uploads. Zero cloud tracking. Your resumes, photos, and signatures stay 100% private in your device storage.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RR Tech Labs • 24/7 User Support -->
+    <div class="st-card">
+      <div class="st-row">
+        <div class="st-ic gold" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="stSupT">RR Tech Labs • 24/7 User Support</b>
+          <span id="stSupD">Need help with templates, PDF exports, or backups? Reach out anytime.</span>
+        </div>
+      </div>
+      <div class="st-sub-actions">
+        <a class="btn" id="emailSupportBtn" href="mailto:royalrajawat247@gmail.com?subject=JobReady%20Resume%20Maker%20Support">Email Support (24/7)</a>
+        <button type="button" class="btn ghost" id="copySupportEmailBtn">Copy Support Email</button>
+      </div>
+
+      <!-- Expandable Quick Help & FAQs Accordion -->
+      <div class="faq-wrap" id="faqWrap">
+        <div style="font-size:12.5px;font-weight:700;color:var(--text);padding:6px 0 4px" id="faqHeader">Quick Help &amp; FAQs</div>
+        <div class="faq-item">
+          <button type="button" class="faq-q" aria-expanded="false">
+            <span id="fq1">How does 100% offline resume creation work?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a" id="fa1">Everything runs directly on your device without an internet connection. Your CV details, photo, signature, and saved resumes are stored locally on your phone.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-q" aria-expanded="false">
+            <span id="fq2">How do I export a sharp HD PDF resume?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a" id="fa2">Select "High HD" under Default Resume PDF Quality, open your CV in the editor, tap "PDF Download", and choose "Save as PDF" in your system print dialog.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-q" aria-expanded="false">
+            <span id="fq3">How does the 4-Digit PIN lock protect my CVs?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a" id="fa3">When enabled, JobReady requires your 4-digit PIN before opening the app or viewing your saved resumes, keeping personal career data private on shared devices.</div>
+        </div>
+        <div class="faq-item">
+          <button type="button" class="faq-q" aria-expanded="false">
+            <span id="fq4">How do I move my saved CVs to a new phone?</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="faq-a" id="fa4">Tap "Export Resume Backup" to download a single backup file containing all your saved CVs, then open JobReady on your new device and tap "Restore Backup".</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="st-footer" id="stFooter">JobReady: Resume &amp; CV Maker · v1.0 · RR Tech Labs</div>
+  </div>
 </section>
 
 <!-- FORM OVERLAY -->
 <section class="ov" id="formOv">
-  <div class="row" style="align-items:center;margin:0 0 8px"><button class="btn ghost sm" data-close>← वापस</button><b style="margin-left:auto">CV बनाएं</b></div>
+  <div class="row" style="align-items:center;margin:0 0 8px"><button class="btn ghost sm" data-close id="fmBack">← वापस</button><b style="margin-left:auto" id="fmTitle">CV बनाएं</b></div>
   <div class="card">
-    <div class="field"><label>पूरा नाम</label><input id="f_name"></div>
-    <div class="field"><label>पद (Job title)</label><input id="f_title"></div>
-    <div class="field"><label>ईमेल</label><input id="f_email" type="email"></div>
-    <div class="field"><label>फ़ोन</label><input id="f_phone" type="tel"></div>
-    <div class="field"><label>पता</label><input id="f_addr"></div>
-    <div class="field"><label>परिचय</label><textarea id="f_sum"></textarea></div>
-    <div class="field"><label>कौशल (कॉमा से अलग)</label><input id="f_skills"></div>
-    <div class="field"><label>अनुभव (हर लाइन में एक)</label><textarea id="f_exp"></textarea></div>
-    <div class="field"><label>शिक्षा (हर लाइन में एक)</label><textarea id="f_edu"></textarea></div>
-    <div class="field"><label>भाषाएं</label><input id="f_lang"></div>
-    <div class="field"><label>फोटो (वैकल्पिक)</label><input id="f_photo" type="file" accept="image/*"></div>
-    <div class="field"><label>सिग्नेचर (वैकल्पिक)</label><input id="f_sign" type="file" accept="image/*"></div>
+    <div class="field"><label id="lb_name">पूरा नाम</label><input id="f_name"></div>
+    <div class="field"><label id="lb_title">पद (Job title)</label><input id="f_title"></div>
+    <div class="field"><label id="lb_email">ईमेल</label><input id="f_email" type="email"></div>
+    <div class="field"><label id="lb_phone">फ़ोन</label><input id="f_phone" type="tel"></div>
+    <div class="field"><label id="lb_addr">पता</label><input id="f_addr"></div>
+    <div class="field"><label id="lb_sum">परिचय</label><textarea id="f_sum"></textarea></div>
+    <div class="field"><label id="lb_skills">कौशल (कॉमा से अलग)</label><input id="f_skills"></div>
+    <div class="field"><label id="lb_exp">अनुभव (हर लाइन में एक)</label><textarea id="f_exp"></textarea></div>
+    <div class="field"><label id="lb_edu">शिक्षा (हर लाइन में एक)</label><textarea id="f_edu"></textarea></div>
+    <div class="field"><label id="lb_lang">भाषाएं</label><input id="f_lang"></div>
+    <div class="field"><label id="lb_photo">फोटो (वैकल्पिक)</label><input id="f_photo" type="file" accept="image/*"></div>
+    <div class="field"><label id="lb_sign">सिग्नेचर (वैकल्पिक)</label><input id="f_sign" type="file" accept="image/*"></div>
   </div>
   <div class="card">
-    <div class="field"><label>नौकरी का विवरण पेस्ट करें (VIP: कीवर्ड चेक)</label><textarea id="jd"></textarea></div>
+    <div class="field"><label id="lb_jd">नौकरी का विवरण पेस्ट करें (VIP: कीवर्ड चेक)</label><textarea id="jd"></textarea></div>
     <button class="btn ghost" id="kwBtn">कीवर्ड चेक करें</button>
     <div class="kw" id="kwOut"></div>
   </div>
@@ -228,24 +634,67 @@ nav button.on{color:var(--gold);font-weight:700}
 <div id="printArea"></div>
 </main>
 
-<div class="banner" id="banner"><span class="ad">AD</span><span>विज्ञापन हटाने के लिए ₹99 VIP प्लान लें</span><button data-go="plan">हटाएं</button></div>
+<!-- 4-DIGIT PIN MODAL / VAULT LOCK -->
+<div class="pin-ov" id="pinOv" role="dialog" aria-modal="true" aria-labelledby="pinModalTitle">
+  <div class="pin-box">
+    <div class="st-ic gold" style="margin:0 auto" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h3 id="pinModalTitle">Enter 4-Digit PIN</h3>
+    <p id="pinModalSub">Unlock your private JobReady resume vault</p>
+    <div class="pin-dots" id="pinDots">
+      <span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span>
+    </div>
+    <div class="pin-err" id="pinErr"></div>
+    <div class="pin-pad" id="pinPad">
+      <button type="button" class="pin-key" data-pk="1">1</button>
+      <button type="button" class="pin-key" data-pk="2">2</button>
+      <button type="button" class="pin-key" data-pk="3">3</button>
+      <button type="button" class="pin-key" data-pk="4">4</button>
+      <button type="button" class="pin-key" data-pk="5">5</button>
+      <button type="button" class="pin-key" data-pk="6">6</button>
+      <button type="button" class="pin-key" data-pk="7">7</button>
+      <button type="button" class="pin-key" data-pk="8">8</button>
+      <button type="button" class="pin-key" data-pk="9">9</button>
+      <button type="button" class="pin-key muted-k" id="pinCancelBtn">Cancel</button>
+      <button type="button" class="pin-key" data-pk="0">0</button>
+      <button type="button" class="pin-key muted-k" id="pinBackBtn" aria-label="Delete">⌫</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRO TEMPLATE 30-SECOND SPONSOR UNLOCK MODAL -->
+<div class="unlock-ov" id="unlockOv" role="dialog" aria-modal="true" aria-labelledby="unlockTitle">
+  <div class="unlock-box">
+    <span class="unlock-pill" id="unlockPill">PRO TEMPLATE</span>
+    <h3 id="unlockTitle">Unlock This Pro Template Free — View Sponsor for 30 Seconds</h3>
+    <p class="unlock-tpl" id="unlockTplName"></p>
+    <div class="unlock-ad-wrap">
+      <div class="ad-box-300x250" id="adsterra-unlock-300x250" data-ad-zone="300x250" aria-label="Sponsored advertisement"></div>
+      <div class="ad-slot-lbl" id="adUnlockLbl">Sponsored · RR Tech Labs</div>
+    </div>
+    <div class="unlock-timer-box">
+      <div class="unlock-timer-row">
+        <span class="unlock-timer-lbl" id="unlockTimerLbl">Unlocks permanently after countdown</span>
+        <span class="unlock-timer" id="unlockTimer">30s</span>
+      </div>
+      <div class="unlock-prog-track"><div class="unlock-prog-fill" id="unlockProg"></div></div>
+    </div>
+    <button type="button" class="btn ghost" id="unlockCancelBtn">Cancel</button>
+  </div>
+</div>
+
 <nav id="nav">
-  <button data-go="home" class="on"><i>🏠</i>होम</button>
-  <button data-go="tpl"><i>🎨</i>टेम्प्लेट</button>
-  <button data-go="files"><i>📂</i>फ़ाइलें</button>
-  <button data-go="plan"><i>💎</i>प्लान</button>
-  <button data-go="settings"><i>⚙️</i>सेटिंग</button>
+  <button data-go="home" class="on"><i>🏠</i><span id="nvHome">Home</span></button>
+  <button data-go="tpl"><i>🎨</i><span id="nvTpl">Templates</span></button>
+  <button data-go="files"><i>📂</i><span id="nvFiles">Files</span></button>
+  <button data-go="hub"><i>🚀</i><span id="nvHub">Career Hub</span></button>
+  <button data-go="settings"><i>⚙️</i><span id="nvSet">Settings</span></button>
 </nav>
 <div class="toast" id="toast"></div>
 
 <script>
-/* ===== CONFIG: पेमेंट बैकएंड बनने के बाद भरें ===== */
-const RAZORPAY_KEY_ID = "REPLACE_WITH_KEY_ID";
-const CREATE_ORDER_URL = "REPLACE_WITH_CREATE_ORDER_URL";
-const PAYMENT_VERIFY_URL = "REPLACE_WITH_VERIFY_URL";
 const APP_URL = "https://royalrajawat247-rr.github.io/JobReady-Resume-CV-Maker/";
-const PLAN_PAISE = {weekly: 4900, lifetime: 9900};
-const FREE_SAVE_LIMIT = 3;
 
 /* ===== helpers ===== */
 const $ = s => document.querySelector(s);
@@ -256,28 +705,289 @@ const LS = {
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 };
 function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2400); }
-const proPlan = () => LS.get("jr_pro", null); // सिर्फ़ verify के बाद सेट होता है
-const isVip = () => !!proPlan();
+const isVip = () => true; // All 16 pro templates & tools unlocked free for all users
 
-/* ===== 14 templates: हर एक का अलग layout, font, heading style और रंग ===== */
+/* ===== Bilingual EN / HI Dictionary ===== */
+let curLang = LS.get("jr_lang", "en");
+const PDF_QUALITY_CFG = {
+  high:     { maxPx: 600, jpeg: 0.94, labelEn: "High HD", labelHi: "हाई HD" },
+  balanced: { maxPx: 340, jpeg: 0.85, labelEn: "Balanced", labelHi: "संतुलित" },
+  compact:  { maxPx: 200, jpeg: 0.65, labelEn: "Portal Ready", labelHi: "पोर्टल रेडी" }
+};
+let pdfQuality = LS.get("jr_pdf_quality", "high");
+if(!PDF_QUALITY_CFG[pdfQuality]) pdfQuality = "high";
+
+const I18N = {
+  en: {
+    hdrSub: "Resume & CV Maker • Offline",
+    freeBadge: "Offline v1.0",
+    nvHome: "Home", nvTpl: "Templates", nvFiles: "Files", nvHub: "Career Hub", nvSet: "Settings",
+    homeHeroT: "Offline, Private & Full HD",
+    homeChips: ["📄 ATS-Friendly PDF", "🔒 Stored Safely On-Device", "⚡ Works Offline"],
+    homeToolsLbl: "Resume Tools",
+    tNewT: "Create New Resume", tNewD: "Build CV with photo & signature",
+    tTplT: "HD Templates", tTplD: "4 Free + 12 Pro (Free Ad Unlock)",
+    tSampleT: "1-Click Smart CV", tSampleD: "Fill sample data & edit fast",
+    tFilesT: "Saved CVs", tFilesD: "View, multi-select & export CVs",
+    tplHeadT: "Choose Template", tplHeadD: "4 templates are free & ready. Unlock any of the 12 Pro templates free with a 30s sponsor view.",
+    tplFree: "Free", tplPro: "PRO", tplApplied: "Applied: ",
+    unlockPill: "PRO TEMPLATE",
+    unlockTitle: "Unlock This Pro Template Free — View Sponsor for 30 Seconds",
+    unlockTimerLbl: "Unlocks permanently when countdown reaches 0s",
+    unlockCancel: "Cancel",
+    tplUnlockedToast: name => `Template Unlocked! (${name})`,
+    filesHeadT: "My Saved Resumes", filesEmpty: "No saved CVs yet.",
+    openBtn: "Open", delBtn: "Delete",
+    selectAll: "Select All", deselectAll: "Deselect All", clearSel: "Clear",
+    selectedCount: n => `${n} selected`,
+    bulkExportPdf: "Export PDF", bulkExportJson: "Export JSON", bulkDelete: "Delete",
+    bulkDeleted: n => `Deleted ${n} resume(s).`,
+    bulkExportedJson: n => `Exported ${n} resume(s) as JSON`,
+    saveCountFree: n => `${n} resume(s) saved locally (Unlimited)`,
+    needName: "Please enter your name",
+    cvSaved: "CV saved locally",
+    deletedUndo: "Deleted.", undoBtn: "UNDO",
+    // Career Hub
+    hubHeadT: "Career Hub • 100% Free Tools",
+    hubHeadD: "Offline Cover Letter PDF, Interview Q&A & Live ATS Resume Score",
+    htCl: "Cover Letter", htQa: "Interview Q&A", htAts: "ATS Score",
+    clTitle: "Instant Cover Letter Generator",
+    clSub: "Auto-fills your name, role & skills from your resume to download a matching PDF in 1 tap.",
+    clSrcLbl: "Load Resume Data", clCompLbl: "Target Company Name", clMgrLbl: "Hiring Manager", clRoleLbl: "Target Role",
+    clPdfBtn: "Download Cover Letter PDF", clCopyBtn: "Copy Text", clCopied: "Cover letter copied",
+    clCurOpt: "Current Editor Resume", clSampleOpt: "Sample Profile (Rahul Sharma)",
+    qaTitle: "Top Interview Q&A Guide",
+    qaSub: "Smart, ready-to-speak answers in English & Hindi across top job tracks.",
+    qc_fresher: "Fresher", qc_sales: "Sales", qc_office: "Office", qc_it: "IT", qc_banking: "Banking",
+    qaCopyAns: "Copy Answer", qaCopied: "Answer copied",
+    atsTitle: "Live ATS Resume Score & Tips",
+    atsSub: "Analyzes your resume out of 100% and gives actionable fixes to get shortlisted faster.",
+    atsSrcLbl: "Select Resume to Analyze", atsEditBtn: "Edit Resume to Boost Score",
+    atsGHigh: "Interview Ready", atsGMid: "Strong Foundation", atsGLow: "Needs Improvement",
+    atsSumText: (s, passed, total) => `${passed} of ${total} recruiter checks passed (${s}%)`,
+    hubFaqTitle: "Smart Hiring Tips & Quick Guide",
+    hubFaqBody: "1. Aim for an ATS Score of 80%+ before applying.\n2. Attach a matching Cover Letter PDF for higher recruiter callbacks.\n3. Select \"Portal Ready\" in Settings for PDFs under 500 KB on Naukri & LinkedIn.",
+    adSponsorLbl: "Sponsored · RR Tech Labs",
+    // Form
+    fmBack: "← Back", fmTitle: "Edit Resume",
+    lb_name: "Full Name", lb_title: "Job Title", lb_email: "Email", lb_phone: "Phone",
+    lb_addr: "Address", lb_sum: "Professional Summary", lb_skills: "Skills (comma separated)",
+    lb_exp: "Experience (one per line)", lb_edu: "Education (one per line)", lb_lang: "Languages",
+    lb_photo: "Photo (optional)", lb_sign: "Signature (optional)",
+    lb_jd: "Paste Job Description (ATS Keyword Check)", kwBtn: "Check Keywords",
+    saveBtn: "Save CV", pdfBtn: "PDF Download", shBtn: "Share",
+    kwMissing: "Missing keywords in CV:", kwHint: "Add these to skills or experience if accurate.",
+    kwAll: "All top keywords are in your CV ✓", kwEmpty: "Paste a job description first.",
+    sampleLoaded: "Sample data filled",
+    linkCopied: "Link copied", shareUnsupported: "Sharing not supported here",
+    // Settings
+    stPillTx: "100% Offline • On-Device",
+    stTitle: "Settings & Privacy",
+    stSub: "100% Login-Free & Offline-First. Customize theme, HD resume export quality, language & backups.",
+    stProTitle: "JobReady Pro Engine • 100% Offline Ready",
+    stProSub: "Private resume studio running locally on your device",
+    stProTierFree: "Offline Vault",
+    pf1: "HD PDF Resumes", pf2: "16+ Pro Templates", pf3: "Zero Login", pf4: "Local Vault", pf5: "Instant Backup",
+    stSecPref: "Appearance & Export",
+    stDarkT: "Dark Mode", stDarkD: "Switch cleanly between Light and Dark theme",
+    stQualT: "Default Resume PDF Quality", stQualD: "Applied automatically when exporting resumes",
+    pqHighT: "High HD", pqHighD: "Full sharp print clarity",
+    pqBalT: "Balanced", pqBalD: "Crisp & fast",
+    pqCompT: "Portal Ready", pqCompD: "Under 500 KB (Best for Naukri/LinkedIn)",
+    stLangT: "App Language", stLangD: "Switch interface language instantaneously",
+    stPinT: "App Security Lock (4-Digit PIN)",
+    stPinDOff: "Protect saved resumes & CVs on this device",
+    stPinDOn: "Active — Resume vault protected with 4-digit PIN",
+    pinChangeBtn: "Change PIN", pinLockNowBtn: "Lock Vault Now",
+    stSecData: "Backup & Sharing",
+    stBakT: "Backup & Restore", stBakD: "Save or transfer your saved CV data offline as a file",
+    exportBackupBtn: "Export Resume Backup", restoreBackupBtn: "Restore Backup",
+    stShareT: "Share JobReady App", stShareD: "Invite friends to build ATS-ready resumes offline",
+    shareAppBtn: "Share JobReady App", copyAppLink: "Copy Link",
+    stSecTrust: "Privacy & Support",
+    stPrivT: "100% Local On-Device Privacy Policy",
+    stPrivD: "Zero server uploads. Zero cloud tracking. Your resumes, photos, and signatures stay 100% private in your device storage.",
+    stSupT: "RR Tech Labs • 24/7 User Support",
+    stSupD: "Need help with templates, PDF exports, or backups? Reach out anytime.",
+    emailSupportBtn: "Email Support (24/7)", copySupportEmailBtn: "Copy Support Email",
+    faqHeader: "Quick Help & FAQs",
+    fq1: "How does 100% offline resume creation work?",
+    fa1: "Everything runs directly on your device without an internet connection. Your CV details, photo, signature, and saved resumes are stored locally on your phone.",
+    fq2: "How do I export a sharp HD PDF resume?",
+    fa2: "Select \"High HD\" under Default Resume PDF Quality, open your CV in the editor, tap \"PDF Download\", and choose \"Save as PDF\" in your system print dialog.",
+    fq3: "How does the 4-Digit PIN lock protect my CVs?",
+    fa3: "When enabled, JobReady requires your 4-digit PIN before opening the app or viewing your saved resumes, keeping personal career data private on shared devices.",
+    fq4: "How do I move my saved CVs to a new phone?",
+    fa4: "Tap \"Export Resume Backup\" to download a single backup file containing all your saved CVs, then open JobReady on your new device and tap \"Restore Backup\".",
+    stFooter: "JobReady: Resume & CV Maker · v1.0 · RR Tech Labs",
+    // Toasts & PIN Modal
+    qualSet: q => `PDF Quality set to ${q}`,
+    langSet: "Language switched to English",
+    bakExported: n => `Backup exported (${n} saved CVs)`,
+    bakRestored: n => `Backup restored (${n} total CVs)`,
+    bakInvalid: "Invalid backup file selected",
+    emailCopied: "Support email copied: royalrajawat247@gmail.com",
+    pinUnlockT: "Vault Locked", pinUnlockS: "Enter your 4-digit PIN to access saved resumes",
+    pinSetupT: "Set 4-Digit PIN", pinSetupS: "Choose a 4-digit PIN to protect your saved CVs",
+    pinConfirmT: "Confirm 4-Digit PIN", pinConfirmS: "Re-enter the 4-digit PIN to confirm",
+    pinDisableT: "Disable PIN Lock", pinDisableS: "Enter your current 4-digit PIN to turn off lock",
+    pinVerifyOldT: "Verify Current PIN", pinVerifyOldS: "Enter your current 4-digit PIN first",
+    pinMismatch: "PINs did not match. Try again.",
+    pinWrong: "Incorrect PIN. Please try again.",
+    pinEnabledToast: "4-digit PIN lock enabled",
+    pinDisabledToast: "PIN lock disabled",
+    pinChangedToast: "4-digit PIN updated",
+    pinCancel: "Cancel"
+  },
+  hi: {
+    hdrSub: "Resume & CV Maker • ऑफ़लाइन",
+    freeBadge: "Offline v1.0",
+    nvHome: "होम", nvTpl: "टेम्प्लेट", nvFiles: "फ़ाइलें", nvHub: "करियर हब", nvSet: "सेटिंग",
+    homeHeroT: "ऑफ़लाइन, सुरक्षित और फुल HD",
+    homeChips: ["📄 ATS-Friendly PDF", "🔒 डेटा फोन में सुरक्षित", "⚡ बिना इंटरनेट"],
+    homeToolsLbl: "रिज्यूमे टूल्स",
+    tNewT: "नया रिज्यूमे बनाएं", tNewD: "फोटो व सिग्नेचर के साथ CV बनाएं",
+    tTplT: "HD टेम्प्लेट्स", tTplD: "4 मुफ़्त + 12 प्रो (ऐड से अनलॉक)",
+    tSampleT: "1-क्लिक स्मार्ट CV", tSampleD: "सैंपल डेटा भरें और एडिट करें",
+    tFilesT: "सेव किए गए CV", tFilesD: "मल्टी-सेलेक्ट, एडिट और एक्सपोर्ट करें",
+    tplHeadT: "टेम्प्लेट चुनें", tplHeadD: "4 टेम्प्लेट मुफ़्त हैं। किसी भी 12 प्रो टेम्प्लेट को 30 सेकंड स्पॉन्सर व्यू से मुफ़्त अनलॉक करें।",
+    tplFree: "मुफ़्त", tplPro: "PRO", tplApplied: "लागू: ",
+    unlockPill: "PRO टेम्प्लेट",
+    unlockTitle: "इस प्रो टेम्प्लेट को मुफ़्त अनलॉक करें — 30 सेकंड स्पॉन्सर देखें",
+    unlockTimerLbl: "काउंटडाउन 0s होते ही हमेशा के लिए अनलॉक होगा",
+    unlockCancel: "रद्द करें",
+    tplUnlockedToast: name => `टेम्प्लेट अनलॉक हो गया! (${name})`,
+    filesHeadT: "मेरे सेव किए गए रिज्यूमे", filesEmpty: "अभी कोई CV सेव नहीं है।",
+    openBtn: "खोलें", delBtn: "डिलीट",
+    selectAll: "सभी चुनें", deselectAll: "चयन हटाएं", clearSel: "साफ़ करें",
+    selectedCount: n => `${n} चयनित`,
+    bulkExportPdf: "PDF एक्सपोर्ट", bulkExportJson: "JSON एक्सपोर्ट", bulkDelete: "डिलीट",
+    bulkDeleted: n => `${n} रिज़्यूमे डिलीट हुए।`,
+    bulkExportedJson: n => `${n} रिज़्यूमे JSON में एक्सपोर्ट हुए`,
+    saveCountFree: n => `${n} रिज़्यूमे सेव हैं (अनलिमिटेड मुफ़्त)`,
+    needName: "कृपया नाम भरें",
+    cvSaved: "CV सेव हो गया",
+    deletedUndo: "डिलीट हुआ। वापस लाने के लिए UNDO दबाएं", undoBtn: "UNDO",
+    // Career Hub
+    hubHeadT: "करियर हब • 100% मुफ़्त टूल्स",
+    hubHeadD: "ऑफ़लाइन कवर लेटर PDF, इंटरव्यू Q&A और लाइव ATS स्कोर",
+    htCl: "कवर लेटर", htQa: "इंटरव्यू Q&A", htAts: "ATS स्कोर",
+    clTitle: "इंस्टेंट कवर लेटर जनरेटर",
+    clSub: "आपके रिज़्यूमे से नाम, पद और कौशल भरकर 1 टैप में मैचिंग PDF डाउनलोड करें।",
+    clSrcLbl: "रिज़्यूमे डेटा लोड करें", clCompLbl: "कंपनी का नाम", clMgrLbl: "हायरिंग मैनेजर", clRoleLbl: "लक्ष्य पद (Role)",
+    clPdfBtn: "कवर लेटर PDF डाउनलोड करें", clCopyBtn: "टेक्स्ट कॉपी करें", clCopied: "कवर लेटर कॉपी हो गया",
+    clCurOpt: "वर्तमान एडिटर रिज़्यूमे", clSampleOpt: "सैंपल प्रोफ़ाइल (Rahul Sharma)",
+    qaTitle: "टॉप इंटरव्यू Q&A गाइड",
+    qaSub: "प्रमुख जॉब श्रेणियों के लिए हिंदी और अंग्रेज़ी में तैयार स्मार्ट उत्तर।",
+    qc_fresher: "फ्रेशर", qc_sales: "सेल्स", qc_office: "ऑफिस", qc_it: "IT", qc_banking: "बैंकिंग",
+    qaCopyAns: "उत्तर कॉपी करें", qaCopied: "उत्तर कॉपी हो गया",
+    atsTitle: "लाइव ATS रिज़्यूमे स्कोर और टिप्स",
+    atsSub: "100% में से आपके रिज़्यूमे का विश्लेषण और जल्दी सिलेक्शन के लिए सुझाव।",
+    atsSrcLbl: "जांचने के लिए रिज़्यूमे चुनें", atsEditBtn: "स्कोर बढ़ाने के लिए एडिट करें",
+    atsGHigh: "इंटरव्यू के लिए तैयार", atsGMid: "मज़बूत आधार", atsGLow: "सुधार की ज़रूरत",
+    atsSumText: (s, passed, total) => `${total} में से ${passed} रिक्रूटर जांच पास (${s}%)`,
+    hubFaqTitle: "स्मार्ट जॉब टिप्स और गाइड",
+    hubFaqBody: "1. आवेदन से पहले 80%+ ATS स्कोर का लक्ष्य रखें।\n2. बेहतर रिस्पॉन्स के लिए मैचिंग कवर लेटर PDF साथ भेजें।\n3. Naukri/LinkedIn पर 500 KB से कम PDF के लिए सेटिंग्स में \"पोर्टल रेडी\" चुनें।",
+    adSponsorLbl: "Sponsored · RR Tech Labs",
+    // Form
+    fmBack: "← वापस", fmTitle: "CV बनाएं",
+    lb_name: "पूरा नाम", lb_title: "पद (Job title)", lb_email: "ईमेल", lb_phone: "फ़ोन",
+    lb_addr: "पता", lb_sum: "परिचय", lb_skills: "कौशल (कॉमा से अलग)",
+    lb_exp: "अनुभव (हर लाइन में एक)", lb_edu: "शिक्षा (हर लाइन में एक)", lb_lang: "भाषाएं",
+    lb_photo: "फोटो (वैकल्पिक)", lb_sign: "सिग्नेचर (वैकल्पिक)",
+    lb_jd: "नौकरी का विवरण पेस्ट करें (ATS कीवर्ड चेक)", kwBtn: "कीवर्ड चेक करें",
+    saveBtn: "सेव करें", pdfBtn: "PDF डाउनलोड", shBtn: "शेयर",
+    kwMissing: "CV में कम कीवर्ड:", kwHint: "इन्हें कौशल या अनुभव में जोड़ें (केवल अगर सच हो)।",
+    kwAll: "सभी मुख्य कीवर्ड आपके CV में हैं ✓", kwEmpty: "नौकरी का विवरण पेस्ट करें।",
+    sampleLoaded: "सैंपल डेटा भरा गया",
+    linkCopied: "लिंक कॉपी हो गया", shareUnsupported: "शेयर सपोर्टेड नहीं है",
+    // Settings
+    stPillTx: "100% ऑफ़लाइन • ऑन-डिवाइस",
+    stTitle: "सेटिंग्स और गोपनीयता",
+    stSub: "100% लॉगिन-मुक्त और ऑफ़लाइन-फ़र्स्ट। थीम, HD रिज़्यूमे क्वालिटी, भाषा और बैकअप कस्टमाइज़ करें।",
+    stProTitle: "JobReady Pro Engine • 100% ऑफ़लाइन तैयार",
+    stProSub: "आपका प्राइवेट रिज़्यूमे स्टूडियो सीधे आपके फ़ोन पर चलता है",
+    stProTierFree: "ऑफ़लाइन वॉल्ट",
+    pf1: "HD PDF रिज़्यूमे", pf2: "16+ प्रो टेम्प्लेट्स", pf3: "बिना लॉगिन", pf4: "लोकल वॉल्ट", pf5: "तुरंत बैकअप",
+    stSecPref: "दिखावट और एक्सपोर्ट",
+    stDarkT: "डार्क मोड (Dark Mode)", stDarkD: "लाइट और डार्क थीम के बीच आसानी से बदलें",
+    stQualT: "डिफ़ॉल्ट रिज़्यूमे PDF क्वालिटी", stQualD: "रिज़्यूमे एक्सपोर्ट करते समय अपने आप लागू होता है",
+    pqHighT: "हाई HD", pqHighD: "पूरा शार्प प्रिंट क्लैरिटी",
+    pqBalT: "संतुलित", pqBalD: "साफ़ और तेज़",
+    pqCompT: "पोर्टल रेडी", pqCompD: "500 KB से कम (Naukri/LinkedIn के लिए बेस्ट)",
+    stLangT: "ऐप की भाषा", stLangD: "ऐप की भाषा तुरंत बदलें",
+    stPinT: "ऐप सुरक्षा लॉक (4-अंकों का PIN)",
+    stPinDOff: "अपने फ़ोन में सेव किए गए CV सुरक्षित रखें",
+    stPinDOn: "चालू — रिज़्यूमे वॉल्ट 4-अंकों के PIN से सुरक्षित है",
+    pinChangeBtn: "PIN बदलें", pinLockNowBtn: "अभी लॉक करें",
+    stSecData: "बैकअप और शेयरिंग",
+    stBakT: "बैकअप और रिकवर", stBakD: "अपने सेव किए गए CV डेटा को फ़ाइल के रूप में सुरक्षित रखें या ट्रांसफर करें",
+    exportBackupBtn: "रिज़्यूमे बैकअप एक्सपोर्ट करें", restoreBackupBtn: "बैकअप रिकवर करें",
+    stShareT: "JobReady ऐप शेयर करें", stShareD: "दोस्तों को ऑफ़लाइन ATS रिज़्यूमे बनाने के लिए आमंत्रित करें",
+    shareAppBtn: "ऐप शेयर करें", copyAppLink: "लिंक कॉपी करें",
+    stSecTrust: "गोपनीयता और सहायता",
+    stPrivT: "100% लोकल ऑन-डिवाइस गोपनीयता नीति",
+    stPrivD: "कोई सर्वर अपलोड नहीं। कोई क्लाउड ट्रैकिंग नहीं। आपके रिज़्यूमे, फोटो और सिग्नेचर 100% आपके फ़ोन में सुरक्षित रहते हैं।",
+    stSupT: "RR Tech Labs • 24/7 यूज़र सपोर्ट",
+    stSupD: "टेम्प्लेट, PDF एक्सपोर्ट या बैकअप में मदद चाहिए? कभी भी संपर्क करें।",
+    emailSupportBtn: "ईमेल सपोर्ट (24/7)", copySupportEmailBtn: "सपोर्ट ईमेल कॉपी करें",
+    faqHeader: "त्वरित सहायता और प्रश्न (FAQs)",
+    fq1: "100% ऑफ़लाइन रिज़्यूमे बनाना कैसे काम करता है?",
+    fa1: "सब कुछ बिना इंटरनेट के सीधे आपके फ़ोन पर चलता है। आपका CV डेटा, फोटो, सिग्नेचर और सेव किए गए रिज़्यूमे केवल आपके डिवाइस में रहते हैं।",
+    fq2: "मैं शार्प HD PDF रिज़्यूमे कैसे डाउनलोड करूं?",
+    fa2: "डिफ़ॉल्ट रिज़्यूमे PDF क्वालिटी में \"हाई HD\" चुनें, एडिटर में अपना CV खोलें, \"PDF डाउनलोड\" दबाएं और प्रिंट विकल्प में \"Save as PDF\" चुनें।",
+    fq3: "4-अंकों का PIN लॉक मेरे CV को कैसे सुरक्षित रखता है?",
+    fa3: "चालू होने पर, ऐप खोलने या सेव किए गए रिज़्यूमे देखने से पहले आपका 4-अंकों का PIN मांगा जाता है, जिससे साझा डिवाइस पर डेटा सुरक्षित रहता है।",
+    fq4: "मैं अपने सेव किए गए CV नए फ़ोन में कैसे ट्रांसफर करूं?",
+    fa4: "\"रिज़्यूमे बैकअप एक्सपोर्ट करें\" दबाकर बैकअप फ़ाइल डाउनलोड करें, फिर नए फ़ोन में JobReady खोलकर \"बैकअप रिकवर करें\" चुनें।",
+    stFooter: "JobReady: Resume & CV Maker · v1.0 · RR Tech Labs",
+    // Toasts & PIN Modal
+    qualSet: q => `PDF क्वालिटी सेट की गई: ${q}`,
+    langSet: "भाषा हिंदी में बदल गई",
+    bakExported: n => `बैकअप एक्सपोर्ट हुआ (${n} सेव्ड CV)`,
+    bakRestored: n => `बैकअप रिकवर हुआ (कुल ${n} CV)`,
+    bakInvalid: "सही बैकअप फ़ाइल चुनें",
+    emailCopied: "सपोर्ट ईमेल कॉपी हुआ: royalrajawat247@gmail.com",
+    pinUnlockT: "वॉल्ट लॉक है", pinUnlockS: "सेव किए गए रिज़्यूमे खोलने के लिए 4-अंकों का PIN डालें",
+    pinSetupT: "4-अंकों का PIN सेट करें", pinSetupS: "अपने सेव किए गए CV सुरक्षित करने के लिए 4 अंक चुनें",
+    pinConfirmT: "PIN की पुष्टि करें", pinConfirmS: "पुष्टि के लिए वही 4-अंकों का PIN दोबारा डालें",
+    pinDisableT: "PIN लॉक बंद करें", pinDisableS: "लॉक बंद करने के लिए वर्तमान 4-अंकों का PIN डालें",
+    pinVerifyOldT: "वर्तमान PIN जांचें", pinVerifyOldS: "पहले अपना वर्तमान 4-अंकों का PIN डालें",
+    pinMismatch: "PIN मेल नहीं खाया। दोबारा कोशिश करें।",
+    pinWrong: "गलत PIN। कृपया दोबारा प्रयास करें।",
+    pinEnabledToast: "4-अंकों का PIN लॉक चालू हो गया",
+    pinDisabledToast: "PIN लॉक बंद हो गया",
+    pinChangedToast: "4-अंकों का PIN अपडेट हो गया",
+    pinCancel: "रद्द करें"
+  }
+};
+const T = () => I18N[curLang] || I18N.en;
+
+/* ===== 16 Templates (4 Free + 12 Pro Unlocked via 30s Sponsor View) ===== */
 const FONT = {sans:"system-ui,'Noto Sans Devanagari',sans-serif", serif:"Georgia,'Noto Serif Devanagari',serif", mono:"ui-monospace,Menlo,Consolas,monospace"};
 const TPL = [
- {id:"classic", name:"Classic Blue",     d:"सभी नौकरियों के लिए", vip:false, L:"band",   F:"sans",  H:"bar",   ac:"#2563eb"},
- {id:"ats",     name:"ATS Clean White",  d:"सरकारी व प्राइवेट फॉर्म", vip:false, L:"min",    F:"sans",  H:"upper", ac:"#111827"},
- {id:"gray",    name:"Simple Gray",      d:"सादा व साफ़ लेआउट", vip:false, L:"min",    F:"serif", H:"rule",  ac:"#475569"},
- {id:"black",   name:"Minimal Black",    d:"छोटे अनुभव के लिए", vip:false, L:"min",    F:"serif", H:"dot",   ac:"#000000"},
- {id:"exec",    name:"Executive Dark",   d:"मैनेजर व ऑफिस जॉब", vip:true,  L:"dark",   F:"sans",  H:"upper", ac:"#e6b450"},
- {id:"emerald", name:"Modern Emerald",   d:"IT, सेल्स व मार्केटिंग", vip:true,  L:"line",   F:"sans",  H:"rule",  ac:"#059669"},
- {id:"sidebar", name:"Sidebar Pro",      d:"बाईं ओर कलर्ड साइडबार", vip:true,  L:"side",   F:"sans",  H:"box",   ac:"#4f46e5"},
- {id:"teal",    name:"Teal Timeline",    d:"टाइमलाइन अनुभव", vip:true,  L:"line",   F:"sans",  H:"bar",   ac:"#0d9488", tl:true},
- {id:"bold",    name:"Bold Header",      d:"बड़ा नाम, बोल्ड हेडर", vip:true,  L:"band",   F:"sans",  H:"box",   ac:"#7c3aed", big:true},
- {id:"corp",    name:"Corporate Grey",   d:"औपचारिक बैंकिंग स्टाइल", vip:true,  L:"min",    F:"serif", H:"box",   ac:"#374151"},
- {id:"coral",   name:"Creative Coral",   d:"डिज़ाइन व मीडिया", vip:true,  L:"side",   F:"sans",  H:"dot",   ac:"#e11d48", rev:true},
- {id:"mono",    name:"Tech Mono",        d:"डेवलपर्स के लिए", vip:true,  L:"line",   F:"mono",  H:"upper", ac:"#0284c7", tl:true},
- {id:"gold",    name:"Gold Premium",     d:"सुनहरी लाइन्स, केंद्रित", vip:true,  L:"center", F:"serif", H:"rule",  ac:"#b45309"},
- {id:"twocol",  name:"Two-Column Light", d:"कॉम्पैक्ट ATS दो-कॉलम", vip:true,  L:"side",   F:"sans",  H:"bar",   ac:"#334155", light:true}
+ {id:"classic", name:"Classic Blue",     d:"सभी नौकरियों के लिए", pro:false, L:"band",   F:"sans",  H:"bar",   ac:"#2563eb"},
+ {id:"ats",     name:"ATS Clean White",  d:"सरकारी व प्राइवेट फॉर्म", pro:false, L:"min",    F:"sans",  H:"upper", ac:"#111827"},
+ {id:"gray",    name:"Simple Gray",      d:"सादा व साफ़ लेआउट", pro:false, L:"min",    F:"serif", H:"rule",  ac:"#475569"},
+ {id:"black",   name:"Minimal Black",    d:"छोटे अनुभव के लिए", pro:false, L:"min",    F:"serif", H:"dot",   ac:"#000000"},
+ {id:"exec",    name:"Executive Dark",   d:"मैनेजर व ऑफिस जॉब", pro:true,  L:"dark",   F:"sans",  H:"upper", ac:"#e6b450"},
+ {id:"emerald", name:"Modern Emerald",   d:"IT, सेल्स व मार्केटिंग", pro:true,  L:"line",   F:"sans",  H:"rule",  ac:"#059669"},
+ {id:"sidebar", name:"Sidebar Pro",      d:"बाईं ओर कलर्ड साइडबार", pro:true,  L:"side",   F:"sans",  H:"box",   ac:"#4f46e5"},
+ {id:"teal",    name:"Teal Timeline",    d:"टाइमलाइन अनुभव", pro:true,  L:"line",   F:"sans",  H:"bar",   ac:"#0d9488", tl:true},
+ {id:"bold",    name:"Bold Header",      d:"बड़ा नाम, बोल्ड हेडर", pro:true,  L:"band",   F:"sans",  H:"box",   ac:"#7c3aed", big:true},
+ {id:"corp",    name:"Corporate Grey",   d:"औपचारिक बैंकिंग स्टाइल", pro:true,  L:"min",    F:"serif", H:"box",   ac:"#374151"},
+ {id:"coral",   name:"Creative Coral",   d:"डिज़ाइन व मीडिया", pro:true,  L:"side",   F:"sans",  H:"dot",   ac:"#e11d48", rev:true},
+ {id:"mono",    name:"Tech Mono",        d:"डेवलपर्स के लिए", pro:true,  L:"line",   F:"mono",  H:"upper", ac:"#0284c7", tl:true},
+ {id:"gold",    name:"Gold Premium",     d:"सुनहरी लाइन्स, केंद्रित", pro:true,  L:"center", F:"serif", H:"rule",  ac:"#b45309"},
+ {id:"twocol",  name:"Two-Column Light", d:"कॉम्पैक्ट ATS दो-कॉलम", pro:true,  L:"side",   F:"sans",  H:"bar",   ac:"#334155", light:true},
+ {id:"navy",    name:"Navy Executive",   d:"लीडरशिप व कॉर्पोरेट", pro:true,  L:"band",   F:"serif", H:"upper", ac:"#1e3a8a"},
+ {id:"indigo",  name:"Indigo Modern",    d:"फ्रेशर व ग्रेजुएट", pro:true,  L:"center", F:"sans",  H:"bar",   ac:"#4338ca"}
 ];
+let unlockedTpls = new Set(Array.isArray(LS.get("jr_unlocked_tpls", [])) ? LS.get("jr_unlocked_tpls", []) : []);
+const isTplUnlocked = t => !t.pro || unlockedTpls.has(t.id);
 let curTpl = LS.get("jr_tpl", "classic");
+const initTplObj = TPL.find(x=>x.id===curTpl);
+if(!initTplObj || !isTplUnlocked(initTplObj)){ curTpl = "classic"; LS.set("jr_tpl", curTpl); }
 
 /* ===== CV sheet renderer ===== */
 let photo = "", sign = "";
@@ -297,7 +1007,7 @@ function sheetHTML(cv, t, wm){
     }
   };
   const skills = `<div class="skills">${cv.skills.split(",").map(x=>x.trim()).filter(Boolean).map(s=>`<span style="color:${ac}">${esc(s)}</span>`).join("")}</div>`;
-  const items = (s, tl) => s.split("\n").map(x=>x.trim()).filter(Boolean).map(x=>{
+  const items = (s) => s.split("\n").map(x=>x.trim()).filter(Boolean).map(x=>{
     const [head, ...rest] = x.split(" – ");
     return `<div class="it"><b>${esc(head)}</b>${rest.length?`<div>${esc(rest.join(" – "))}</div>`:""}</div>`;
   }).join("");
@@ -306,32 +1016,38 @@ function sheetHTML(cv, t, wm){
   const ph = cv.photo ? `<img class="ph" src="${cv.photo}" alt="">` : "";
   const sg = cv.sign ? `<img class="sig" src="${cv.sign}" alt="">` : "";
   const contact = [cv.email, cv.phone, cv.addr].filter(Boolean).map(esc).join(" | ");
-  const main = `${sec("परिचय")}<p>${esc(cv.sum)}</p>${sec("अनुभव")}${exp}${sec("शिक्षा")}${edu}`;
+  const lblSum = curLang==="en" ? "Summary" : "परिचय";
+  const lblExp = curLang==="en" ? "Experience" : "अनुभव";
+  const lblEdu = curLang==="en" ? "Education" : "शिक्षा";
+  const lblSkl = curLang==="en" ? "Skills" : "कौशल";
+  const lblLng = curLang==="en" ? "Languages" : "भाषाएं";
+  const phName = curLang==="en" ? "Your Name" : "आपका नाम";
+  const main = `${sec(lblSum)}<p>${esc(cv.sum)}</p>${sec(lblExp)}${exp}${sec(lblEdu)}${edu}`;
   let inner, cls = "";
   if(t.L==="band"){
     const nmSize = t.big ? "34px" : "26px";
-    inner = `<div class="hd" style="background:${ac};color:#fff">${ph}<div class="nm" style="font-size:${nmSize};${t.big?'text-transform:uppercase':''}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div></div>
-      <div class="bd">${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
+    inner = `<div class="hd" style="background:${ac};color:#fff">${ph}<div class="nm" style="font-size:${nmSize};${t.big?'text-transform:uppercase':''}">${esc(cv.name||phName)}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div></div>
+      <div class="bd">${sec(lblSkl)}${skills}${main}${sec(lblLng)}<p>${esc(cv.lang)}</p>${sg}</div>`;
   } else if(t.L==="min"){
-    inner = `<div class="bd"><div class="nm" style="color:${ac}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div><div style="height:2px;background:${ac};margin:10px 0 0"></div>${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
+    inner = `<div class="bd"><div class="nm" style="color:${ac}">${esc(cv.name||phName)}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div><div style="height:2px;background:${ac};margin:10px 0 0"></div>${sec(lblSkl)}${skills}${main}${sec(lblLng)}<p>${esc(cv.lang)}</p>${sg}</div>`;
   } else if(t.L==="line"){
-    inner = `<div class="bd">${ph}<div class="nm" style="color:${ac}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div><div style="height:3px;background:${ac};margin:10px 0 0;width:60%"></div>${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
+    inner = `<div class="bd">${ph}<div class="nm" style="color:${ac}">${esc(cv.name||phName)}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div><div style="height:3px;background:${ac};margin:10px 0 0;width:60%"></div>${sec(lblSkl)}${skills}${main}${sec(lblLng)}<p>${esc(cv.lang)}</p>${sg}</div>`;
   } else if(t.L==="dark"){
     cls = "dark";
-    inner = `<div class="bd"><div class="nm" style="color:${ac}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div><div style="height:2px;background:${ac};margin:10px 0 0"></div>${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
+    inner = `<div class="bd"><div class="nm" style="color:${ac}">${esc(cv.name||phName)}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div><div style="height:2px;background:${ac};margin:10px 0 0"></div>${sec(lblSkl)}${skills}${main}${sec(lblLng)}<p>${esc(cv.lang)}</p>${sg}</div>`;
   } else if(t.L==="center"){
     cls = "center";
-    inner = `<div class="hd" style="border-bottom:3px double ${ac}">${ph}<div class="nm" style="color:${ac}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div></div>
-      <div class="bd">${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
-  } else { // side
+    inner = `<div class="hd" style="border-bottom:3px double ${ac}">${ph}<div class="nm" style="color:${ac}">${esc(cv.name||phName)}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div></div>
+      <div class="bd">${sec(lblSkl)}${skills}${main}${sec(lblLng)}<p>${esc(cv.lang)}</p>${sg}</div>`;
+  } else {
     cls = "side" + (t.rev ? " rev" : "");
     const sbBg = t.light ? "#f1f5f9" : ac;
     const sbTxt = t.light ? ac : "#fff";
-    inner = `<div class="sd" style="background:${sbBg};color:${sbTxt}">${ph}<div class="nm">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${esc(cv.email)}<br>${esc(cv.phone)}<br>${esc(cv.addr)}</div>
-      <div class="sh" style="margin-top:14px">कौशल</div>${skills}<div class="sh">भाषाएं</div><p>${esc(cv.lang)}</p>${sg}</div>
+    inner = `<div class="sd" style="background:${sbBg};color:${sbTxt}">${ph}<div class="nm">${esc(cv.name||phName)}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${esc(cv.email)}<br>${esc(cv.phone)}<br>${esc(cv.addr)}</div>
+      <div class="sh" style="margin-top:14px">${lblSkl}</div>${skills}<div class="sh">${lblLng}</div><p>${esc(cv.lang)}</p>${sg}</div>
       <div class="mn">${main}</div>`;
   }
-  return `<div class="sheet ${cls}" style="font-family:${F};${cls==="dark"?"":""}">${inner}${wm?'<div class="wm">Made with JobReady</div>':''}</div>`;
+  return `<div class="sheet ${cls}" style="font-family:${F}">${inner}${wm?'<div class="wm">Made with JobReady</div>':''}</div>`;
 }
 function fitBox(box){
   const s = box.querySelector(".sheet"); if(!s) return;
@@ -342,142 +1058,816 @@ function fitAll(){ document.querySelectorAll(".thumb,.fit").forEach(fitBox); }
 window.addEventListener("resize", fitAll);
 
 function renderTpls(){
+  const tx = T();
   $("#tplGrid").innerHTML = TPL.map(t => {
-    const locked = t.vip && !isVip();
-    const sample = {name:"Rahul Sharma", title:"Sales Executive", email:"rahul@mail.com", phone:"98XXXXXX10", addr:"जयपुर", sum:"3 साल का अनुभव।", skills:"Excel, Tally, Sales", exp:"ABC Traders – Sales (2022-25)", edu:"B.Com – 2020", lang:"हिंदी, English"};
+    const sample = {name:"Rahul Sharma", title:"Sales Executive", email:"rahul@mail.com", phone:"98XXXXXX10", addr:"Jaipur", sum:"3+ years experience.", skills:"Excel, Tally, Sales", exp:"ABC Traders – Sales (2022-25)", edu:"B.Com – 2020", lang:"Hindi, English"};
+    const unlocked = isTplUnlocked(t);
+    const badgeCls = t.pro ? "pro" : "free";
+    const badgeTxt = t.pro ? tx.tplPro : tx.tplFree;
+    const lockHtml = unlocked ? "" : `<span class="lock" aria-label="Locked">🔒</span>`;
     return `<button class="tp ${t.id===curTpl?'sel':''}" data-tpl="${t.id}">
-      <span class="lbl ${t.vip?'vip':'free'}">${t.vip?'VIP':'मुफ़्त'}</span>
+      <span class="lbl ${badgeCls}">${badgeTxt}</span>${lockHtml}
       <div class="thumb">${sheetHTML(sample, t, false)}</div>
-      <b>${esc(t.name)}</b><small>${esc(t.d)}</small>${locked?'<span class="lock">🔒</span>':''}</button>`;
+      <b>${esc(t.name)}</b><small>${esc(t.d)}</small></button>`;
   }).join("");
   $$("#tplGrid .thumb").forEach(fitBox);
 }
+
+/* ===== Pro Template 30s Sponsor Unlock Modal ===== */
+let unlockTimerId = null, unlockTargetTpl = null;
+function closeUnlockModal(){
+  if(unlockTimerId){ clearInterval(unlockTimerId); unlockTimerId = null; }
+  unlockTargetTpl = null;
+  $("#unlockOv").classList.remove("on");
+}
+function openUnlockModal(t){
+  closeUnlockModal();
+  const tx = T();
+  unlockTargetTpl = t;
+  let sec = 30;
+  $("#unlockPill").textContent = tx.unlockPill;
+  $("#unlockTitle").textContent = tx.unlockTitle;
+  $("#unlockTplName").textContent = t.name;
+  $("#adUnlockLbl").textContent = tx.adSponsorLbl;
+  $("#unlockTimerLbl").textContent = tx.unlockTimerLbl;
+  $("#unlockCancelBtn").textContent = tx.unlockCancel;
+  $("#unlockTimer").textContent = sec + "s";
+  $("#unlockProg").style.width = "0%";
+  $("#unlockOv").classList.add("on");
+  unlockTimerId = setInterval(()=>{
+    sec -= 1;
+    if(sec <= 0){
+      $("#unlockTimer").textContent = "0s";
+      $("#unlockProg").style.width = "100%";
+      const unlockedTpl = unlockTargetTpl;
+      clearInterval(unlockTimerId);
+      unlockTimerId = null;
+      if(unlockedTpl){
+        unlockedTpls.add(unlockedTpl.id);
+        LS.set("jr_unlocked_tpls", [...unlockedTpls]);
+        curTpl = unlockedTpl.id;
+        LS.set("jr_tpl", curTpl);
+        closeUnlockModal();
+        renderTpls();
+        renderPreview();
+        toast(T().tplUnlockedToast(unlockedTpl.name));
+      } else {
+        closeUnlockModal();
+      }
+      return;
+    }
+    $("#unlockTimer").textContent = sec + "s";
+    $("#unlockProg").style.width = Math.round(((30 - sec) / 30) * 100) + "%";
+  }, 1000);
+}
+$("#unlockCancelBtn").addEventListener("click", closeUnlockModal);
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape" && $("#unlockOv").classList.contains("on")) closeUnlockModal();
+});
+
 $("#tplGrid").addEventListener("click", e => {
   const b = e.target.closest("[data-tpl]"); if(!b) return;
-  const t = TPL.find(x=>x.id===b.dataset.tpl);
-  if(t.vip && !isVip()){ toast("यह टेम्प्लेट VIP प्लान में है"); show("plan"); return; }
-  curTpl = t.id; LS.set("jr_tpl", curTpl); renderTpls(); toast("लागू: "+t.name);
+  const t = TPL.find(x=>x.id===b.dataset.tpl); if(!t) return;
+  if(!isTplUnlocked(t)){
+    openUnlockModal(t);
+    return;
+  }
+  curTpl = t.id; LS.set("jr_tpl", curTpl); renderTpls(); renderPreview(); toast(T().tplApplied+t.name);
 });
 
 function renderPreview(){
   const t = TPL.find(x=>x.id===curTpl) || TPL[0];
-  $("#preview").innerHTML = sheetHTML(readCv(), t, !isVip());
+  $("#preview").innerHTML = sheetHTML(readCv(), t, false);
   fitBox($("#preview"));
 }
 FIELDS.forEach(k=>{ const el=$("#f_"+k); if(el) el.addEventListener("input", renderPreview); });
 function toDataUrl(file, cb){
   if(!file) return cb("");
+  const qCfg = PDF_QUALITY_CFG[pdfQuality] || PDF_QUALITY_CFG.high;
   const img = new Image(), url = URL.createObjectURL(file);
-  img.onload = ()=>{ const c=document.createElement("canvas"); const s=Math.min(1,300/Math.max(img.width,img.height)); c.width=img.width*s; c.height=img.height*s; c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url); cb(c.toDataURL("image/jpeg",0.85)); };
+  img.onload = ()=>{ const c=document.createElement("canvas"); const s=Math.min(1,qCfg.maxPx/Math.max(img.width,img.height)); c.width=img.width*s; c.height=img.height*s; c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url); cb(c.toDataURL("image/jpeg",qCfg.jpeg)); };
   img.src = url;
 }
 $("#f_photo").addEventListener("change", e=>toDataUrl(e.target.files[0], d=>{ photo=d; renderPreview(); }));
 $("#f_sign").addEventListener("change", e=>toDataUrl(e.target.files[0], d=>{ sign=d; renderPreview(); }));
 
-const SAMPLE = {name:"Rahul Sharma", title:"Sales & Office Executive", email:"rahul@example.com", phone:"98XXXXXX10", addr:"जयपुर, राजस्थान", sum:"3 साल का अनुभव ग्राहक सेवा, बिक्री और ऑफिस प्रबंधन में।", skills:"MS Excel, Tally, Communication, Billing", exp:"ABC Traders – Sales Executive – 2022-2025\nXYZ Pvt Ltd – Office Assistant – 2020-2022", edu:"B.Com – Rajasthan University – 2020", lang:"हिंदी, English"};
+const SAMPLE = {name:"Rahul Sharma", title:"Sales & Office Executive", email:"rahul@example.com", phone:"98XXXXXX10", addr:"Jaipur, Rajasthan", sum:"3 years of experience in customer service, sales operations, and office administration.", skills:"MS Excel, Tally, Communication, Billing", exp:"ABC Traders – Sales Executive – 2022-2025\nXYZ Pvt Ltd – Office Assistant – 2020-2022", edu:"B.Com – Rajasthan University – 2020", lang:"Hindi, English"};
 
-/* ===== save / files ===== */
+/* ===== save / files + Multi-Select Bulk Export & Delete ===== */
+let selectedIds = new Set();
+function updateBulkUI(list){
+  const tx = T();
+  const validIds = new Set(list.map(x=>String(x.id)));
+  selectedIds = new Set([...selectedIds].filter(id=>validIds.has(id)));
+  const count = selectedIds.size;
+  const bar = $("#filesSelectBar");
+  if(bar) bar.style.display = list.length ? "flex" : "none";
+  const allSelected = list.length > 0 && count === list.length;
+  $("#selectAllCvsBtn").textContent = allSelected ? tx.deselectAll : tx.selectAll;
+  $("#clearSelCvsBtn").style.display = count > 0 ? "inline-flex" : "none";
+  $("#clearSelCvsBtn").textContent = tx.clearSel;
+  $("#bulkBar").classList.toggle("on", count > 0);
+  $("#bulkCountLbl").textContent = tx.selectedCount(count);
+  $("#bulkExportPdfBtn").textContent = tx.bulkExportPdf;
+  $("#bulkExportJsonBtn").textContent = tx.bulkExportJson;
+  $("#bulkDeleteBtn").textContent = tx.bulkDelete;
+}
 function renderFiles(){
+  const tx = T();
   const list = LS.get("jr_cvs", []);
-  $("#saveCount").textContent = isVip() ? `${list.length} CV सेव हैं` : `${list.length} / ${FREE_SAVE_LIMIT} CV सेव हैं (मुफ़्त सीमा)`;
-  $("#fileList").innerHTML = list.length ? list.map(x=>`<div class="item"><div><b>${esc(x.cv.name)}</b><br><small>${esc(x.cv.title)} • ${x.date}</small></div>
-    <button class="btn ghost sm" data-open="${x.id}">खोलें</button><button class="btn ghost sm" data-del="${x.id}">डिलीट</button></div>`).join("")
-    : `<div class="empty">अभी कोई CV सेव नहीं है।</div>`;
+  $("#saveCount").textContent = tx.saveCountFree(list.length);
+  updateBulkUI(list);
+  $("#fileList").innerHTML = list.length ? list.map(x=>{
+    const sid = String(x.id);
+    const chk = selectedIds.has(sid);
+    return `<div class="item ${chk?'selected':''}">
+      <label class="cv-chk-wrap"><input type="checkbox" class="cv-chk" data-sel="${sid}" ${chk?'checked':''} aria-label="Select ${esc(x.cv.name)}"></label>
+      <div><b>${esc(x.cv.name)}</b><br><small>${esc(x.cv.title)} • ${x.date}</small></div>
+      <button class="btn ghost sm" data-open="${sid}">${tx.openBtn}</button><button class="btn ghost sm" data-del="${sid}">${tx.delBtn}</button>
+    </div>`;
+  }).join("") : `<div class="empty">${tx.filesEmpty}</div>`;
 }
 function saveCv(){
-  const cv = readCv(); if(!cv.name){ toast("कृपया नाम भरें"); return false; }
+  const tx = T();
+  const cv = readCv(); if(!cv.name){ toast(tx.needName); return false; }
   const list = LS.get("jr_cvs", []);
-  if(!isVip() && list.length >= FREE_SAVE_LIMIT){ toast("मुफ़्त में 3 CV तक, ज़्यादा के लिए प्लान लें"); show("plan"); return false; }
   list.unshift({id:Date.now(), cv, tpl:curTpl, date:new Date().toLocaleDateString("en-GB")});
-  LS.set("jr_cvs", list); renderFiles(); toast("CV सेव हो गया"); return true;
+  LS.set("jr_cvs", list); renderFiles(); refreshHubSources(); toast(tx.cvSaved); return true;
 }
-let undoItem=null;
+let undoBatch = null;
+$("#fileList").addEventListener("change", e=>{
+  const c = e.target.closest("[data-sel]");
+  if(!c) return;
+  const id = c.dataset.sel;
+  if(c.checked) selectedIds.add(id); else selectedIds.delete(id);
+  c.closest(".item").classList.toggle("selected", c.checked);
+  updateBulkUI(LS.get("jr_cvs", []));
+});
 $("#fileList").addEventListener("click", e=>{
   const o=e.target.closest("[data-open]"), d=e.target.closest("[data-del]");
-  if(o){ const x=LS.get("jr_cvs",[]).find(y=>y.id==o.dataset.open); if(x){ curTpl=x.tpl; fillCv(x.cv); openForm(); } }
+  if(o){ const x=LS.get("jr_cvs",[]).find(y=>String(y.id)===o.dataset.open); if(x){ curTpl=x.tpl; fillCv(x.cv); openForm(); } }
   if(d){
-    const list=LS.get("jr_cvs",[]); const i=list.findIndex(y=>y.id==d.dataset.del); if(i<0) return;
-    undoItem={item:list[i], i}; list.splice(i,1); LS.set("jr_cvs",list); renderFiles();
-    toast("डिलीट हुआ। वापस लाने के लिए UNDO दबाएं");
-    const t=$("#toast"); t.insertAdjacentHTML("beforeend", ' <b style="cursor:pointer;color:#e6b450" id="undoBtn">UNDO</b>');
-    $("#undoBtn").onclick=()=>{ if(!undoItem) return; const l=LS.get("jr_cvs",[]); l.splice(undoItem.i,0,undoItem.item); LS.set("jr_cvs",l); undoItem=null; renderFiles(); t.classList.remove("on"); };
+    const tx = T();
+    const list=LS.get("jr_cvs",[]); const i=list.findIndex(y=>String(y.id)===d.dataset.del); if(i<0) return;
+    undoBatch = {items:[{item:list[i], index:i}]};
+    list.splice(i,1); selectedIds.delete(d.dataset.del);
+    LS.set("jr_cvs",list); renderFiles(); refreshHubSources();
+    toast(tx.deletedUndo);
+    const t=$("#toast"); t.insertAdjacentHTML("beforeend", ` <b style="cursor:pointer;color:#e6b450" id="undoBtn">${tx.undoBtn}</b>`);
+    $("#undoBtn").onclick=()=>{ if(!undoBatch) return; const l=LS.get("jr_cvs",[]); undoBatch.items.forEach(entry=>l.splice(Math.min(entry.index,l.length),0,entry.item)); LS.set("jr_cvs",l); undoBatch=null; renderFiles(); refreshHubSources(); t.classList.remove("on"); };
   }
 });
+$("#selectAllCvsBtn").onclick = ()=>{
+  const list = LS.get("jr_cvs", []);
+  if(selectedIds.size === list.length) selectedIds.clear();
+  else list.forEach(x=>selectedIds.add(String(x.id)));
+  renderFiles();
+};
+$("#clearSelCvsBtn").onclick = ()=>{ selectedIds.clear(); renderFiles(); };
+$("#bulkDeleteBtn").onclick = ()=>{
+  if(!selectedIds.size) return;
+  const tx = T();
+  const list = LS.get("jr_cvs", []);
+  const removed = [];
+  const remaining = [];
+  list.forEach((item, idx)=>{
+    if(selectedIds.has(String(item.id))) removed.push({item, index: idx});
+    else remaining.push(item);
+  });
+  if(!removed.length) return;
+  undoBatch = {items: removed};
+  selectedIds.clear();
+  LS.set("jr_cvs", remaining); renderFiles(); refreshHubSources();
+  toast(tx.bulkDeleted(removed.length));
+  const t=$("#toast"); t.insertAdjacentHTML("beforeend", ` <b style="cursor:pointer;color:#e6b450" id="undoBtn">${tx.undoBtn}</b>`);
+  $("#undoBtn").onclick=()=>{ if(!undoBatch) return; const l=LS.get("jr_cvs",[]); undoBatch.items.forEach(entry=>l.splice(Math.min(entry.index,l.length),0,entry.item)); LS.set("jr_cvs",l); undoBatch=null; renderFiles(); refreshHubSources(); t.classList.remove("on"); };
+};
+$("#bulkExportJsonBtn").onclick = ()=>{
+  const list = LS.get("jr_cvs", []).filter(x=>selectedIds.has(String(x.id)));
+  if(!list.length) return;
+  const payload = {app:"JobReady: Resume & CV Maker", version:1, exportedAt:new Date().toISOString(), cvs:list};
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = `jobready-selected-${list.length}-cvs.json`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  toast(T().bulkExportedJson(list.length));
+};
+$("#bulkExportPdfBtn").onclick = ()=>{
+  const list = LS.get("jr_cvs", []).filter(x=>selectedIds.has(String(x.id)));
+  if(!list.length) return;
+  $("#printArea").setAttribute("data-pdf-quality", pdfQuality);
+  $("#printArea").innerHTML = list.map((x, idx)=>{
+    const t = TPL.find(tp=>tp.id===x.tpl) || TPL[0];
+    return `<div style="${idx < list.length-1 ? 'page-break-after:always;' : ''}">${sheetHTML(x.cv, t, false)}</div>`;
+  }).join("");
+  setTimeout(()=>window.print(), 120);
+};
 
-/* ===== ATS keyword check (VIP) ===== */
+/* ===== ATS keyword check (Unlocked Free) ===== */
 const STOP = new Set("the and for with you your our are will this that from have has was not but all can job work team role years year good must should using use new able".split(" "));
 $("#kwBtn").onclick = ()=>{
-  if(!isVip()){ toast("कीवर्ड चेक VIP में है"); show("plan"); return; }
+  const tx = T();
   const cv = readCv();
   const jd = $("#jd").value.toLowerCase().match(/[a-z][a-z+#.]{2,}/g) || [];
   const freq = {}; jd.forEach(w=>{ if(!STOP.has(w)) freq[w]=(freq[w]||0)+1; });
   const top = Object.keys(freq).sort((a,b)=>freq[b]-freq[a]).slice(0,15);
   const have = (cv.skills+" "+cv.exp+" "+cv.sum).toLowerCase();
   const missing = top.filter(w=>!have.includes(w));
-  $("#kwOut").innerHTML = top.length ? (missing.length ? `<b>CV में कम कीवर्ड:</b> ${missing.map(esc).join(", ")}<br><span class="muted">इन्हें कौशल या अनुभव में जोड़ें (केवल अगर सच हो)।</span>` : "सभी मुख्य कीवर्ड आपके CV में हैं ✓") : "नौकरी का विवरण पेस्ट करें।";
+  $("#kwOut").innerHTML = top.length ? (missing.length ? `<b>${tx.kwMissing}</b> ${missing.map(esc).join(", ")}<br><span class="muted">${tx.kwHint}</span>` : tx.kwAll) : tx.kwEmpty;
 };
 
 /* ===== share ===== */
-const SHARE_TXT = `JobReady: Resume & CV Maker – फोन में ऑफ़लाइन रिज्यूमे बनाएं: ${APP_URL}`;
-function cvText(cv){ return `${cv.name} – ${cv.title}\n${cv.email} ${cv.phone}\n\n${cv.sum}\n\nबनाया गया: JobReady`; }
+const SHARE_TXT = `JobReady: Resume & CV Maker – Create offline ATS-ready resumes on your phone: ${APP_URL}`;
+function cvText(cv){ return `${cv.name} – ${cv.title}\n${cv.email} ${cv.phone}\n\n${cv.sum}\n\nCreated with JobReady`; }
 async function nativeShare(text){
+  const tx = T();
   if(navigator.share){ try{ await navigator.share({text}); return; }catch(e){ return; } }
-  try{ await navigator.clipboard.writeText(text); toast("लिंक कॉपी हो गया"); }catch(e){ toast("शेयर सपोर्टेड नहीं है"); }
+  try{ await navigator.clipboard.writeText(text); toast(tx.linkCopied); }catch(e){ toast(tx.shareUnsupported); }
 }
 const waLink = t => "https://wa.me/?text="+encodeURIComponent(t);
 const smsLink = t => "sms:?&body="+encodeURIComponent(t);
 $("#shareApp").onclick = ()=>nativeShare(SHARE_TXT);
 $("#waApp").onclick = ()=>window.open(waLink(SHARE_TXT),"_blank");
-$("#smsApp").onclick = ()=>location.href=smsLink(SHARE_TXT);
+$("#copyAppLink").onclick = async ()=>{
+  try{ await navigator.clipboard.writeText(APP_URL); toast(T().linkCopied); }
+  catch(e){ toast(T().shareUnsupported); }
+};
 $("#waCv").onclick = ()=>window.open(waLink(cvText(readCv())),"_blank");
 $("#smsCv").onclick = ()=>location.href=smsLink(cvText(readCv()));
 $("#shCv").onclick = ()=>nativeShare(cvText(readCv()));
 
-/* ===== PDF: सिर्फ़ CV प्रिंट ===== */
+/* ===== PDF: सिर्फ़ CV प्रिंट + PDF quality setting ===== */
 $("#pdf").onclick = ()=>{
   const t = TPL.find(x=>x.id===curTpl) || TPL[0];
-  $("#printArea").innerHTML = sheetHTML(readCv(), t, !isVip());
+  $("#printArea").setAttribute("data-pdf-quality", pdfQuality);
+  $("#printArea").innerHTML = sheetHTML(readCv(), t, false);
   setTimeout(()=>window.print(), 100);
 };
 
-/* ===== payments: verify के बाद ही unlock ===== */
-function loadRzp(){
-  return new Promise((res,rej)=>{ if(window.Razorpay) return res(); const s=document.createElement("script"); s.src="https://checkout.razorpay.com/v1/checkout.js"; s.onload=()=>res(); s.onerror=()=>rej(); document.head.appendChild(s); });
-}
-async function startPay(plan){
-  if(RAZORPAY_KEY_ID.startsWith("REPLACE") || CREATE_ORDER_URL.startsWith("REPLACE") || PAYMENT_VERIFY_URL.startsWith("REPLACE")){
-    toast("पेमेंट सेटअप बाकी है"); return;
-  }
-  try{
-    const o = await (await fetch(CREATE_ORDER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({plan})})).json();
-    await loadRzp();
-    new Razorpay({key:RAZORPAY_KEY_ID, amount:PLAN_PAISE[plan], currency:"INR", name:"JobReady", description:plan==="weekly"?"स्मार्ट पास (1 महीना)":"VIP लाइफटाइम", order_id:o.order_id,
-      handler: async r => {
-        const v = await (await fetch(PAYMENT_VERIFY_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...r,plan})})).json();
-        if(v.verified){ LS.set("jr_pro", plan); applyPlan(); toast("VIP चालू हो गया"); } else toast("पेमेंट वेरिफ़ाई नहीं हुआ");
-      }}).open();
-  }catch(e){ toast("कनेक्शन में दिक्कत, दोबारा कोशिश करें"); }
-}
-$$("[data-pay]").forEach(b=>b.onclick=()=>startPay(b.dataset.pay));
-$("#restore").onclick = async ()=>{
-  if(PAYMENT_VERIFY_URL.startsWith("REPLACE")){ toast("पेमेंट सेटअप बाकी है"); return; }
-  try{ const v = await (await fetch(PAYMENT_VERIFY_URL+"?status=1")).json(); if(v.plan){ LS.set("jr_pro",v.plan); applyPlan(); toast("खरीद रिकवर हो गई"); } else toast("कोई खरीद नहीं मिली"); }catch(e){ toast("कनेक्शन में दिक्कत"); }
+/* ===== Career Hub: Cover Letter Generator, Interview Q&A, Live ATS Score ===== */
+let activeHubTab = "cl", activeQaCat = "fresher";
+
+const QA_DATA = {
+  fresher: [
+    {
+      qEn: "Tell me about yourself.",
+      aEn: "I am a recent graduate with strong foundations in communication, MS Office, and problem-solving. During my academics and projects, I learned how to collaborate in teams and meet deadlines reliably, and I am eager to contribute my energy and adaptability to your company.",
+      qHi: "अपने बारे में बताएं (Tell me about yourself)।",
+      aHi: "मैं एक हालिया ग्रेजुएट हूं जिसकी कम्युनिकेशन, MS Office और प्रॉब्लम-सॉल्विंग में अच्छी पकड़ है। अपनी पढ़ाई और प्रोजेक्ट्स के दौरान मैंने टीमवर्क और समय पर काम पूरा करना सीखा है, और अब मैं आपकी कंपनी के साथ ग्रो करने के लिए उत्साहित हूं।"
+    },
+    {
+      qEn: "Why should we hire you as a fresher?",
+      aEn: "Because I bring a strong willingness to learn fast, zero bad habits, and full commitment. I adapt quickly to new tools and processes and can start adding value from week one.",
+      qHi: "हम आपको फ्रेशर के रूप में क्यों चुनें?",
+      aHi: "क्योंकि मैं तेज़ी से सीखने की क्षमता, सकारात्मक सोच और पूरी लगन के साथ काम करता हूं। मैं नए टूल्स और प्रक्रियाओं को जल्दी अपनाकर पहले हफ्ते से ही योगदान दे सकता हूं।"
+    }
+  ],
+  sales: [
+    {
+      qEn: "How do you handle a customer who says your price is too high?",
+      aEn: "I acknowledge their concern, ask what matters most to them, and highlight the long-term ROI, warranty, and after-sales support rather than just discounting price.",
+      qHi: "यदि ग्राहक कहे कि कीमत बहुत ज़्यादा है, तो आप क्या करेंगे?",
+      aHi: "मैं पहले उनकी बात ध्यान से सुनूंगा, उनकी असली ज़रूरत समझूंगा और केवल कीमत कम करने के बजाय प्रोडक्ट की क्वालिटी, वारंटी और लॉन्ग-टर्म फायदे समझाऊंगा।"
+    },
+    {
+      qEn: "How do you consistently achieve monthly sales targets?",
+      aEn: "I break monthly targets into daily outreach and follow-up goals, maintain a clean CRM pipeline, and prioritize warm leads while building repeat referrals.",
+      qHi: "आप हर महीने सेल्स टारगेट लगातार कैसे पूरा करते हैं?",
+      aHi: "मैं मासिक लक्ष्य को दैनिक कॉल, मीटिंग और फॉलो-अप में बांटता हूं, हर लीड का रिकॉर्ड रखता हूं और पुराने ग्राहकों से रेफरल लेकर बिक्री बढ़ाता हूं।"
+    }
+  ],
+  office: [
+    {
+      qEn: "How do you manage multiple urgent tasks at once?",
+      aEn: "I list tasks by deadline and business impact, complete high-priority items first, and update stakeholders early if any timeline needs coordination.",
+      qHi: "आप एक साथ कई ज़रूरी कामों को कैसे मैनेज करते हैं?",
+      aHi: "मैं कामों को उनकी डेडलाइन और प्राथमिकता के अनुसार क्रम में रखता हूं, सबसे ज़रूरी काम पहले निपटाता हूं और ज़रूरत पड़ने पर टीम को समय पर अपडेट देता हूं।"
+    },
+    {
+      qEn: "Which office tools are you most comfortable with?",
+      aEn: "I am proficient in MS Excel (VLOOKUP, Pivot Tables), Word, PowerPoint, Google Workspace, email etiquette, and accurate data documentation.",
+      qHi: "आप किन ऑफिस टूल्स में सबसे अधिक कुशल हैं?",
+      aHi: "मैं MS Excel (VLOOKUP, Pivot Table), Word, PowerPoint, Google Workspace, प्रोफेशनल ईमेल और डेटा डॉक्यूमेंटेशन में पूरी तरह निपुण हूं।"
+    }
+  ],
+  it: [
+    {
+      qEn: "How do you debug an issue you have never seen before?",
+      aEn: "I reproduce the issue consistently, check error logs and recent changes, isolate the failing component, test hypotheses step by step, and document the root cause.",
+      qHi: "यदि कोई बिल्कुल नई टेक्निकल समस्या आए, तो आप उसे कैसे हल करते हैं?",
+      aHi: "मैं पहले समस्या को रीप्रोड्यूस करता हूं, लॉग्स और हाल के बदलाव जांचता हूं, प्रभावित हिस्से को अलग करके स्टेप-बाय-स्टेप टेस्ट करता हूं और उसका स्थायी समाधान लिखता हूं।"
+    },
+    {
+      qEn: "How do you explain technical issues to non-technical teammates?",
+      aEn: "I focus on the user impact, timeline, and solution options using plain everyday language instead of jargon.",
+      qHi: "आप नॉन-टेक्निकल टीम को टेक्निकल समस्या कैसे समझाते हैं?",
+      aHi: "मैं कठिन शब्दों के बजाय सरल भाषा में बताता हूं कि यूज़र पर क्या असर पड़ रहा है, समाधान में कितना समय लगेगा और अगला कदम क्या है।"
+    }
+  ],
+  banking: [
+    {
+      qEn: "What makes good customer service in banking & finance?",
+      aEn: "Accuracy, strict confidentiality, clear explanation of terms without hidden surprises, and patient handling of customer queries.",
+      qHi: "बैंकिंग और फाइनेंस में बेहतरीन कस्टमर सर्विस क्या है?",
+      aHi: "सटीकता, ग्राहक डेटा की पूरी गोपनीयता, सभी नियमों और शुल्कों की स्पष्ट जानकारी देना और धैर्यपूर्वक हर प्रश्न का समाधान करना।"
+    },
+    {
+      qEn: "How do you ensure zero errors in financial documentation?",
+      aEn: "I use a two-step verification checklist for KYC, amounts, and account numbers before final submission.",
+      qHi: "फाइनेंशियल डॉक्यूमेंटेशन में शून्य गलती कैसे सुनिश्चित करते हैं?",
+      aHi: "मैं सबमिशन से पहले KYC, राशि और अकाउंट नंबर की दो-चरणीय चेकलिस्ट से दोबारा जांच करता हूं ताकि कोई त्रुटि न रहे।"
+    }
+  ]
 };
 
-/* ===== UI state ===== */
-function applyPlan(){
-  const p = proPlan();
-  $("#planBadge").textContent = p ? "VIP" : "मुफ़्त प्लान";
-  $("#planBadge").classList.toggle("vip", !!p);
-  $("#banner").style.display = (p === "lifetime") ? "none" : "flex";
-  $("#payNote").textContent = p ? "आपका VIP प्लान चालू है।" : "पेमेंट UPI/कार्ड से होगा।";
-  renderTpls(); renderFiles();
+function getHubCv(selectEl){
+  const val = selectEl ? selectEl.value : "current";
+  if(val === "sample") return SAMPLE;
+  if(val && val.startsWith("saved:")){
+    const id = val.slice(6);
+    const found = LS.get("jr_cvs", []).find(x=>String(x.id)===id);
+    if(found) return found.cv;
+  }
+  const cur = readCv();
+  return cur.name ? cur : (LS.get("jr_cvs", [])[0]?.cv || SAMPLE);
 }
+
+function refreshHubSources(){
+  const tx = T();
+  const saved = LS.get("jr_cvs", []);
+  const opts = `<option value="current">${esc(tx.clCurOpt)}</option>` +
+    saved.map(x=>`<option value="saved:${esc(x.id)}">${esc(x.cv.name)} — ${esc(x.cv.title || "CV")}</option>`).join("") +
+    `<option value="sample">${esc(tx.clSampleOpt)}</option>`;
+  ["#clSource", "#atsSource"].forEach(selId=>{
+    const el = $(selId);
+    if(!el) return;
+    const prev = el.value;
+    el.innerHTML = opts;
+    if([...el.options].some(o=>o.value===prev)) el.value = prev;
+  });
+  const clCv = getHubCv($("#clSource"));
+  if(!$("#cl_role").value && clCv.title) $("#cl_role").value = clCv.title;
+  renderCoverLetter();
+  renderAtsScore();
+}
+
+function buildCoverLetterText(){
+  const cv = getHubCv($("#clSource"));
+  const name = cv.name || (curLang==="hi" ? "आपका नाम" : "Your Name");
+  const role = $("#cl_role").value.trim() || cv.title || (curLang==="hi" ? "संबंधित पद" : "the open position");
+  const company = $("#cl_company").value.trim() || (curLang==="hi" ? "आपकी कंपनी" : "your organization");
+  const mgr = $("#cl_mgr").value.trim() || (curLang==="hi" ? "हायरिंग मैनेजर" : "Hiring Manager");
+  const skills = cv.skills || (curLang==="hi" ? "प्रबंधन, कम्युनिकेशन और समस्या-समाधान" : "communication, execution, and problem-solving");
+  const contact = [cv.email, cv.phone, cv.addr].filter(Boolean).join(" | ");
+  const dateStr = new Date().toLocaleDateString(curLang==="hi" ? "hi-IN" : "en-IN", {day:"2-digit", month:"short", year:"numeric"});
+  if(curLang === "hi"){
+    return `${name}\n${contact}\nदिनांक: ${dateStr}\n\nप्रति,\n${mgr}\n${company}\n\nविषय: ${role} पद के लिए आवेदन\n\nप्रिय ${mgr},\n\nमैं ${company} में ${role} के पद के लिए आवेदन प्रस्तुत कर रहा/रही हूं। ${cv.sum ? cv.sum + " " : ""}मेरे पास ${skills} जैसे प्रमुख कौशलों में व्यावहारिक अनुभव है, जिससे मैं आपकी टीम में पहले दिन से ही सकारात्मक योगदान दे सकता/सकती हूं।\n\nमैंने अपना विस्तृत रिज़्यूमे संलग्न किया है। आपसे व्यक्तिगत बातचीत के अवसर की प्रतीक्षा रहेगी।\n\nभवदीय,\n${name}`;
+  }
+  return `${name}\n${contact}\nDate: ${dateStr}\n\nTo,\n${mgr}\n${company}\n\nSubject: Application for ${role}\n\nDear ${mgr},\n\nI am writing to express my strong interest in the ${role} position at ${company}. ${cv.sum ? cv.sum + " " : ""}With hands-on strengths in ${skills}, I am confident in my ability to deliver measurable results and support your team's goals from day one.\n\nPlease find my resume attached for your review. Thank you for your time and consideration, and I look forward to discussing how my background aligns with ${company}.\n\nSincerely,\n${name}`;
+}
+
+function renderCoverLetter(){
+  const prev = $("#clPreview");
+  if(prev) prev.textContent = buildCoverLetterText();
+}
+
+$("#clSource").onchange = ()=>{
+  const cv = getHubCv($("#clSource"));
+  $("#cl_role").value = cv.title || "";
+  renderCoverLetter();
+};
+$("#cl_company").oninput = renderCoverLetter;
+$("#cl_mgr").oninput = renderCoverLetter;
+$("#cl_role").oninput = renderCoverLetter;
+$("#clCopyBtn").onclick = async ()=>{
+  try{ await navigator.clipboard.writeText(buildCoverLetterText()); toast(T().clCopied); }
+  catch(e){ toast(T().shareUnsupported); }
+};
+$("#clPdfBtn").onclick = ()=>{
+  const cv = getHubCv($("#clSource"));
+  const body = buildCoverLetterText().split("\n\n").map(p=>`<p style="margin:0 0 12px;white-space:pre-line">${esc(p)}</p>`).join("");
+  const t = TPL.find(x=>x.id===curTpl) || TPL[0];
+  $("#printArea").setAttribute("data-pdf-quality", pdfQuality);
+  $("#printArea").innerHTML = `<div class="sheet" style="font-family:${FONT[t.F]};padding:42px 46px;display:block">
+    <div style="border-bottom:3px solid ${t.ac};padding-bottom:14px;margin-bottom:20px">
+      <div style="font-size:24px;font-weight:800;color:${t.ac}">${esc(cv.name || "Your Name")}</div>
+      <div style="font-size:13px;font-weight:600;margin-top:3px;color:#334155">${esc($("#cl_role").value.trim() || cv.title)}</div>
+      <div style="font-size:11.5px;margin-top:4px;color:#475569">${esc([cv.email, cv.phone, cv.addr].filter(Boolean).join(" | "))}</div>
+    </div>
+    <div style="font-size:13px;line-height:1.68;color:#1e293b">${body}</div>
+  </div>`;
+  setTimeout(()=>window.print(), 100);
+};
+
+function renderQaList(){
+  const items = QA_DATA[activeQaCat] || QA_DATA.fresher;
+  const tx = T();
+  $$("#qaCats .qa-chip").forEach(b=>b.classList.toggle("on", b.dataset.qacat === activeQaCat));
+  $("#qaList").innerHTML = items.map((item, idx)=>{
+    const q = curLang==="hi" ? item.qHi : item.qEn;
+    const a = curLang==="hi" ? item.aHi : item.aEn;
+    return `<div class="qa-card">
+      <div class="qa-q">${esc(q)}</div>
+      <p class="qa-a">${esc(a)}</p>
+      <button type="button" class="btn ghost sm" data-qacopy="${idx}">${esc(tx.qaCopyAns)}</button>
+    </div>`;
+  }).join("");
+}
+$("#qaCats").addEventListener("click", e=>{
+  const b = e.target.closest("[data-qacat]"); if(!b) return;
+  activeQaCat = b.dataset.qacat;
+  renderQaList();
+});
+$("#qaList").addEventListener("click", async e=>{
+  const b = e.target.closest("[data-qacopy]"); if(!b) return;
+  const item = (QA_DATA[activeQaCat] || [])[Number(b.dataset.qacopy)];
+  if(!item) return;
+  const ans = curLang==="hi" ? item.aHi : item.aEn;
+  try{ await navigator.clipboard.writeText(ans); toast(T().qaCopied); }
+  catch(err){ toast(T().shareUnsupported); }
+});
+
+function renderAtsScore(){
+  const cv = getHubCv($("#atsSource"));
+  const tx = T();
+  const hi = curLang === "hi";
+  const skillsArr = (cv.skills || "").split(",").map(s=>s.trim()).filter(Boolean);
+  const expLines = (cv.exp || "").split("\n").map(s=>s.trim()).filter(Boolean);
+  const eduLines = (cv.edu || "").split("\n").map(s=>s.trim()).filter(Boolean);
+
+  const checks = [
+    { pts: 20, ok: !!(cv.name && cv.email && cv.phone),
+      okTxt: hi ? "नाम, ईमेल और फ़ोन नंबर पूरे हैं (+20%)" : "Contact details complete: Name, Email & Phone (+20%)",
+      badTxt: hi ? "संपर्क विवरण (नाम, ईमेल या फ़ोन) अधूरा है (+20%)" : "Add complete Name, Email & Phone for recruiter reachout (+20%)" },
+    { pts: 20, ok: !!(cv.title && (cv.sum || "").length >= 40),
+      okTxt: hi ? "लक्ष्य पद और स्पष्ट परिचय मौजूद है (+20%)" : "Job Title and strong Summary included (+20%)",
+      badTxt: hi ? "पद और कम से कम 40 अक्षरों का परिचय जोड़ें (+20%)" : "Add a clear Job Title & 40+ character Summary (+20%)" },
+    { pts: 20, ok: skillsArr.length >= 4,
+      okTxt: hi ? `${skillsArr.length} प्रमुख कौशल जुड़े हैं (+20%)` : `${skillsArr.length} core skills listed for ATS parsing (+20%)`,
+      badTxt: hi ? "ATS रैंकिंग के लिए कम से कम 4 कॉमा-सेपरेटेड कौशल जोड़ें (+20%)" : "List at least 4 comma-separated skills for ATS matching (+20%)" },
+    { pts: 25, ok: expLines.length >= 1 && expLines.some(l=>l.includes("–") || l.includes("-") || /\d{4}/.test(l)),
+      okTxt: hi ? "अनुभव में भूमिका और वर्ष का विवरण स्पष्ट है (+25%)" : "Experience entries include role & timeline details (+25%)",
+      badTxt: hi ? "अनुभव में कंपनी, पद और वर्ष (जैसे 2022-2025) जोड़ें (+25%)" : "Include Experience with company, role & years (e.g. 2022–2025) (+25%)" },
+    { pts: 15, ok: eduLines.length >= 1 && !!(cv.lang || "").trim(),
+      okTxt: hi ? "शिक्षा और भाषाएं दोनों शामिल हैं (+15%)" : "Education & Languages sections complete (+15%)",
+      badTxt: hi ? "शिक्षा और ज्ञात भाषाएं दोनों भरें (+15%)" : "Fill both Education and Languages sections (+15%)" }
+  ];
+
+  const score = checks.reduce((sum, c)=> sum + (c.ok ? c.pts : 0), 0);
+  const passed = checks.filter(c=>c.ok).length;
+  const circ = 219.9;
+  const arc = $("#atsArc");
+  if(arc){
+    arc.style.strokeDashoffset = String(circ - (circ * score / 100));
+    arc.style.stroke = score >= 80 ? "var(--ok)" : score >= 55 ? "var(--gold)" : "var(--danger)";
+  }
+  $("#atsScoreNum").textContent = `${score}%`;
+  $("#atsGrade").textContent = score >= 80 ? tx.atsGHigh : score >= 55 ? tx.atsGMid : tx.atsGLow;
+  $("#atsSummary").textContent = tx.atsSumText(score, passed, checks.length);
+  $("#atsTips").innerHTML = checks.map(c=>`<div class="ats-tip ${c.ok?'ok':'warn'}"><span>${c.ok?'✓':'!'}</span><span>${esc(c.ok?c.okTxt:c.badTxt)}</span></div>`).join("");
+}
+
+$("#atsSource").onchange = renderAtsScore;
+$("#atsEditBtn").onclick = ()=>{
+  const val = $("#atsSource").value;
+  if(val && val.startsWith("saved:")){
+    const found = LS.get("jr_cvs", []).find(x=>String(x.id)===val.slice(6));
+    if(found){ curTpl = found.tpl; fillCv(found.cv); }
+  } else if(val === "sample"){
+    fillCv(SAMPLE);
+  }
+  openForm();
+};
+
+$$("[data-hub]").forEach(btn=>{
+  btn.onclick = ()=>{
+    activeHubTab = btn.dataset.hub;
+    $$("[data-hub]").forEach(b=>b.classList.toggle("on", b.dataset.hub===activeHubTab));
+    $$(".hub-pane").forEach(p=>p.classList.toggle("on", p.id==="hp-"+activeHubTab));
+  };
+});
+
+/* ===== Settings: Dark Mode, PDF Quality, Language, PIN Lock, Backup/Restore, FAQs ===== */
+function applyTheme(isLight){
+  document.documentElement.classList.toggle("light", !!isLight);
+  const darkBtn = $("#darkT");
+  if(darkBtn) darkBtn.setAttribute("aria-checked", String(!isLight));
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if(meta) meta.setAttribute("content", isLight ? "#f3f5f9" : "#0b0e14");
+}
+$("#darkT").onclick = ()=>{
+  const currentlyLight = document.documentElement.classList.contains("light");
+  const nextLight = !currentlyLight;
+  LS.set("jr_light", nextLight);
+  applyTheme(nextLight);
+};
+
+function applyPdfQualityUI(){
+  $$("#pdfQGrid [data-pdfq]").forEach(btn=>{
+    btn.classList.toggle("sel", btn.dataset.pdfq === pdfQuality);
+  });
+}
+$("#pdfQGrid").addEventListener("click", e=>{
+  const b = e.target.closest("[data-pdfq]"); if(!b) return;
+  pdfQuality = b.dataset.pdfq;
+  LS.set("jr_pdf_quality", pdfQuality);
+  applyPdfQualityUI();
+  const cfg = PDF_QUALITY_CFG[pdfQuality];
+  toast(T().qualSet(curLang==="hi" ? cfg.labelHi : cfg.labelEn));
+});
+
+function applyLang(){
+  const tx = T();
+  document.documentElement.lang = curLang;
+  const setTxt = (id, v) => { const el = $(id); if(el) el.textContent = v; };
+
+  setTxt("#hdrSub", tx.hdrSub);
+  setTxt("#planBadge", tx.freeBadge);
+  setTxt("#nvHome", tx.nvHome); setTxt("#nvTpl", tx.nvTpl); setTxt("#nvFiles", tx.nvFiles);
+  setTxt("#nvHub", tx.nvHub); setTxt("#nvSet", tx.nvSet);
+
+  setTxt("#homeHeroT", tx.homeHeroT);
+  $("#homeChips").innerHTML = tx.homeChips.map(c=>`<span class="chip">${esc(c)}</span>`).join("");
+  setTxt("#homeToolsLbl", tx.homeToolsLbl);
+  setTxt("#tNewT", tx.tNewT); setTxt("#tNewD", tx.tNewD);
+  setTxt("#tTplT", tx.tTplT); setTxt("#tTplD", tx.tTplD);
+  setTxt("#tSampleT", tx.tSampleT); setTxt("#tSampleD", tx.tSampleD);
+  setTxt("#tFilesT", tx.tFilesT); setTxt("#tFilesD", tx.tFilesD);
+
+  setTxt("#tplHeadT", tx.tplHeadT); setTxt("#tplHeadD", tx.tplHeadD);
+  setTxt("#filesHeadT", tx.filesHeadT);
+
+  // Career Hub
+  setTxt("#hubHeadT", tx.hubHeadT); setTxt("#hubHeadD", tx.hubHeadD);
+  setTxt("#htCl", tx.htCl); setTxt("#htQa", tx.htQa); setTxt("#htAts", tx.htAts);
+  setTxt("#clTitle", tx.clTitle); setTxt("#clSub", tx.clSub);
+  setTxt("#clSrcLbl", tx.clSrcLbl); setTxt("#clCompLbl", tx.clCompLbl); setTxt("#clMgrLbl", tx.clMgrLbl); setTxt("#clRoleLbl", tx.clRoleLbl);
+  setTxt("#clPdfBtn", tx.clPdfBtn); setTxt("#clCopyBtn", tx.clCopyBtn);
+  setTxt("#qaTitle", tx.qaTitle); setTxt("#qaSub", tx.qaSub);
+  ["fresher","sales","office","it","banking"].forEach(k=>setTxt("#qc_"+k, tx["qc_"+k]));
+  setTxt("#atsTitle", tx.atsTitle); setTxt("#atsSub", tx.atsSub);
+  setTxt("#atsSrcLbl", tx.atsSrcLbl); setTxt("#atsEditBtn", tx.atsEditBtn);
+  setTxt("#hubFaqTitle", tx.hubFaqTitle);
+  const hb = $("#hubFaqBody"); if(hb) hb.innerHTML = esc(tx.hubFaqBody).replace(/\n/g, "<br>");
+  setTxt("#adHubLbl", tx.adSponsorLbl); setTxt("#adUnlockLbl", tx.adSponsorLbl);
+  setTxt("#unlockPill", tx.unlockPill); setTxt("#unlockTitle", tx.unlockTitle);
+  setTxt("#unlockTimerLbl", tx.unlockTimerLbl); setTxt("#unlockCancelBtn", tx.unlockCancel);
+
+  setTxt("#fmBack", tx.fmBack); setTxt("#fmTitle", tx.fmTitle);
+  ["name","title","email","phone","addr","sum","skills","exp","edu","lang","photo","sign","jd"].forEach(k=>setTxt("#lb_"+k, tx["lb_"+k]));
+  setTxt("#kwBtn", tx.kwBtn); setTxt("#save", tx.saveBtn); setTxt("#pdf", tx.pdfBtn); setTxt("#shCv", tx.shBtn);
+
+  // Settings view
+  setTxt("#stPillTx", tx.stPillTx);
+  setTxt("#stTitle", tx.stTitle); setTxt("#stSub", tx.stSub);
+  setTxt("#stProTitle", tx.stProTitle); setTxt("#stProSub", tx.stProSub);
+  setTxt("#stProTier", tx.stProTierFree);
+  setTxt("#pf1", tx.pf1); setTxt("#pf2", tx.pf2); setTxt("#pf3", tx.pf3); setTxt("#pf4", tx.pf4); setTxt("#pf5", tx.pf5);
+  setTxt("#stSecPref", tx.stSecPref);
+  setTxt("#stDarkT", tx.stDarkT); setTxt("#stDarkD", tx.stDarkD);
+  setTxt("#stQualT", tx.stQualT); setTxt("#stQualD", tx.stQualD);
+  setTxt("#pqHighT", tx.pqHighT); setTxt("#pqHighD", tx.pqHighD);
+  setTxt("#pqBalT", tx.pqBalT); setTxt("#pqBalD", tx.pqBalD);
+  setTxt("#pqCompT", tx.pqCompT); setTxt("#pqCompD", tx.pqCompD);
+  setTxt("#stLangT", tx.stLangT); setTxt("#stLangD", tx.stLangD);
+  $$("[data-setlang]").forEach(b=>b.classList.toggle("on", b.dataset.setlang === curLang));
+
+  setTxt("#stPinT", tx.stPinT);
+  setTxt("#pinChangeBtn", tx.pinChangeBtn); setTxt("#pinLockNowBtn", tx.pinLockNowBtn);
+  setTxt("#stSecData", tx.stSecData);
+  setTxt("#stBakT", tx.stBakT); setTxt("#stBakD", tx.stBakD);
+  setTxt("#exportBackupBtn", tx.exportBackupBtn); setTxt("#restoreBackupBtn", tx.restoreBackupBtn);
+  setTxt("#stShareT", tx.stShareT); setTxt("#stShareD", tx.stShareD);
+  setTxt("#shareApp", tx.shareAppBtn); setTxt("#copyAppLink", tx.copyAppLink);
+  setTxt("#stSecTrust", tx.stSecTrust);
+  setTxt("#stPrivT", tx.stPrivT); setTxt("#stPrivD", tx.stPrivD);
+  setTxt("#stSupT", tx.stSupT); setTxt("#stSupD", tx.stSupD);
+  setTxt("#emailSupportBtn", tx.emailSupportBtn); setTxt("#copySupportEmailBtn", tx.copySupportEmailBtn);
+  setTxt("#faqHeader", tx.faqHeader);
+  setTxt("#fq1", tx.fq1); setTxt("#fa1", tx.fa1);
+  setTxt("#fq2", tx.fq2); setTxt("#fa2", tx.fa2);
+  setTxt("#fq3", tx.fq3); setTxt("#fa3", tx.fa3);
+  setTxt("#fq4", tx.fq4); setTxt("#fa4", tx.fa4);
+  setTxt("#stFooter", tx.stFooter);
+  setTxt("#pinCancelBtn", tx.pinCancel);
+
+  applyPinUI();
+  renderTpls();
+  renderFiles();
+  refreshHubSources();
+  renderQaList();
+  renderPreview();
+}
+
+$$("[data-setlang]").forEach(btn=>{
+  btn.onclick = ()=>{
+    if(btn.dataset.setlang === curLang) return;
+    curLang = btn.dataset.setlang;
+    LS.set("jr_lang", curLang);
+    applyLang();
+    toast(T().langSet);
+  };
+});
+
+/* ===== 4-Digit PIN Lock ===== */
+let pinBuffer = "", pinMode = "", pinFirst = "";
+const isPinEnabled = () => !!LS.get("jr_pin_enabled", false) && /^\d{4}$/.test(String(LS.get("jr_pin", "")));
+function applyPinUI(){
+  const on = isPinEnabled(), tx = T();
+  $("#pinToggle").setAttribute("aria-checked", String(on));
+  $("#stPinD").textContent = on ? tx.stPinDOn : tx.stPinDOff;
+  $("#pinActions").style.display = on ? "flex" : "none";
+}
+function updatePinDots(){
+  $$("#pinDots .pin-dot").forEach((d, idx)=>d.classList.toggle("fill", idx < pinBuffer.length));
+}
+function openPinModal(mode){
+  const tx = T();
+  pinMode = mode; pinBuffer = ""; pinFirst = "";
+  $("#pinErr").textContent = "";
+  const cancelBtn = $("#pinCancelBtn");
+  if(mode === "unlock"){
+    $("#pinModalTitle").textContent = tx.pinUnlockT;
+    $("#pinModalSub").textContent = tx.pinUnlockS;
+    cancelBtn.style.visibility = "hidden";
+  } else if(mode === "setup"){
+    $("#pinModalTitle").textContent = tx.pinSetupT;
+    $("#pinModalSub").textContent = tx.pinSetupS;
+    cancelBtn.style.visibility = "visible";
+  } else if(mode === "disable"){
+    $("#pinModalTitle").textContent = tx.pinDisableT;
+    $("#pinModalSub").textContent = tx.pinDisableS;
+    cancelBtn.style.visibility = "visible";
+  } else if(mode === "change-verify"){
+    $("#pinModalTitle").textContent = tx.pinVerifyOldT;
+    $("#pinModalSub").textContent = tx.pinVerifyOldS;
+    cancelBtn.style.visibility = "visible";
+  }
+  updatePinDots();
+  $("#pinOv").classList.add("on");
+}
+function closePinModal(){
+  $("#pinOv").classList.remove("on");
+  pinBuffer = ""; pinMode = ""; pinFirst = "";
+}
+function handlePinComplete(){
+  const tx = T(), saved = String(LS.get("jr_pin", ""));
+  if(pinMode === "unlock"){
+    if(pinBuffer === saved){ closePinModal(); }
+    else { $("#pinErr").textContent = tx.pinWrong; pinBuffer = ""; updatePinDots(); }
+  } else if(pinMode === "setup" || pinMode === "change-new"){
+    pinFirst = pinBuffer; pinBuffer = "";
+    pinMode = pinMode === "setup" ? "setup-confirm" : "change-confirm";
+    $("#pinModalTitle").textContent = tx.pinConfirmT;
+    $("#pinModalSub").textContent = tx.pinConfirmS;
+    $("#pinErr").textContent = "";
+    updatePinDots();
+  } else if(pinMode === "setup-confirm" || pinMode === "change-confirm"){
+    if(pinBuffer === pinFirst){
+      const wasChange = pinMode === "change-confirm";
+      LS.set("jr_pin", pinBuffer);
+      LS.set("jr_pin_enabled", true);
+      applyPinUI(); closePinModal();
+      toast(wasChange ? tx.pinChangedToast : tx.pinEnabledToast);
+    } else {
+      $("#pinErr").textContent = tx.pinMismatch;
+      pinBuffer = ""; pinFirst = "";
+      pinMode = pinMode === "setup-confirm" ? "setup" : "change-new";
+      $("#pinModalTitle").textContent = tx.pinSetupT;
+      $("#pinModalSub").textContent = tx.pinSetupS;
+      updatePinDots();
+    }
+  } else if(pinMode === "disable"){
+    if(pinBuffer === saved){
+      LS.set("jr_pin_enabled", false);
+      applyPinUI(); closePinModal();
+      toast(tx.pinDisabledToast);
+    } else {
+      $("#pinErr").textContent = tx.pinWrong; pinBuffer = ""; updatePinDots();
+    }
+  } else if(pinMode === "change-verify"){
+    if(pinBuffer === saved){
+      pinBuffer = ""; pinMode = "change-new";
+      $("#pinModalTitle").textContent = tx.pinSetupT;
+      $("#pinModalSub").textContent = tx.pinSetupS;
+      $("#pinErr").textContent = "";
+      updatePinDots();
+    } else {
+      $("#pinErr").textContent = tx.pinWrong; pinBuffer = ""; updatePinDots();
+    }
+  }
+}
+function pushPinDigit(d){
+  if(!$("#pinOv").classList.contains("on") || pinBuffer.length >= 4) return;
+  $("#pinErr").textContent = "";
+  pinBuffer += d;
+  updatePinDots();
+  if(pinBuffer.length === 4) setTimeout(handlePinComplete, 120);
+}
+$("#pinPad").addEventListener("click", e=>{
+  const k = e.target.closest("[data-pk]");
+  if(k) pushPinDigit(k.dataset.pk);
+});
+$("#pinBackBtn").onclick = ()=>{ if(pinBuffer.length){ pinBuffer = pinBuffer.slice(0,-1); updatePinDots(); } };
+$("#pinCancelBtn").onclick = ()=>{ if(pinMode !== "unlock") closePinModal(); };
+document.addEventListener("keydown", e=>{
+  if(!$("#pinOv").classList.contains("on")) return;
+  if(/^\d$/.test(e.key)) pushPinDigit(e.key);
+  else if(e.key === "Backspace"){ pinBuffer = pinBuffer.slice(0,-1); updatePinDots(); }
+  else if(e.key === "Escape" && pinMode !== "unlock") closePinModal();
+});
+$("#pinToggle").onclick = ()=> openPinModal(isPinEnabled() ? "disable" : "setup");
+$("#pinChangeBtn").onclick = ()=> openPinModal("change-verify");
+$("#pinLockNowBtn").onclick = ()=> openPinModal("unlock");
+
+/* ===== Backup & Restore ===== */
+$("#exportBackupBtn").onclick = ()=>{
+  const cvs = LS.get("jr_cvs", []);
+  const payload = {
+    app: "JobReady: Resume & CV Maker",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    cvs,
+    tpl: curTpl,
+    unlockedTpls: [...unlockedTpls],
+    settings: {
+      light: LS.get("jr_light", false),
+      pdfQuality,
+      lang: curLang
+    }
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type: "application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `jobready-backup-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+  toast(T().bakExported(cvs.length));
+};
+$("#restoreBackupBtn").onclick = ()=>$("#restoreFile").click();
+$("#restoreFile").addEventListener("change", async e=>{
+  const file = e.target.files[0];
+  e.target.value = "";
+  if(!file) return;
+  try{
+    const data = JSON.parse(await file.text());
+    if(!data || !Array.isArray(data.cvs)) throw new Error("Invalid");
+    const existing = LS.get("jr_cvs", []);
+    const seen = new Set(existing.map(x=>x.id));
+    const merged = [...existing];
+    data.cvs.forEach(item=>{
+      if(item && item.cv && !seen.has(item.id)){
+        merged.push(item);
+        seen.add(item.id);
+      }
+    });
+    LS.set("jr_cvs", merged);
+    if(Array.isArray(data.unlockedTpls)){
+      data.unlockedTpls.forEach(id=>unlockedTpls.add(id));
+      LS.set("jr_unlocked_tpls", [...unlockedTpls]);
+    }
+    if(data.tpl){
+      const restoredTpl = TPL.find(t=>t.id===data.tpl);
+      if(restoredTpl && isTplUnlocked(restoredTpl)){ curTpl = data.tpl; LS.set("jr_tpl", curTpl); }
+    }
+    if(data.settings){
+      if(typeof data.settings.light === "boolean"){ LS.set("jr_light", data.settings.light); applyTheme(data.settings.light); }
+      if(PDF_QUALITY_CFG[data.settings.pdfQuality]){ pdfQuality = data.settings.pdfQuality; LS.set("jr_pdf_quality", pdfQuality); applyPdfQualityUI(); }
+      if(I18N[data.settings.lang]){ curLang = data.settings.lang; LS.set("jr_lang", curLang); }
+    }
+    applyLang();
+    renderFiles();
+    toast(T().bakRestored(merged.length));
+  }catch(err){
+    toast(T().bakInvalid);
+  }
+});
+
+/* ===== Support Email & FAQs Accordion ===== */
+$("#copySupportEmailBtn").onclick = async ()=>{
+  const email = "royalrajawat247@gmail.com";
+  try{ await navigator.clipboard.writeText(email); toast(T().emailCopied); }
+  catch(e){ toast(email); }
+};
+$("#faqWrap").addEventListener("click", e=>{
+  const btn = e.target.closest(".faq-q"); if(!btn) return;
+  const item = btn.closest(".faq-item");
+  const isOpen = item.classList.toggle("open");
+  btn.setAttribute("aria-expanded", String(isOpen));
+});
+
+/* ===== UI state ===== */
 function show(name){
   $$(".screen").forEach(s=>s.classList.toggle("on", s.id==="s-"+name));
   $$("nav button").forEach(b=>b.classList.toggle("on", b.dataset.go===name));
   if(name==="files") renderFiles();
   if(name==="tpl") fitAll();
+  if(name==="hub"){ refreshHubSources(); renderQaList(); }
   window.scrollTo(0,0);
 }
 function openForm(){ $("#formOv").classList.add("on"); renderPreview(); window.scrollTo(0,0); }
@@ -486,15 +1876,15 @@ document.addEventListener("click", e=>{
   if(g){ if(g.dataset.go==="form") openForm(); else show(g.dataset.go); }
   if(e.target.closest("[data-close]")) $("#formOv").classList.remove("on");
 });
-$("#sample").onclick = ()=>{ fillCv(SAMPLE); openForm(); toast("सैंपल डेटा भरा गया"); };
+$("#sample").onclick = ()=>{ fillCv(SAMPLE); openForm(); toast(T().sampleLoaded); };
 $("#save").onclick = saveCv;
-$("#lightT").checked = LS.get("jr_light", false);
-document.documentElement.classList.toggle("light", $("#lightT").checked);
-$("#lightT").onchange = e=>{ LS.set("jr_light", e.target.checked); document.documentElement.classList.toggle("light", e.target.checked); };
 
 /* ===== init ===== */
+applyTheme(LS.get("jr_light", false));
+applyPdfQualityUI();
 fillCv({});
-applyPlan();
+applyLang();
+if(isPinEnabled()) openPinModal("unlock");
 if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>

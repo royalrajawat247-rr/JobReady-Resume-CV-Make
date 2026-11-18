@@ -30,7 +30,7 @@
     ],
     "rewrites": [
       {
-        "source": "**",
+        "regex": "^(?!/\\.well-known/).*",
         "destination": "/index.html"
       }
     ]

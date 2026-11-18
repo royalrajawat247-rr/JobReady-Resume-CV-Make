@@ -3,6 +3,6 @@
   "target": {
     "namespace": "android_app",
     "package_name": "app.web.jobready_resume_cv_maker.twa",
-    "sha256_cert_fingerprints": ["D6:B4:EB:AB:66:BE:30:D5:B5:AF:87:38:09:67:0F:E9:7C:14:9E:D7:3F:65:FE:FF:45:9E:1A:56:C0:A0:86:B9"]
+    "sha256_cert_fingerprints": ["1E:9A:58:0C:F4:14:D2:FA:79:73:50:2C:2D:4C:B3:6C:38:D2:C4:01:2B:F5:98:E3:9A:6E:B4:24:EE:FA:1F:AC"]
   }
 }]

@@ -1,68 +1,107 @@
 <!doctype html>
-<html lang="hi">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0e14">
+<meta name="theme-color" content="#ffffff">
 <meta name="description" content="100% Offline-First Resume & CV Maker with HD PDF Export, Pro Templates, Local Vault & Instant Backup">
 <title>JobReady: Resume & CV Maker</title>
 <link rel="manifest" href="manifest.json">
 <style>
 :root{
-  --bg:#0b0e14;--card:#141923;--card2:#1a2130;--line:#242c3d;--text:#f3f5f8;--muted:#94a3b8;
-  --a1:#4f46e5;--a2:#7c3aed;--accent:#6366f1;--accent-soft:rgba(99,102,241,.16);
-  --gold:#e6b450;--ok:#22c55e;--ok-soft:rgba(34,197,94,.14);--danger:#ef4444;
-  --switch-bg:#2b3447;--shadow:0 1px 2px rgba(0,0,0,.35);--r:14px
+  --bg:#f8fafc;--card:#ffffff;--card2:#f1f5f9;--input-bg:#ffffff;--line:#e2e8f0;--text:#0f172a;--muted:#475569;
+  --a1:#2563eb;--a2:#1d4ed8;--accent:#2563eb;--accent-soft:#eff6ff;
+  --gold:#d97706;--ok:#059669;--ok-bg:#ecfdf5;--ok-border:#a7f3d0;--ok-soft:rgba(5,150,105,.10);--danger:#dc2626;
+  --switch-bg:#cbd5e1;--shadow:0 1px 3px rgba(15,23,42,.05),0 1px 2px rgba(15,23,42,.03);--overlay-bg:rgba(15,23,42,.56);--r:16px
 }
-:root.light{
-  --bg:#f3f5f9;--card:#ffffff;--card2:#f8fafc;--line:#e2e8f0;--text:#0f172a;--muted:#475569;
-  --accent:#4f46e5;--accent-soft:rgba(79,70,229,.10);
-  --ok:#16a34a;--ok-soft:rgba(22,163,74,.10);
-  --switch-bg:#cbd5e1;--shadow:0 1px 3px rgba(15,23,42,.06)
+:root.dark{
+  --bg:#0b0e14;--card:#141923;--card2:#1a2130;--input-bg:#0b0e14;--line:#242c3d;--text:#f3f5f8;--muted:#94a3b8;
+  --a1:#2563eb;--a2:#1d4ed8;--accent:#60a5fa;--accent-soft:rgba(37,99,235,.16);
+  --gold:#e6b450;--ok:#22c55e;--ok-bg:rgba(34,197,94,.14);--ok-border:rgba(34,197,94,.32);--ok-soft:rgba(34,197,94,.14);--danger:#ef4444;
+  --switch-bg:#2b3447;--shadow:0 1px 2px rgba(0,0,0,.35);--overlay-bg:rgba(11,14,20,.84)
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Devanagari",sans-serif;font-size:13.5px;-webkit-tap-highlight-color:transparent;transition:background-color .18s ease,color .18s ease}
-body{min-height:100vh;padding-bottom:78px;overflow-x:hidden}
+body{min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom));overflow-x:hidden}
 button,input,textarea,select{font:inherit}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.hdr{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--line)}
-.logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:12px;flex:none}
-.hdr h1{font-size:15px;margin:0}.hdr small{color:var(--muted);font-size:11px;display:block}
-.badge{margin-left:auto;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--card2);color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
-main{padding:12px;max-width:760px;margin:0 auto}
+.hdr{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 1px 2px rgba(15,23,42,.03)}
+.hdr-in{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 14px;min-height:54px}
+.logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:12.5px;flex:none;letter-spacing:-.02em;box-shadow:0 4px 10px rgba(37,99,235,.22)}
+.hdr-brand{display:flex;align-items:center;gap:10px;min-width:0}
+.hdr h1{font-size:16.5px;font-weight:800;letter-spacing:-.02em;margin:0;color:var(--text);white-space:nowrap}
+.hdr-pill{margin-left:auto;display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border);font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.hdr-pill svg{width:13px;height:13px;flex:none}
+main{padding:14px 14px 18px;max-width:820px;margin:0 auto}
 .screen{display:none}.screen.on{display:block}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
-.card h2{font-size:15px;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card h2{font-size:15.5px;font-weight:800;letter-spacing:-.01em;margin:0 0 6px;color:var(--text)}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:11px;color:var(--muted)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;text-align:left;color:var(--text);cursor:pointer;box-shadow:var(--shadow)}
-.tile .ic{width:34px;height:34px;border-radius:9px;background:rgba(79,70,229,.2);display:grid;place-items:center;font-size:17px;margin-bottom:8px}
-.tile b{display:block;margin-bottom:3px;font-size:13px}.tile span{color:var(--muted);font-size:11px;line-height:1.35}
+/* Home Screen Redesign Sections */
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.hero-card{border-radius:16px;padding:15px 14px;text-align:left;cursor:pointer;display:flex;flex-direction:column;min-height:126px;transition:transform .14s ease,box-shadow .16s ease,border-color .16s ease}
+.hero-card:active{transform:scale(.985)}
+.hero-card.blue{background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);border:1px solid #1d4ed8;color:#ffffff;box-shadow:0 10px 22px -6px rgba(37,99,235,.38)}
+.hero-card.white{background:var(--card);border:1px solid var(--line);color:var(--text);box-shadow:var(--shadow)}
+.hero-card.white:hover{border-color:var(--accent)}
+.hero-ic{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;margin-bottom:12px;flex:none}
+.hero-card.blue .hero-ic{background:rgba(255,255,255,.18);color:#ffffff}
+.hero-card.white .hero-ic{background:var(--accent-soft);color:var(--accent)}
+.hero-ic svg{width:20px;height:20px}
+.hero-card b{display:block;font-size:14px;font-weight:800;letter-spacing:-.01em;line-height:1.25;margin-bottom:4px}
+.hero-card span{display:block;font-size:11.5px;line-height:1.35}
+.hero-card.blue span{color:rgba(239,246,255,.92)}
+.hero-card.white span{color:var(--muted)}
+.trust-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-bottom:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:9px}
+.trust-row{display:flex;align-items:center;gap:10px;font-size:12.5px;font-weight:600;color:var(--text);line-height:1.38}
+.trust-chk{width:22px;height:22px;border-radius:999px;background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border);display:grid;place-items:center;flex:none}
+.trust-chk svg{width:13px;height:13px}
+.home-sec-lbl{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.02em;margin:2px 2px 8px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;text-align:left;color:var(--text);cursor:pointer;box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:106px;transition:transform .14s ease,border-color .16s ease}
+.tile:hover{border-color:var(--accent)}
+.tile:active{transform:scale(.985)}
+.tile .ic{width:36px;height:36px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;margin-bottom:9px;flex:none}
+.tile .ic.ok{background:var(--ok-bg);color:var(--ok)}
+.tile .ic svg{width:18px;height:18px}
+.tile b{display:block;margin-bottom:3px;font-size:13px;font-weight:700;color:var(--text)}
+.tile span{color:var(--muted);font-size:11.5px;line-height:1.35}
+.sec-labs-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:14px;margin-bottom:12px;box-shadow:var(--shadow)}
+.sec-labs-hd{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+.sec-labs-ic{width:32px;height:32px;border-radius:9px;background:var(--ok-bg);color:var(--ok);display:grid;place-items:center;flex:none}
+.sec-labs-ic svg{width:17px;height:17px}
+.sec-labs-hd b{font-size:13.5px;font-weight:800;color:var(--text);letter-spacing:-.01em}
+.sec-labs-list{display:flex;flex-direction:column}
+.sec-labs-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--text)}
+.sec-labs-row svg{width:16px;height:16px;color:var(--a1);flex:none}
 .muted{color:var(--muted);font-size:12px}
-.btn{width:100%;min-height:42px;border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));cursor:pointer;margin-top:6px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;transition:opacity .15s ease,transform .12s ease}
+.btn{width:100%;min-height:44px;border:0;border-radius:11px;padding:10px 14px;font-weight:700;font-size:13px;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));cursor:pointer;margin-top:6px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;transition:opacity .15s ease,transform .12s ease}
 .btn:active{transform:scale(.99)}
-.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
-.btn.sm{width:auto;min-height:36px;padding:6px 12px;margin:0;font-size:12px}
-.btn.dk{background:#1e293b;color:#fff}
+.btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--text)}
+.btn.sm{width:auto;min-height:38px;padding:6px 12px;margin:0;font-size:12px}
+.btn.dk{background:#0f172a;color:#fff}
 .btn.soft{background:var(--accent-soft);color:var(--accent);border:1px solid transparent}
-.btn.danger{background:rgba(239,68,68,.14);color:var(--danger);border:1px solid rgba(239,68,68,.3)}
+.btn.danger{background:rgba(220,38,38,.10);color:var(--danger);border:1px solid rgba(220,38,38,.28)}
 .link{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:12px;cursor:pointer;margin:10px auto 0;display:block}
-nav{position:fixed;left:0;right:0;bottom:0;z-index:7;display:grid;grid-template-columns:repeat(5,1fr);background:var(--card);border-top:1px solid var(--line);padding:4px 0 calc(4px + env(safe-area-inset-bottom))}
-nav button{background:none;border:0;color:var(--muted);font-size:10.5px;padding:4px 0;min-height:46px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
-nav button i{font-size:17px;font-style:normal}
-nav button.on{color:var(--gold);font-weight:700}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:12;display:grid;grid-template-columns:repeat(5,1fr);background:var(--card);border-top:1px solid var(--line);box-shadow:0 -2px 12px rgba(15,23,42,.04);padding:5px 0 calc(5px + env(safe-area-inset-bottom))}
+nav button{background:none;border:0;color:var(--muted);font-size:10.5px;font-weight:600;padding:4px 2px;min-height:48px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;white-space:nowrap;transition:color .15s ease}
+nav button svg{width:20px;height:20px;flex:none}
+nav button.on{color:var(--a1);font-weight:700}
 /* templates grid with real thumbnails */
 .tpls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.tp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;cursor:pointer;position:relative;color:var(--text);text-align:left}
-.tp.sel{border:2px solid var(--gold)}
+.tp{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px;cursor:pointer;position:relative;color:var(--text);text-align:left;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.tp.sel{border:2px solid var(--a1);box-shadow:0 0 0 3px var(--accent-soft)}
 .thumb{width:100%;aspect-ratio:210/297;overflow:hidden;background:#fff;border-radius:6px;position:relative}
 .thumb .sheet{position:absolute;left:0;top:0;transform-origin:0 0}
-.tp b{display:block;margin-top:6px;font-size:12px}.tp small{color:var(--muted);font-size:10.5px}
+.tp b{display:block;margin-top:6px;font-size:12px}.tp small{color:var(--muted);font-size:10.5px;display:block;margin-bottom:8px}
 .lbl{position:absolute;top:6px;right:6px;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:999px;z-index:2;letter-spacing:.03em}
-.lbl.free{background:var(--ok);color:#06210f}
-.lbl.pro{background:var(--gold);color:#111}
-.tp .lock{position:absolute;bottom:8px;right:8px;font-size:12px;z-index:2;line-height:1}
+.lbl.free{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border)}
+.lbl.pro{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.tp .lock{position:absolute;top:6px;left:6px;font-size:11px;z-index:2;line-height:1;background:rgba(15,23,42,.80);color:#fff;padding:2px 5px;border-radius:6px}
+.qv-btn{margin-top:auto;width:100%;min-height:36px;border:1px solid var(--line);border-radius:8px;background:var(--card2);color:var(--text);font-size:11.5px;font-weight:700;padding:6px 8px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;transition:border-color .15s ease,background-color .15s ease}
+.qv-btn:hover{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.qv-btn svg{width:14px;height:14px;flex:none}
 /* Multi-select Saved Resumes */
 .files-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
 .bulk-bar{display:none;align-items:center;gap:8px;flex-wrap:wrap;background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:10px 12px;margin-bottom:10px}
@@ -72,7 +111,7 @@ nav button.on{color:var(--gold);font-weight:700}
 .cv-chk-wrap{display:flex;align-items:center;justify-content:center;min-width:32px;min-height:36px;cursor:pointer}
 .cv-chk{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
 /* Career Hub */
-.hub-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);padding:5px;border-radius:14px;margin-bottom:12px}
+.hub-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--card);border:1px solid var(--line);padding:5px;border-radius:14px;margin-bottom:12px;box-shadow:var(--shadow)}
 .hub-tab{min-height:42px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;padding:6px 4px;transition:background-color .15s ease,color .15s ease}
 .hub-tab.on{background:var(--a1);color:#fff}
 .hub-pane{display:none}.hub-pane.on{display:block}
@@ -89,38 +128,38 @@ nav button.on{color:var(--gold);font-weight:700}
 .ats-ring-num{position:absolute;font-size:18px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--text)}
 .ats-tips{display:flex;flex-direction:column;gap:7px;margin-top:8px}
 .ats-tip{display:flex;align-items:flex-start;gap:8px;padding:9px 11px;border-radius:10px;background:var(--card2);border:1px solid var(--line);font-size:12.5px;line-height:1.45}
-.ats-tip.ok{border-color:rgba(34,197,94,.3);background:var(--ok-soft)}
-.ats-tip.warn{border-color:rgba(230,180,80,.35)}
+.ats-tip.ok{border-color:var(--ok-border);background:var(--ok-bg)}
+.ats-tip.warn{border-color:rgba(217,119,6,.35)}
 /* Adsterra 300x250 Container */
-.ad-slot-wrap{display:flex;flex-direction:column;align-items:center;margin:16px auto 10px;width:100%}
-.ad-slot-lbl{font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.03em;margin-top:7px;text-align:center}
-.ad-box-300x250{width:300px;max-width:100%;height:250px;border-radius:14px;border:1px solid var(--line);background:var(--card2);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:var(--shadow);margin:0 auto}
+.ad-slot-wrap{display:flex;flex-direction:column;align-items:center;margin:14px auto 8px;width:100%}
+.ad-slot-lbl{font-size:10.5px;font-weight:600;color:var(--muted);letter-spacing:.02em;margin-top:7px;text-align:center}
+.ad-box-300x250{width:300px;max-width:100%;height:250px;border-radius:14px;border:1px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:var(--shadow);margin:0 auto}
 .ad-box-300x250 iframe{border:0;width:300px;height:250px;display:block;overflow:hidden;background:transparent}
-.field select{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%;font-size:13px}
+.field select{background:var(--input-bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 10px;width:100%;font-size:13px}
 .field{display:flex;flex-direction:column;gap:4px;margin-bottom:9px}
-.field label{font-size:12px;color:var(--muted)}
-.field input,.field textarea{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%;font-size:13px}
+.field label{font-size:12px;font-weight:600;color:var(--muted)}
+.field input,.field textarea{background:var(--input-bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:9px 10px;width:100%;font-size:13px}
 .field textarea{min-height:58px;resize:vertical}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.row .btn{flex:1;min-width:110px;margin-top:0}
 .list{display:flex;flex-direction:column;gap:8px}
-.item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;box-shadow:var(--shadow)}
 .item div{flex:1}.item small{color:var(--muted);font-size:11px}
 .empty{color:var(--muted);text-align:center;padding:24px 0}
 .kw{font-size:12px;line-height:1.6}
 /* ===== Enterprise Mobile Settings UI ===== */
 .st-stack{display:flex;flex-direction:column;gap:12px;padding-bottom:12px}
 .st-head{padding:4px 2px 2px}
-.st-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;background:var(--ok-soft);color:var(--ok);font-size:11.5px;font-weight:700;letter-spacing:.01em;margin-bottom:10px}
+.st-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border);font-size:11.5px;font-weight:700;letter-spacing:.01em;margin-bottom:10px}
 .st-head h2{font-size:22px;font-weight:800;letter-spacing:-.02em;margin:0 0 6px;color:var(--text)}
 .st-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
-.pro-hero{background:linear-gradient(135deg,#1e1b4b 0%,#312e81 48%,#4338ca 100%);color:#f8fafc;border-radius:16px;padding:16px;position:relative;overflow:hidden;border:1px solid rgba(129,140,248,.28);box-shadow:0 8px 24px rgba(30,27,75,.28)}
+.pro-hero{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 55%,#1d4ed8 100%);color:#f8fafc;border-radius:16px;padding:16px;position:relative;overflow:hidden;border:1px solid rgba(37,99,235,.28);box-shadow:0 10px 26px -6px rgba(37,99,235,.32)}
 .pro-hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
 .pro-hero-title{font-size:15px;font-weight:800;letter-spacing:-.01em;margin:0 0 3px;color:#fff}
-.pro-hero-sub{font-size:12px;color:rgba(226,232,240,.85);margin:0}
-.pro-hero-badge{background:rgba(255,255,255,.16);color:#fde68a;border:1px solid rgba(253,230,138,.35);padding:4px 9px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+.pro-hero-sub{font-size:12px;color:rgba(239,246,255,.88);margin:0}
+.pro-hero-badge{background:rgba(255,255,255,.16);color:#fef08a;border:1px solid rgba(254,240,138,.35);padding:4px 9px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
 .pro-feats{display:grid;grid-template-columns:1fr 1fr;gap:7px 10px}
-.pro-feat{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#f1f5f9;background:rgba(15,23,42,.26);padding:7px 9px;border-radius:10px;border:1px solid rgba(255,255,255,.08)}
-.pro-feat svg{width:15px;height:15px;flex:none;color:#a5b4fc}
+.pro-feat{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#ffffff;background:rgba(15,23,42,.20);padding:7px 9px;border-radius:10px;border:1px solid rgba(255,255,255,.12)}
+.pro-feat svg{width:15px;height:15px;flex:none;color:#bfdbfe}
 .st-sec-lbl{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.03em;margin:4px 2px -4px}
 .st-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
 .st-row{display:flex;align-items:center;gap:12px;min-height:44px}
@@ -167,11 +206,11 @@ nav button.on{color:var(--gold);font-weight:700}
 /* Modal Animations */
 @keyframes modalFadeIn{from{opacity:0}to{opacity:1}}
 @keyframes modalSlideUp{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-@media(prefers-reduced-motion:reduce){.pin-ov.on,.pin-ov.on .pin-box,.unlock-ov.on,.unlock-ov.on .unlock-box,.qr-ov.on,.qr-ov.on .qr-box{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.pin-ov.on,.pin-ov.on .pin-box,.unlock-ov.on,.unlock-ov.on .unlock-box,.qr-ov.on,.qr-ov.on .qr-box,.qv-ov.on,.qv-ov.on .qv-sheet-wrap{animation:none!important}}
 /* PIN Modal */
-.pin-ov{position:fixed;inset:0;z-index:50;background:rgba(11,14,20,.86);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px}
+.pin-ov{position:fixed;inset:0;z-index:50;background:var(--overlay-bg);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px}
 .pin-ov.on{display:flex;animation:modalFadeIn .2s ease-out}
-.pin-box{width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.pin-box{width:100%;max-width:340px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px;text-align:center;box-shadow:0 20px 50px rgba(15,23,42,.25)}
 .pin-ov.on .pin-box{animation:modalSlideUp .26s cubic-bezier(.16,1,.3,1)}
 .pin-box h3{margin:10px 0 4px;font-size:17px;font-weight:800;color:var(--text)}
 .pin-box p{margin:0 0 16px;font-size:12.5px;color:var(--muted);line-height:1.45}
@@ -184,11 +223,11 @@ nav button.on{color:var(--gold);font-weight:700}
 .pin-key:active{background:var(--accent-soft)}
 .pin-key.muted-k{font-size:13px;font-weight:600;color:var(--muted)}
 /* Pro Template 30s Sponsor Unlock Modal */
-.unlock-ov{position:fixed;inset:0;z-index:50;background:rgba(11,14,20,.84);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.unlock-ov{position:fixed;inset:0;z-index:50;background:var(--overlay-bg);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .unlock-ov.on{display:flex;animation:modalFadeIn .2s ease-out}
-.unlock-box{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 16px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.unlock-box{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 16px;text-align:center;box-shadow:0 20px 50px rgba(15,23,42,.25)}
 .unlock-ov.on .unlock-box{animation:modalSlideUp .26s cubic-bezier(.16,1,.3,1)}
-.unlock-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:var(--gold);color:#111;font-size:10.5px;font-weight:800;letter-spacing:.04em;margin-bottom:8px}
+.unlock-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:#fef3c7;color:#92400e;border:1px solid #fde68a;font-size:10.5px;font-weight:800;letter-spacing:.04em;margin-bottom:8px}
 .unlock-box h3{margin:0 0 4px;font-size:15.5px;font-weight:800;line-height:1.35;color:var(--text)}
 .unlock-tpl{margin:0 0 12px;font-size:12.5px;font-weight:600;color:var(--accent)}
 .unlock-ad-wrap{display:flex;flex-direction:column;align-items:center;margin:0 auto 14px}
@@ -197,11 +236,11 @@ nav button.on{color:var(--gold);font-weight:700}
 .unlock-timer-lbl{font-size:12px;font-weight:600;color:var(--muted);text-align:left}
 .unlock-timer{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--gold);min-width:44px;text-align:right}
 .unlock-prog-track{width:100%;height:6px;border-radius:999px;background:var(--line);overflow:hidden}
-.unlock-prog-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--a1),var(--gold));transition:width .35s linear}
+.unlock-prog-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--a1),var(--ok));transition:width .35s linear}
 /* Resume QR Code Share & Import Modal */
-.qr-ov{position:fixed;inset:0;z-index:50;background:rgba(11,14,20,.84);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
+.qr-ov{position:fixed;inset:0;z-index:50;background:var(--overlay-bg);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px;overflow-y:auto}
 .qr-ov.on{display:flex;animation:modalFadeIn .2s ease-out}
-.qr-box{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 16px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.45)}
+.qr-box{width:100%;max-width:360px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px 16px;text-align:center;box-shadow:0 20px 50px rgba(15,23,42,.25)}
 .qr-ov.on .qr-box{animation:modalSlideUp .26s cubic-bezier(.16,1,.3,1)}
 .qr-pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:10.5px;font-weight:800;letter-spacing:.04em;margin-bottom:8px}
 .qr-box h3{margin:0 0 4px;font-size:16px;font-weight:800;color:var(--text)}
@@ -209,7 +248,24 @@ nav button.on{color:var(--gold);font-weight:700}
 .qr-canvas-wrap{display:inline-flex;align-items:center;justify-content:center;background:#ffffff;padding:12px;border-radius:14px;border:1px solid var(--line);box-shadow:var(--shadow);margin:0 auto 12px}
 .qr-canvas-wrap canvas{display:block;width:220px;height:220px;image-rendering:pixelated}
 .qr-json-pre{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;line-height:1.45;color:var(--muted);text-align:left;max-height:84px;overflow:auto;word-break:break-all;margin:0 0 10px;white-space:pre-wrap}
-.qr-import-ta{width:100%;min-height:110px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;resize:vertical;margin-bottom:10px}
+.qr-import-ta{width:100%;min-height:110px;background:var(--input-bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;resize:vertical;margin-bottom:10px}
+/* Template Quick View Full-Screen Modal */
+.qv-ov{position:fixed;inset:0;z-index:48;background:var(--bg);display:none;flex-direction:column}
+.qv-ov.on{display:flex;animation:modalFadeIn .18s ease-out}
+.qv-hdr{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--card);border-bottom:1px solid var(--line);flex:none}
+.qv-hdr-meta{flex:1;min-width:0}
+.qv-hdr-meta b{display:block;font-size:15px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qv-hdr-meta small{display:block;font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qv-badge{font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:999px;flex:none;letter-spacing:.03em}
+.qv-badge.free{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok-border)}
+.qv-badge.pro{background:#fef3c7;color:#92400e;border:1px solid #fde68a}
+.qv-x{width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--text);font-size:18px;font-weight:700;cursor:pointer;display:grid;place-items:center;flex:none}
+.qv-body{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:16px;background:var(--bg)}
+.qv-sheet-wrap{margin:0 auto;position:relative;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 18px 48px rgba(0,0,0,.38);border:1px solid var(--line)}
+.qv-ov.on .qv-sheet-wrap{animation:modalSlideUp .24s cubic-bezier(.16,1,.3,1)}
+.qv-sheet-wrap .sheet{position:absolute;left:0;top:0;transform-origin:0 0}
+.qv-ftr{display:flex;gap:10px;padding:10px 14px calc(10px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line);flex:none}
+.qv-ftr .btn{margin-top:0}
 /* ===== CV sheet (A4 proportion, 600px base) ===== */
 .sheet{width:600px;height:848px;background:#fff;color:#111;font-size:13px;line-height:1.45;overflow:hidden;position:relative;display:flex;flex-direction:column}
 .sheet .bd{padding:26px 30px;flex:1}
@@ -255,24 +311,107 @@ nav button.on{color:var(--gold);font-weight:700}
 </head>
 <body>
 <header class="hdr">
-  <div class="logo">JR</div>
-  <div><h1>JobReady</h1><small id="hdrSub">Resume &amp; CV Maker • Offline</small></div>
-  <span class="badge" id="planBadge">Offline v1.0</span>
+  <div class="hdr-in">
+    <div class="hdr-brand">
+      <div class="logo">JR</div>
+      <h1>JobReady</h1>
+    </div>
+    <span class="hdr-pill" id="planBadgeWrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+      <span id="planBadge">100% Offline • On-Device</span>
+    </span>
+  </div>
 </header>
 
 <main>
 <!-- HOME -->
 <section class="screen on" id="s-home">
-  <div class="card">
-    <h2 id="homeHeroT">ऑफ़लाइन, सुरक्षित और फुल HD</h2>
-    <div class="chips" id="homeChips"><span class="chip">📄 ATS-Friendly PDF</span><span class="chip">🔒 डेटा फोन में सुरक्षित</span><span class="chip">⚡ बिना इंटरनेट</span></div>
+  <!-- 2. Top Primary Action Cards -->
+  <div class="hero-grid">
+    <button type="button" class="hero-card blue" data-go="form">
+      <div class="hero-ic" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+      </div>
+      <b id="tNewT">Create New Resume</b>
+      <span id="tNewD">Build CV with photo &amp; signature</span>
+    </button>
+    <button type="button" class="hero-card white" data-go="tpl">
+      <div class="hero-ic" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+      </div>
+      <b id="tTplT">HD Templates</b>
+      <span id="tTplD">4 Free + 12 Pro Unlock</span>
+    </button>
   </div>
-  <p class="muted" id="homeToolsLbl" style="margin:4px 2px 8px">रिज्यूमे टूल्स</p>
+
+  <!-- 3. Trust Highlights Card -->
+  <div class="trust-card">
+    <div class="trust-row">
+      <span class="trust-chk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <span id="trust1">No Login Required • 100% Free</span>
+    </div>
+    <div class="trust-row">
+      <span class="trust-chk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <span id="trust2">Your CVs never leave your phone (Zero server uploads)</span>
+    </div>
+    <div class="trust-row">
+      <span class="trust-chk" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+      <span id="trust3">ATS-Friendly HD PDF • Direct WhatsApp Share</span>
+    </div>
+  </div>
+
+  <!-- 4. Quick Pro Actions (2x2 Grid) -->
+  <div class="home-sec-lbl" id="homeToolsLbl">Quick Pro Actions</div>
   <div class="grid2">
-    <button class="tile" data-go="form"><div class="ic">📝</div><b id="tNewT">नया रिज्यूमे बनाएं</b><span id="tNewD">फोटो व सिग्नेचर के साथ CV बनाएं</span></button>
-    <button class="tile" data-go="tpl"><div class="ic">🎨</div><b id="tTplT">HD टेम्प्लेट्स</b><span id="tTplD">4 मुफ़्त + 12 प्रो (ऐड से अनलॉक)</span></button>
-    <button class="tile" id="sample"><div class="ic">⚡</div><b id="tSampleT">1-क्लिक स्मार्ट CV</b><span id="tSampleD">सैंपल डेटा भरें और एडिट करें</span></button>
-    <button class="tile" data-go="files"><div class="ic">📂</div><b id="tFilesT">सेव किए गए CV</b><span id="tFilesD">पुराने रिज्यूमे देखें व बदलें</span></button>
+    <button type="button" class="tile" id="sample">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <b id="tSampleT">1-Click Smart CV</b>
+      <span id="tSampleD">Fill sample data &amp; edit fast</span>
+    </button>
+    <button type="button" class="tile" data-go="files">
+      <div class="ic ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg></div>
+      <b id="tFilesT">Saved CVs</b>
+      <span id="tFilesD">View, multi-select &amp; export PDF</span>
+    </button>
+    <button type="button" class="tile" data-hub-go="cl">
+      <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+      <b id="tClT">Cover Letter Maker</b>
+      <span id="tClD">Auto-generate matching letter</span>
+    </button>
+    <button type="button" class="tile" data-hub-go="ats">
+      <div class="ic ok" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <b id="tAtsT">ATS Score Checker</b>
+      <span id="tAtsD">Optimize resume keywords</span>
+    </button>
+  </div>
+
+  <!-- 5. Bottom Trust & Ad Section -->
+  <div class="sec-labs-card">
+    <div class="sec-labs-hd">
+      <div class="sec-labs-ic" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <b id="secLabsTitle">Built by RR Tech Labs • Enterprise Security</b>
+    </div>
+    <div class="sec-labs-list">
+      <div class="sec-labs-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <span id="secRow1">256-Bit Local File Storage</span>
+      </div>
+      <div class="sec-labs-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        <span id="secRow2">Zero Cloud Tracking</span>
+      </div>
+      <div class="sec-labs-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+        <span id="secRow3">100% Offline PDF Engine</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="ad-slot-wrap">
+    <div class="ad-box-300x250" id="adsterra-home-300x250" data-ad-zone="300x250" aria-label="Sponsored advertisement"></div>
+    <div class="ad-slot-lbl" id="adHomeLbl">Sponsored • RR Tech Labs</div>
   </div>
 </section>
 
@@ -730,12 +869,46 @@ nav button.on{color:var(--gold);font-weight:700}
   </div>
 </div>
 
+<!-- TEMPLATE QUICK VIEW FULL-SCREEN MODAL -->
+<div class="qv-ov" id="qvOv" role="dialog" aria-modal="true" aria-labelledby="qvTitle">
+  <div class="qv-hdr">
+    <div class="qv-hdr-meta">
+      <b id="qvTitle">Template Preview</b>
+      <small id="qvDesc"></small>
+    </div>
+    <span class="qv-badge free" id="qvBadge">Free</span>
+    <button type="button" class="qv-x" id="qvCloseBtn" aria-label="Close">✕</button>
+  </div>
+  <div class="qv-body" id="qvBody">
+    <div class="qv-sheet-wrap" id="qvSheetWrap"></div>
+  </div>
+  <div class="qv-ftr">
+    <button type="button" class="btn" id="qvUseBtn" style="flex:2">Use Template</button>
+    <button type="button" class="btn ghost" id="qvFtrCloseBtn" style="flex:1">Close</button>
+  </div>
+</div>
+
 <nav id="nav">
-  <button data-go="home" class="on"><i>🏠</i><span id="nvHome">Home</span></button>
-  <button data-go="tpl"><i>🎨</i><span id="nvTpl">Templates</span></button>
-  <button data-go="files"><i>📂</i><span id="nvFiles">Files</span></button>
-  <button data-go="hub"><i>🚀</i><span id="nvHub">Career Hub</span></button>
-  <button data-go="settings"><i>⚙️</i><span id="nvSet">Settings</span></button>
+  <button type="button" data-go="home" class="on">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+    <span id="nvHome">Home</span>
+  </button>
+  <button type="button" data-go="tpl">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+    <span id="nvTpl">Templates</span>
+  </button>
+  <button type="button" data-go="files">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+    <span id="nvFiles">Files</span>
+  </button>
+  <button type="button" data-go="hub">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+    <span id="nvHub">Career Hub</span>
+  </button>
+  <button type="button" data-go="settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <span id="nvSet">Settings</span>
+  </button>
 </nav>
 <div class="toast" id="toast"></div>
 
@@ -766,17 +939,25 @@ if(!PDF_QUALITY_CFG[pdfQuality]) pdfQuality = "high";
 const I18N = {
   en: {
     hdrSub: "Resume & CV Maker • Offline",
-    freeBadge: "Offline v1.0",
+    freeBadge: "100% Offline • On-Device",
     nvHome: "Home", nvTpl: "Templates", nvFiles: "Files", nvHub: "Career Hub", nvSet: "Settings",
-    homeHeroT: "Offline, Private & Full HD",
-    homeChips: ["📄 ATS-Friendly PDF", "🔒 Stored Safely On-Device", "⚡ Works Offline"],
-    homeToolsLbl: "Resume Tools",
     tNewT: "Create New Resume", tNewD: "Build CV with photo & signature",
-    tTplT: "HD Templates", tTplD: "4 Free + 12 Pro (Free Ad Unlock)",
+    tTplT: "HD Templates", tTplD: "4 Free + 12 Pro Unlock",
+    trust1: "No Login Required • 100% Free",
+    trust2: "Your CVs never leave your phone (Zero server uploads)",
+    trust3: "ATS-Friendly HD PDF • Direct WhatsApp Share",
+    homeToolsLbl: "Quick Pro Actions",
     tSampleT: "1-Click Smart CV", tSampleD: "Fill sample data & edit fast",
-    tFilesT: "Saved CVs", tFilesD: "View, multi-select & export CVs",
+    tFilesT: "Saved CVs", tFilesD: "View, multi-select & export PDF",
+    tClT: "Cover Letter Maker", tClD: "Auto-generate matching letter",
+    tAtsT: "ATS Score Checker", tAtsD: "Optimize resume keywords",
+    secLabsTitle: "Built by RR Tech Labs • Enterprise Security",
+    secRow1: "256-Bit Local File Storage",
+    secRow2: "Zero Cloud Tracking",
+    secRow3: "100% Offline PDF Engine",
     tplHeadT: "Choose Template", tplHeadD: "4 templates are free & ready. Unlock any of the 12 Pro templates free with a 30s sponsor view.",
     tplFree: "Free", tplPro: "PRO", tplApplied: "Applied: ",
+    quickViewBtn: "Quick View", qvClose: "Close", qvUseTpl: "Use Template", qvUnlockTpl: "Unlock Free (30s Sponsor)", qvSelected: "Selected ✓",
     unlockPill: "PRO TEMPLATE",
     unlockTitle: "Unlock This Pro Template Free — View Sponsor for 30 Seconds",
     unlockTimerLbl: "Unlocks permanently when countdown reaches 0s",
@@ -813,7 +994,7 @@ const I18N = {
     atsSumText: (s, passed, total) => `${passed} of ${total} recruiter checks passed (${s}%)`,
     hubFaqTitle: "Smart Hiring Tips & Quick Guide",
     hubFaqBody: "1. Aim for an ATS Score of 80%+ before applying.\n2. Attach a matching Cover Letter PDF for higher recruiter callbacks.\n3. Select \"Portal Ready\" in Settings for PDFs under 500 KB on Naukri & LinkedIn.",
-    adSponsorLbl: "Sponsored · RR Tech Labs",
+    adSponsorLbl: "Sponsored • RR Tech Labs",
     // Form
     fmBack: "← Back", fmTitle: "Edit Resume",
     lb_name: "Full Name", lb_title: "Job Title", lb_email: "Email", lb_phone: "Phone",
@@ -902,17 +1083,25 @@ const I18N = {
   },
   hi: {
     hdrSub: "Resume & CV Maker • ऑफ़लाइन",
-    freeBadge: "Offline v1.0",
+    freeBadge: "100% ऑफ़लाइन • ऑन-डिवाइस",
     nvHome: "होम", nvTpl: "टेम्प्लेट", nvFiles: "फ़ाइलें", nvHub: "करियर हब", nvSet: "सेटिंग",
-    homeHeroT: "ऑफ़लाइन, सुरक्षित और फुल HD",
-    homeChips: ["📄 ATS-Friendly PDF", "🔒 डेटा फोन में सुरक्षित", "⚡ बिना इंटरनेट"],
-    homeToolsLbl: "रिज्यूमे टूल्स",
     tNewT: "नया रिज्यूमे बनाएं", tNewD: "फोटो व सिग्नेचर के साथ CV बनाएं",
-    tTplT: "HD टेम्प्लेट्स", tTplD: "4 मुफ़्त + 12 प्रो (ऐड से अनलॉक)",
+    tTplT: "HD टेम्प्लेट्स", tTplD: "4 मुफ़्त + 12 प्रो अनलॉक",
+    trust1: "लॉगिन की आवश्यकता नहीं • 100% मुफ़्त",
+    trust2: "आपके CV आपके फ़ोन से बाहर नहीं जाते (शून्य सर्वर अपलोड)",
+    trust3: "ATS-Friendly HD PDF • डायरेक्ट WhatsApp शेयर",
+    homeToolsLbl: "त्वरित प्रो टूल्स",
     tSampleT: "1-क्लिक स्मार्ट CV", tSampleD: "सैंपल डेटा भरें और एडिट करें",
-    tFilesT: "सेव किए गए CV", tFilesD: "मल्टी-सेलेक्ट, एडिट और एक्सपोर्ट करें",
+    tFilesT: "सेव किए गए CV", tFilesD: "मल्टी-सेलेक्ट और PDF एक्सपोर्ट करें",
+    tClT: "कवर लेटर मेकर", tClD: "मैचिंग लेटर अपने-आप बनाएं",
+    tAtsT: "ATS स्कोर चेकर", tAtsD: "रिज़्यूमे कीवर्ड बेहतर बनाएं",
+    secLabsTitle: "RR Tech Labs द्वारा निर्मित • एंटरप्राइज सुरक्षा",
+    secRow1: "256-बिट लोकल फ़ाइल स्टोरेज",
+    secRow2: "शून्य क्लाउड ट्रैकिंग",
+    secRow3: "100% ऑफ़लाइन PDF इंजन",
     tplHeadT: "टेम्प्लेट चुनें", tplHeadD: "4 टेम्प्लेट मुफ़्त हैं। किसी भी 12 प्रो टेम्प्लेट को 30 सेकंड स्पॉन्सर व्यू से मुफ़्त अनलॉक करें।",
     tplFree: "मुफ़्त", tplPro: "PRO", tplApplied: "लागू: ",
+    quickViewBtn: "क्विक व्यू", qvClose: "बंद करें", qvUseTpl: "टेम्प्लेट चुनें", qvUnlockTpl: "मुफ़्त अनलॉक करें (30s)", qvSelected: "चयनित ✓",
     unlockPill: "PRO टेम्प्लेट",
     unlockTitle: "इस प्रो टेम्प्लेट को मुफ़्त अनलॉक करें — 30 सेकंड स्पॉन्सर देखें",
     unlockTimerLbl: "काउंटडाउन 0s होते ही हमेशा के लिए अनलॉक होगा",
@@ -949,7 +1138,7 @@ const I18N = {
     atsSumText: (s, passed, total) => `${total} में से ${passed} रिक्रूटर जांच पास (${s}%)`,
     hubFaqTitle: "स्मार्ट जॉब टिप्स और गाइड",
     hubFaqBody: "1. आवेदन से पहले 80%+ ATS स्कोर का लक्ष्य रखें।\n2. बेहतर रिस्पॉन्स के लिए मैचिंग कवर लेटर PDF साथ भेजें।\n3. Naukri/LinkedIn पर 500 KB से कम PDF के लिए सेटिंग्स में \"पोर्टल रेडी\" चुनें।",
-    adSponsorLbl: "Sponsored · RR Tech Labs",
+    adSponsorLbl: "Sponsored • RR Tech Labs",
     // Form
     fmBack: "← वापस", fmTitle: "CV बनाएं",
     lb_name: "पूरा नाम", lb_title: "पद (Job title)", lb_email: "ईमेल", lb_phone: "फ़ोन",
@@ -1130,7 +1319,10 @@ function fitBox(box){
   s.style.transform = `scale(${box.clientWidth/600})`;
   box.style.height = (box.clientWidth*297/210)+"px";
 }
-function fitAll(){ document.querySelectorAll(".thumb,.fit").forEach(fitBox); }
+function fitAll(){
+  document.querySelectorAll(".thumb,.fit").forEach(fitBox);
+  if($("#qvOv").classList.contains("on")) fitQuickView();
+}
 window.addEventListener("resize", fitAll);
 
 function renderTpls(){
@@ -1141,10 +1333,12 @@ function renderTpls(){
     const badgeCls = t.pro ? "pro" : "free";
     const badgeTxt = t.pro ? tx.tplPro : tx.tplFree;
     const lockHtml = unlocked ? "" : `<span class="lock" aria-label="Locked">🔒</span>`;
-    return `<button class="tp ${t.id===curTpl?'sel':''}" data-tpl="${t.id}">
+    return `<div class="tp ${t.id===curTpl?'sel':''}" data-tpl="${t.id}" role="button" tabindex="0">
       <span class="lbl ${badgeCls}">${badgeTxt}</span>${lockHtml}
       <div class="thumb">${sheetHTML(sample, t, false)}</div>
-      <b>${esc(t.name)}</b><small>${esc(t.d)}</small></button>`;
+      <b>${esc(t.name)}</b><small>${esc(t.d)}</small>
+      <button type="button" class="qv-btn" data-qv="${t.id}" aria-label="${esc(tx.quickViewBtn)} ${esc(t.name)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><span>${esc(tx.quickViewBtn)}</span></button>
+    </div>`;
   }).join("");
   $$("#tplGrid .thumb").forEach(fitBox);
 }
@@ -1230,12 +1424,84 @@ function openUnlockModal(t){
     $("#unlockProg").style.width = Math.round(((30 - sec) / 30) * 100) + "%";
   }, 1000);
 }
+/* ===== Template Quick View Full-Screen Modal ===== */
+let qvTargetTpl = null;
+function fitQuickView(){
+  const wrap = $("#qvSheetWrap");
+  if(!wrap) return;
+  const s = wrap.querySelector(".sheet");
+  if(!s) return;
+  const targetW = Math.round(Math.max(520, Math.min(720, window.innerWidth - 32)));
+  const targetH = Math.round(targetW * 297 / 210);
+  wrap.style.width = targetW + "px";
+  wrap.style.height = targetH + "px";
+  s.style.transform = `scale(${targetW / 600})`;
+}
+function updateQuickViewUI(){
+  if(!qvTargetTpl) return;
+  const tx = T(), t = qvTargetTpl, unlocked = isTplUnlocked(t);
+  $("#qvTitle").textContent = t.name;
+  $("#qvDesc").textContent = t.d;
+  const badge = $("#qvBadge");
+  badge.className = "qv-badge " + (t.pro ? "pro" : "free");
+  badge.textContent = t.pro ? (unlocked ? tx.tplPro : "🔒 " + tx.tplPro) : tx.tplFree;
+  $("#qvCloseBtn").setAttribute("aria-label", tx.qvClose);
+  $("#qvFtrCloseBtn").textContent = tx.qvClose;
+  const useBtn = $("#qvUseBtn");
+  if(t.id === curTpl && unlocked){
+    useBtn.textContent = tx.qvSelected;
+  } else if(unlocked){
+    useBtn.textContent = tx.qvUseTpl;
+  } else {
+    useBtn.textContent = tx.qvUnlockTpl;
+  }
+}
+function openQuickView(t){
+  if(!t) return;
+  qvTargetTpl = t;
+  const cur = readCv();
+  const previewCv = cur.name ? cur : (LS.get("jr_cvs", [])[0]?.cv || SAMPLE);
+  $("#qvSheetWrap").innerHTML = sheetHTML(previewCv, t, false);
+  updateQuickViewUI();
+  $("#qvOv").classList.add("on");
+  $("#qvBody").scrollTop = 0;
+  $("#qvBody").scrollLeft = 0;
+  fitQuickView();
+}
+function closeQuickView(){
+  $("#qvOv").classList.remove("on");
+  $("#qvSheetWrap").innerHTML = "";
+  qvTargetTpl = null;
+}
+$("#qvCloseBtn").addEventListener("click", closeQuickView);
+$("#qvFtrCloseBtn").addEventListener("click", closeQuickView);
+$("#qvUseBtn").addEventListener("click", ()=>{
+  const t = qvTargetTpl;
+  if(!t) return;
+  closeQuickView();
+  if(!isTplUnlocked(t)){
+    openUnlockModal(t);
+    return;
+  }
+  curTpl = t.id; LS.set("jr_tpl", curTpl); renderTpls(); renderPreview(); toast(T().tplApplied+t.name);
+});
+
 $("#unlockCancelBtn").addEventListener("click", closeUnlockModal);
 document.addEventListener("keydown", e=>{
-  if(e.key === "Escape" && $("#unlockOv").classList.contains("on")) closeUnlockModal();
+  if(e.key === "Escape"){
+    if($("#unlockOv").classList.contains("on")) closeUnlockModal();
+    else if($("#qvOv").classList.contains("on")) closeQuickView();
+  }
 });
 
 $("#tplGrid").addEventListener("click", e => {
+  const qv = e.target.closest("[data-qv]");
+  if(qv){
+    e.stopPropagation();
+    const qt = TPL.find(x=>x.id===qv.dataset.qv);
+    if(qt) openQuickView(qt);
+    return;
+  }
   const b = e.target.closest("[data-tpl]"); if(!b) return;
   const t = TPL.find(x=>x.id===b.dataset.tpl); if(!t) return;
   if(!isTplUnlocked(t)){
@@ -1243,6 +1509,13 @@ $("#tplGrid").addEventListener("click", e => {
     return;
   }
   curTpl = t.id; LS.set("jr_tpl", curTpl); renderTpls(); renderPreview(); toast(T().tplApplied+t.name);
+});
+$("#tplGrid").addEventListener("keydown", e => {
+  if(e.target.closest("[data-qv]")) return;
+  if(e.key === "Enter" || e.key === " "){
+    const b = e.target.closest("[data-tpl]");
+    if(b){ e.preventDefault(); b.click(); }
+  }
 });
 
 function renderPreview(){
@@ -2036,18 +2309,18 @@ $$("[data-hub]").forEach(btn=>{
 });
 
 /* ===== Settings: Dark Mode, PDF Quality, Language, PIN Lock, Backup/Restore, FAQs ===== */
-function applyTheme(isLight){
-  document.documentElement.classList.toggle("light", !!isLight);
+function applyTheme(isDark){
+  document.documentElement.classList.toggle("dark", !!isDark);
   const darkBtn = $("#darkT");
-  if(darkBtn) darkBtn.setAttribute("aria-checked", String(!isLight));
+  if(darkBtn) darkBtn.setAttribute("aria-checked", String(!!isDark));
   const meta = document.querySelector('meta[name="theme-color"]');
-  if(meta) meta.setAttribute("content", isLight ? "#f3f5f9" : "#0b0e14");
+  if(meta) meta.setAttribute("content", isDark ? "#0b0e14" : "#ffffff");
 }
 $("#darkT").onclick = ()=>{
-  const currentlyLight = document.documentElement.classList.contains("light");
-  const nextLight = !currentlyLight;
-  LS.set("jr_light", nextLight);
-  applyTheme(nextLight);
+  const currentlyDark = document.documentElement.classList.contains("dark");
+  const nextDark = !currentlyDark;
+  LS.set("jr_dark", nextDark);
+  applyTheme(nextDark);
 };
 
 function applyPdfQualityUI(){
@@ -2074,13 +2347,17 @@ function applyLang(){
   setTxt("#nvHome", tx.nvHome); setTxt("#nvTpl", tx.nvTpl); setTxt("#nvFiles", tx.nvFiles);
   setTxt("#nvHub", tx.nvHub); setTxt("#nvSet", tx.nvSet);
 
-  setTxt("#homeHeroT", tx.homeHeroT);
-  $("#homeChips").innerHTML = tx.homeChips.map(c=>`<span class="chip">${esc(c)}</span>`).join("");
-  setTxt("#homeToolsLbl", tx.homeToolsLbl);
   setTxt("#tNewT", tx.tNewT); setTxt("#tNewD", tx.tNewD);
   setTxt("#tTplT", tx.tTplT); setTxt("#tTplD", tx.tTplD);
+  setTxt("#trust1", tx.trust1); setTxt("#trust2", tx.trust2); setTxt("#trust3", tx.trust3);
+  setTxt("#homeToolsLbl", tx.homeToolsLbl);
   setTxt("#tSampleT", tx.tSampleT); setTxt("#tSampleD", tx.tSampleD);
   setTxt("#tFilesT", tx.tFilesT); setTxt("#tFilesD", tx.tFilesD);
+  setTxt("#tClT", tx.tClT); setTxt("#tClD", tx.tClD);
+  setTxt("#tAtsT", tx.tAtsT); setTxt("#tAtsD", tx.tAtsD);
+  setTxt("#secLabsTitle", tx.secLabsTitle);
+  setTxt("#secRow1", tx.secRow1); setTxt("#secRow2", tx.secRow2); setTxt("#secRow3", tx.secRow3);
+  setTxt("#adHomeLbl", tx.adSponsorLbl);
 
   setTxt("#tplHeadT", tx.tplHeadT); setTxt("#tplHeadD", tx.tplHeadD);
   setTxt("#filesHeadT", tx.filesHeadT);
@@ -2146,6 +2423,7 @@ function applyLang(){
 
   applyPinUI();
   renderTpls();
+  updateQuickViewUI();
   renderFiles();
   refreshHubSources();
   renderQaList();
@@ -2284,7 +2562,7 @@ $("#exportBackupBtn").onclick = ()=>{
     tpl: curTpl,
     unlockedTpls: [...unlockedTpls],
     settings: {
-      light: LS.get("jr_light", false),
+      dark: LS.get("jr_dark", false),
       pdfQuality,
       lang: curLang
     }
@@ -2339,7 +2617,8 @@ $("#restoreFile").addEventListener("change", async e=>{
       if(restoredTpl && isTplUnlocked(restoredTpl)){ curTpl = data.tpl; LS.set("jr_tpl", curTpl); }
     }
     if(data.settings){
-      if(typeof data.settings.light === "boolean"){ LS.set("jr_light", data.settings.light); applyTheme(data.settings.light); }
+      if(typeof data.settings.dark === "boolean"){ LS.set("jr_dark", data.settings.dark); applyTheme(data.settings.dark); }
+      else if(typeof data.settings.light === "boolean"){ const d = !data.settings.light; LS.set("jr_dark", d); applyTheme(d); }
       if(PDF_QUALITY_CFG[data.settings.pdfQuality]){ pdfQuality = data.settings.pdfQuality; LS.set("jr_pdf_quality", pdfQuality); applyPdfQualityUI(); }
       if(I18N[data.settings.lang]){ curLang = data.settings.lang; LS.set("jr_lang", curLang); }
     }
@@ -2365,9 +2644,14 @@ $("#faqWrap").addEventListener("click", e=>{
 });
 
 /* ===== UI state ===== */
+function ensureHomeAd(){
+  const homeSlot = $("#adsterra-home-300x250");
+  if(homeSlot && !homeSlot.querySelector("iframe")) mountAdsterraFrame(homeSlot, "Home Sponsored Banner");
+}
 function show(name){
   $$(".screen").forEach(s=>s.classList.toggle("on", s.id==="s-"+name));
   $$("nav button").forEach(b=>b.classList.toggle("on", b.dataset.go===name));
+  if(name==="home") ensureHomeAd();
   if(name==="files") renderFiles();
   if(name==="tpl") fitAll();
   if(name==="hub"){
@@ -2380,6 +2664,14 @@ function show(name){
 }
 function openForm(){ $("#formOv").classList.add("on"); renderPreview(); window.scrollTo(0,0); }
 document.addEventListener("click", e=>{
+  const hg = e.target.closest("[data-hub-go]");
+  if(hg){
+    activeHubTab = hg.dataset.hubGo;
+    $$("[data-hub]").forEach(b=>b.classList.toggle("on", b.dataset.hub===activeHubTab));
+    $$(".hub-pane").forEach(p=>p.classList.toggle("on", p.id==="hp-"+activeHubTab));
+    show("hub");
+    return;
+  }
   const g=e.target.closest("[data-go]");
   if(g){ if(g.dataset.go==="form") openForm(); else show(g.dataset.go); }
   if(e.target.closest("[data-close]")) $("#formOv").classList.remove("on");
@@ -2388,10 +2680,11 @@ $("#sample").onclick = ()=>{ fillCv(SAMPLE); openForm(); toast(T().sampleLoaded)
 $("#save").onclick = saveCv;
 
 /* ===== init ===== */
-applyTheme(LS.get("jr_light", false));
+applyTheme(LS.get("jr_dark", false));
 applyPdfQualityUI();
 fillCv({});
 applyLang();
+ensureHomeAd();
 if(isPinEnabled()) openPinModal("unlock");
 if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>

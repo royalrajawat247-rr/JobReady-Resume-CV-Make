@@ -7,89 +7,109 @@
 <title>JobReady: Resume & CV Maker</title>
 <link rel="manifest" href="manifest.json">
 <style>
-:root{--bg:#0f1115;--card:#161a22;--line:#252b36;--text:#f5f7fa;--muted:#9aa4b2;--a1:#6366f1;--a2:#ec4899;--gold:#f5b53c;--ok:#22c55e;--r:16px}
-:root.light{--bg:#f5f6fa;--card:#ffffff;--line:#e2e5ec;--text:#111827;--muted:#5b6474}
+:root{--bg:#0f1115;--card:#161a22;--line:#262c38;--text:#f3f5f8;--muted:#98a2b3;--a1:#4f46e5;--a2:#7c3aed;--gold:#e6b450;--ok:#22c55e;--r:12px}
+:root.light{--bg:#f4f5f8;--card:#ffffff;--line:#e3e6ec;--text:#111827;--muted:#5b6474}
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,"Noto Sans Devanagari",sans-serif;-webkit-tap-highlight-color:transparent}
-body{min-height:100vh;padding-bottom:150px;overflow-x:hidden}
-button,input,textarea,select{font:inherit}
-.hdr{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
-.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;color:#fff;font-weight:800}
-.hdr h1{font-size:17px;margin:0}.hdr small{color:var(--muted);font-size:12px}
-.badge{margin-left:auto;padding:6px 12px;border-radius:999px;border:1px solid var(--gold);color:var(--gold);font-size:12px;font-weight:700}
-.badge.vip{background:linear-gradient(135deg,#f5b53c,#ec4899);color:#111;border-color:transparent}
-main{padding:16px}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,"Noto Sans Devanagari",sans-serif;font-size:13px;-webkit-tap-highlight-color:transparent}
+body{min-height:100vh;padding-bottom:128px;overflow-x:hidden}
+button,input,textarea{font:inherit}
+.hdr{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg);border-bottom:1px solid var(--line)}
+.logo{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--a1),var(--a2));display:grid;place-items:center;color:#fff;font-weight:800;font-size:12px}
+.hdr h1{font-size:15px;margin:0}.hdr small{color:var(--muted);font-size:11px}
+.badge{margin-left:auto;padding:4px 10px;border-radius:999px;border:1px solid var(--gold);color:var(--gold);font-size:11px;font-weight:700}
+.badge.vip{background:var(--gold);color:#111}
+main{padding:12px}
 .screen{display:none}.screen.on{display:block}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
-.card h2{font-size:18px;margin:0 0 10px}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:12px;color:var(--muted)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;text-align:left;color:var(--text);cursor:pointer;min-height:150px}
-.tile .ic{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(99,102,241,.25),rgba(236,72,153,.25));display:grid;place-items:center;font-size:22px;margin-bottom:10px}
-.tile b{display:block;margin-bottom:4px}.tile span{color:var(--muted);font-size:12px;line-height:1.4}
-.muted{color:var(--muted);font-size:13px}
-.btn{width:100%;border:0;border-radius:12px;padding:14px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));cursor:pointer;margin-top:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:10px}
+.card h2{font-size:15px;margin:0 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:11px;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;text-align:left;color:var(--text);cursor:pointer}
+.tile .ic{width:34px;height:34px;border-radius:9px;background:rgba(79,70,229,.2);display:grid;place-items:center;font-size:17px;margin-bottom:8px}
+.tile b{display:block;margin-bottom:3px;font-size:13px}.tile span{color:var(--muted);font-size:11px;line-height:1.35}
+.muted{color:var(--muted);font-size:12px}
+.btn{width:100%;border:0;border-radius:10px;padding:10px;font-weight:700;font-size:13px;color:#fff;background:linear-gradient(135deg,var(--a1),var(--a2));cursor:pointer;margin-top:6px}
 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
-.btn.sm{width:auto;padding:8px 12px;margin:0;font-size:13px}
-.btn.dk{background:#111827;color:#fff}
-.banner{position:fixed;left:0;right:0;bottom:62px;z-index:6;display:flex;align-items:center;gap:10px;background:var(--card);border-top:1px solid var(--line);padding:10px 14px;font-size:13px}
-.banner .ad{background:var(--gold);color:#111;font-size:11px;font-weight:800;padding:2px 6px;border-radius:4px}
-.banner button{margin-left:auto;background:var(--a1);color:#fff;border:0;border-radius:10px;padding:8px 12px;cursor:pointer}
-nav{position:fixed;left:0;right:0;bottom:0;z-index:7;display:grid;grid-template-columns:repeat(5,1fr);background:var(--card);border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom))}
-nav button{background:none;border:0;color:var(--muted);font-size:11px;padding:6px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
-nav button i{font-size:20px;font-style:normal}
+.btn.sm{width:auto;padding:6px 10px;margin:0;font-size:12px}
+.btn.dk{background:#1f2937;color:#fff}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:12px;cursor:pointer;margin:10px auto 0;display:block}
+.banner{position:fixed;left:0;right:0;bottom:56px;z-index:6;display:flex;align-items:center;gap:8px;background:var(--card);border-top:1px solid var(--line);padding:7px 12px;font-size:12px}
+.banner .ad{background:var(--gold);color:#111;font-size:10px;font-weight:800;padding:1px 5px;border-radius:4px}
+.banner button{margin-left:auto;background:var(--a1);color:#fff;border:0;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:7;display:grid;grid-template-columns:repeat(5,1fr);background:var(--card);border-top:1px solid var(--line);padding:4px 0 calc(4px + env(safe-area-inset-bottom))}
+nav button{background:none;border:0;color:var(--muted);font-size:10.5px;padding:4px 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
+nav button i{font-size:17px;font-style:normal}
 nav button.on{color:var(--gold);font-weight:700}
-.tpls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tp{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:10px;cursor:pointer;position:relative;color:var(--text);text-align:left}
-.tp.sel{border-color:var(--a2)}
-.tp .pv{height:120px;border-radius:8px;background:#fff;overflow:hidden;position:relative;color:#111;font-size:6px;padding:6px}
-.tp .lbl{position:absolute;top:8px;right:8px;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
-.lbl.free{background:var(--ok);color:#06210f}.lbl.vip{background:linear-gradient(135deg,#f5b53c,#ec4899);color:#111}
-.tp b{display:block;margin-top:8px;font-size:14px}.tp small{color:var(--muted);font-size:11px}
-.lock{position:absolute;bottom:10px;right:10px;font-size:12px}
-.plan{border:1px solid var(--line);background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:14px}
-.plan.hot{border:2px solid var(--a2);position:relative}
-.plan .tag{position:absolute;top:-11px;right:14px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px}
-.price{font-size:32px;font-weight:800;margin:6px 0}.price small{font-size:13px;color:var(--muted);font-weight:400}
-.plan ul{list-style:none;padding:0;margin:8px 0;font-size:14px;line-height:1.9}
-.field{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
-.field label{font-size:13px;color:var(--muted)}
-.field input,.field textarea{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px;width:100%}
-.field textarea{min-height:70px;resize:vertical}
-.row{display:flex;gap:10px;flex-wrap:wrap}.row .btn{flex:1;min-width:140px}
-.toggle{display:flex;justify-content:space-between;align-items:center;font-size:15px}
-.toggle input{width:22px;height:22px}
-.list{display:flex;flex-direction:column;gap:10px}
-.item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}
-.item div{flex:1}.item small{color:var(--muted)}
-.empty{color:var(--muted);text-align:center;padding:30px 0}
-/* A4 paper & print */
-.sheet{background:#fff;color:#111;border-radius:6px;padding:22px;font-size:13px;line-height:1.5;margin-top:12px;box-shadow:0 6px 24px rgba(0,0,0,.35);position:relative;overflow:hidden}
-.sheet .nm{font-size:24px;font-weight:800;letter-spacing:.3px}
-.sheet h4{margin:14px 0 4px;font-size:12px;letter-spacing:1px;text-transform:uppercase}
-.sheet .cc{font-size:12px;color:#444}
-.sheet .wm{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:#999}
-.sheet .ph{width:76px;height:76px;border-radius:50%;object-fit:cover;float:right;margin-left:10px}
-.sheet .sig{max-height:50px;margin-top:6px}
-.t-top .band{margin:-22px -22px 14px;padding:22px;color:#fff}
-.t-side{display:grid;grid-template-columns:34% 1fr;margin:-22px;min-height:100%}
-.t-side .sb{padding:22px 14px;color:#fff}
-.t-side .mn{padding:22px 18px}
-.t-line .sec{border-left:3px solid var(--ac,#6366f1);padding-left:10px}
+/* templates grid with real thumbnails */
+.tpls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tp{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;cursor:pointer;position:relative;color:var(--text);text-align:left}
+.tp.sel{border:2px solid var(--gold)}
+.thumb{width:100%;aspect-ratio:210/297;overflow:hidden;background:#fff;border-radius:6px;position:relative}
+.thumb .sheet{position:absolute;left:0;top:0;transform-origin:0 0}
+.tp b{display:block;margin-top:6px;font-size:12px}.tp small{color:var(--muted);font-size:10.5px}
+.lbl{position:absolute;top:6px;right:6px;font-size:9.5px;font-weight:800;padding:2px 6px;border-radius:999px;z-index:2}
+.lbl.free{background:var(--ok);color:#06210f}.lbl.vip{background:var(--gold);color:#111}
+.lock{position:absolute;bottom:8px;right:8px;font-size:11px;z-index:2}
+/* plans */
+.plan{border:1px solid var(--line);background:var(--card);border-radius:var(--r);padding:12px;margin-bottom:10px;position:relative}
+.plan.hot{border:1px solid var(--gold)}
+.plan .tag{position:absolute;top:-9px;right:12px;background:var(--gold);color:#111;font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px}
+.price{font-size:24px;font-weight:800;margin:4px 0}.price small{font-size:12px;color:var(--muted);font-weight:400}
+.plan ul{list-style:none;padding:0;margin:6px 0;font-size:12.5px;line-height:1.75}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:9px}
+.field label{font-size:12px;color:var(--muted)}
+.field input,.field textarea{background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:8px;width:100%;font-size:13px}
+.field textarea{min-height:58px;resize:vertical}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.row .btn{flex:1;min-width:110px;margin-top:0}
+.toggle{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.toggle input{width:18px;height:18px}
+.list{display:flex;flex-direction:column;gap:8px}
+.item{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px}
+.item div{flex:1}.item small{color:var(--muted);font-size:11px}
+.empty{color:var(--muted);text-align:center;padding:24px 0}
+.kw{font-size:12px;line-height:1.6}
+/* ===== CV sheet (A4 proportion, 600px base) ===== */
+.sheet{width:600px;height:848px;background:#fff;color:#111;font-size:13px;line-height:1.45;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.sheet .bd{padding:26px 30px;flex:1}
+.sheet .nm{font-size:26px;font-weight:800;line-height:1.1}
+.sheet .tt{font-size:14px;margin-top:3px;font-weight:600}
+.sheet .ct{font-size:11.5px;margin-top:5px;opacity:.85}
+.sheet p{margin:0 0 4px}
+.sheet .sh{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px;padding:2px 0}
+.sheet .it{margin:0 0 6px}
+.sheet .it div{font-size:12px;opacity:.9}
+.sheet .skills{display:flex;flex-wrap:wrap;gap:4px}
+.sheet .skills span{font-size:11px;padding:2px 7px;border-radius:4px;border:1px solid currentColor}
+.sheet .ph{width:86px;height:86px;border-radius:50%;object-fit:cover;display:block;margin-bottom:10px;border:2px solid rgba(255,255,255,.6)}
+.sheet .sig{max-height:46px;display:block;margin-top:6px}
+.sheet .wm{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-size:10px;color:#9aa}
+.sheet .hd{padding:26px 30px}
+.sheet.center .hd,.sheet.center .bd{text-align:center}
+.sheet.center .skills{justify-content:center}
+.sheet .sd{padding:24px 18px;width:36%;flex:none}
+.sheet .sd .nm{font-size:20px}
+.sheet .mn{padding:24px 24px;flex:1}
+.sheet.side{flex-direction:row}
+.sheet.side.rev{flex-direction:row-reverse}
+.sheet.dark{background:#111418;color:#e8ebf0}
+.sheet .tl{border-left:2px solid currentColor;padding-left:12px;margin-left:4px}
+.sheet .tl .it{position:relative}
+.sheet .tl .it:before{content:"";position:absolute;left:-17px;top:4px;width:8px;height:8px;border-radius:50%;background:currentColor}
 @media print{
   body *{visibility:hidden}
   #printArea,#printArea *{visibility:visible}
-  #printArea{position:absolute;left:0;top:0;width:100%;margin:0}
-  .sheet{box-shadow:none;margin:0;border-radius:0}
+  #printArea{position:absolute;left:0;top:0;width:100%}
+  #printArea .sheet{width:210mm;height:297mm;transform:none}
 }
-#printArea{display:none}
-@media print{#printArea{display:block}}
-.ov{position:fixed;inset:0;background:var(--bg);z-index:20;overflow:auto;display:none;padding:16px 16px 40px}
+#printArea{position:absolute;left:-9999px;top:0}
+@media print{#printArea{position:absolute;left:0}}
+.ov{position:fixed;inset:0;background:var(--bg);z-index:20;overflow:auto;display:none;padding:12px 12px 40px}
 .ov.on{display:block}
-.toast{position:fixed;left:50%;bottom:150px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:30;display:none;max-width:90%}
+.fit{width:100%;aspect-ratio:210/297;position:relative;overflow:hidden;border-radius:6px;background:#fff;margin-top:8px}
+.fit .sheet{position:absolute;left:0;top:0;transform-origin:0 0}
+.toast{position:fixed;left:50%;bottom:140px;transform:translateX(-50%);background:#111827;color:#fff;padding:8px 14px;border-radius:9px;font-size:12px;z-index:30;display:none;max-width:90%;text-align:center}
 .toast.on{display:block}
-body.light .sheet{box-shadow:0 2px 10px rgba(0,0,0,.1)}
 </style>
 </head>
 <body>
@@ -104,52 +124,64 @@ body.light .sheet{box-shadow:0 2px 10px rgba(0,0,0,.1)}
 <section class="screen on" id="s-home">
   <div class="card">
     <h2>ऑफ़लाइन, सुरक्षित और फुल HD</h2>
-    <div class="chips"><span class="chip">📄 ATS-Friendly PDF</span><span class="chip">🔒 डेटा फोन में सुरक्षित</span><span class="chip">⚡ 100% बिना इंटरनेट</span></div>
+    <div class="chips"><span class="chip">📄 ATS-Friendly PDF</span><span class="chip">🔒 डेटा फोन में सुरक्षित</span><span class="chip">⚡ बिना इंटरनेट</span></div>
   </div>
-  <p class="muted" style="margin:6px 2px 10px">रिज्यूमे टूल्स</p>
+  <p class="muted" style="margin:4px 2px 8px">रिज्यूमे टूल्स</p>
   <div class="grid2">
-    <button class="tile" data-go="form"><div class="ic">📝</div><b>नया रिज्यूमे बनाएं</b><span>फोटो व सिग्नेचर के साथ अपना CV तैयार करें</span></button>
-    <button class="tile" data-go="tpl"><div class="ic">🎨</div><b>HD टेम्प्लेट्स</b><span>4 मुफ़्त + 10 VIP ATS डिज़ाइन चुनें</span></button>
-    <button class="tile" id="sample"><div class="ic">⚡</div><b>1-क्लिक स्मार्ट CV</b><span>तैयार सैंपल डेटा भरें और तुरंत एडिट करें</span></button>
-    <button class="tile" data-go="files"><div class="ic">📂</div><b>सेव किए गए CV</b><span>पुराने बनाए गए रिज्यूमे देखें व बदलें</span></button>
+    <button class="tile" data-go="form"><div class="ic">📝</div><b>नया रिज्यूमे बनाएं</b><span>फोटो व सिग्नेचर के साथ CV बनाएं</span></button>
+    <button class="tile" data-go="tpl"><div class="ic">🎨</div><b>HD टेम्प्लेट्स</b><span>4 मुफ़्त + 10 VIP डिज़ाइन</span></button>
+    <button class="tile" id="sample"><div class="ic">⚡</div><b>1-क्लिक स्मार्ट CV</b><span>सैंपल डेटा भरें और एडिट करें</span></button>
+    <button class="tile" data-go="files"><div class="ic">📂</div><b>सेव किए गए CV</b><span>पुराने रिज्यूमे देखें व बदलें</span></button>
   </div>
 </section>
 
 <!-- TEMPLATES -->
 <section class="screen" id="s-tpl">
-  <div class="card"><h2>प्रोफेशनल ATS टेम्प्लेट चुनें</h2><p class="muted" style="margin:0">चुना गया टेम्प्लेट आपके अगले PDF डाउनलोड में लागू होगा।</p></div>
+  <div class="card"><h2>टेम्प्लेट चुनें</h2><p class="muted" style="margin:0">चुना गया टेम्प्लेट अगले PDF में लागू होगा।</p></div>
   <div class="tpls" id="tplGrid"></div>
 </section>
 
 <!-- FILES -->
 <section class="screen" id="s-files">
-  <div class="card"><h2>मेरे सेव किए गए रिज्यूमे</h2><p class="muted" style="margin:0">आपके फोन में सुरक्षित रिज्यूमे प्रोफ़ाइल:</p></div>
+  <div class="card"><h2>मेरे सेव किए गए रिज्यूमे</h2><p class="muted" style="margin:0" id="saveCount"></p></div>
   <div class="list" id="fileList"></div>
 </section>
 
 <!-- PLANS -->
 <section class="screen" id="s-plan">
   <div class="plan">
-    <b style="font-size:17px">मुफ़्त (कभी-कभी उपयोग हेतु)</b>
+    <b style="font-size:14px">मुफ़्त</b>
     <div class="price">₹0 <small>/ हमेशा</small></div>
-    <ul><li>✓ 4 प्रोफेशनल ATS टेम्प्लेट्स</li><li>✓ फुल HD Vector PDF सेव</li><li>• नीचे छोटा बैनर विज्ञापन दिखेगा</li></ul>
-    <button class="btn ghost" data-go="home">मुफ़्त प्लान चुनें</button>
+    <ul><li>✓ 4 प्रोफेशनल टेम्प्लेट्स</li><li>✓ फुल HD PDF</li><li>✓ 3 CV तक सेव</li><li>• नीचे छोटा बैनर विज्ञापन</li></ul>
   </div>
   <div class="plan">
-    <b style="font-size:17px">स्मार्ट पास (1 महीना)</b>
+    <b style="font-size:14px">स्मार्ट पास (1 महीना)</b>
     <div class="price">₹49 <small>/ महीना</small></div>
-    <ul><li>✓ सभी VIP टेम्प्लेट्स अनलॉक</li><li>✓ बिना वॉटरमार्क के HD PDF</li><li>✓ केवल छोटे बैनर विज्ञापन</li></ul>
+    <ul>
+      <li>✓ सभी 10 VIP टेम्प्लेट्स</li>
+      <li>✓ बिना वॉटरमार्क HD PDF</li>
+      <li>✓ अनलिमिटेड सेव्ड CV</li>
+      <li>✓ ATS कीवर्ड चेक (नौकरी के विवरण से)</li>
+      <li>• छोटे बैनर विज्ञापन रहेंगे</li>
+    </ul>
     <button class="btn" data-pay="weekly">₹49 प्लान चालू करें</button>
   </div>
   <div class="plan hot">
     <span class="tag">सबसे किफ़ायती • NO ADS</span>
-    <b style="font-size:17px">VIP लाइफटाइम (असीमित)</b>
-    <div class="price">₹99 <small>/ एक बार (हमेशा के लिए)</small></div>
-    <ul><li>✓ 100% विज्ञापन बंद (No Ads)</li><li>✓ सभी VIP टेम्प्लेट्स अनलॉक</li><li>✓ बिना वॉटरमार्क अनलिमिटेड HD PDF</li></ul>
+    <b style="font-size:14px">VIP लाइफटाइम (असीमित)</b>
+    <div class="price">₹99 <small>/ एक बार, हमेशा के लिए</small></div>
+    <ul>
+      <li>✓ 100% विज्ञापन बंद (No Ads)</li>
+      <li>✓ सभी 10 VIP टेम्प्लेट्स</li>
+      <li>✓ बिना वॉटरमार्क अनलिमिटेड HD PDF</li>
+      <li>✓ अनलिमिटेड सेव्ड CV</li>
+      <li>✓ ATS कीवर्ड चेक</li>
+      <li>✓ कोई मासिक कटौती नहीं</li>
+    </ul>
     <button class="btn" data-pay="lifetime">₹99 लाइफटाइम अनलॉक करें</button>
   </div>
-  <p class="muted" id="payNote">पेमेंट UPI/कार्ड से होगा। समस्या हो तो सपोर्ट से संपर्क करें।</p>
-  <button class="btn ghost" id="restore">खरीद रिकवर करें</button>
+  <p class="muted" id="payNote" style="text-align:center">पेमेंट UPI/कार्ड से होगा।</p>
+  <button class="link" id="restore">पिछली खरीद रिकवर करें</button>
 </section>
 
 <!-- SETTINGS -->
@@ -158,35 +190,39 @@ body.light .sheet{box-shadow:0 2px 10px rgba(0,0,0,.1)}
     <label class="toggle">हल्की थीम (Light Mode) <input type="checkbox" id="lightT"></label></div>
   <div class="card"><h2>ऐप शेयर करें</h2>
     <div class="row">
-      <button class="btn" id="shareApp">CV Maker ऐप शेयर करें</button>
-      <button class="btn dk" id="waApp">WhatsApp पर शेयर</button>
-      <button class="btn ghost" id="smsApp">SMS से शेयर करें</button>
+      <button class="btn" id="shareApp">शेयर करें</button>
+      <button class="btn dk" id="waApp">WhatsApp</button>
+      <button class="btn ghost" id="smsApp">SMS</button>
     </div></div>
   <div class="card"><h2>जानकारी</h2>
-    <p class="muted" style="margin:0;line-height:1.9"><b>ऐप:</b> JobReady: Resume &amp; CV Maker<br><b>संस्करण:</b> 1.0 (Full HD Offline Engine)<br><b>गोपनीयता:</b> आपका डेटा केवल आपके फोन में सुरक्षित रहता है।</p></div>
+    <p class="muted" style="margin:0;line-height:1.8"><b>ऐप:</b> JobReady: Resume &amp; CV Maker<br><b>संस्करण:</b> 1.0 (Offline)<br><b>गोपनीयता:</b> आपका डेटा केवल आपके फोन में सुरक्षित रहता है।</p></div>
 </section>
 
 <!-- FORM OVERLAY -->
 <section class="ov" id="formOv">
-  <div class="row" style="align-items:center;margin-bottom:10px"><button class="btn ghost sm" data-close>← वापस</button><b style="margin-left:auto">CV बनाएं</b></div>
+  <div class="row" style="align-items:center;margin:0 0 8px"><button class="btn ghost sm" data-close>← वापस</button><b style="margin-left:auto">CV बनाएं</b></div>
   <div class="card">
     <div class="field"><label>पूरा नाम</label><input id="f_name"></div>
     <div class="field"><label>पद (Job title)</label><input id="f_title"></div>
     <div class="field"><label>ईमेल</label><input id="f_email" type="email"></div>
     <div class="field"><label>फ़ोन</label><input id="f_phone" type="tel"></div>
     <div class="field"><label>पता</label><input id="f_addr"></div>
-    <div class="field"><label>परिचय (Summary)</label><textarea id="f_sum"></textarea></div>
-    <div class="field"><label>कौशल (Skills, कॉमा से अलग करें)</label><input id="f_skills"></div>
+    <div class="field"><label>परिचय</label><textarea id="f_sum"></textarea></div>
+    <div class="field"><label>कौशल (कॉमा से अलग)</label><input id="f_skills"></div>
     <div class="field"><label>अनुभव (हर लाइन में एक)</label><textarea id="f_exp"></textarea></div>
     <div class="field"><label>शिक्षा (हर लाइन में एक)</label><textarea id="f_edu"></textarea></div>
     <div class="field"><label>भाषाएं</label><input id="f_lang"></div>
-    <div class="field"><label>फोटो (वैकल्पिक, 300 KB तक)</label><input id="f_photo" type="file" accept="image/*"></div>
+    <div class="field"><label>फोटो (वैकल्पिक)</label><input id="f_photo" type="file" accept="image/*"></div>
     <div class="field"><label>सिग्नेचर (वैकल्पिक)</label><input id="f_sign" type="file" accept="image/*"></div>
-    <p class="muted" style="margin:0">💡 नौकरी के विवरण से मुख्य कीवर्ड कौशल में जोड़ें।</p>
   </div>
-  <div class="row"><button class="btn ghost" id="save">सेव करें</button><button class="btn" id="pdf">PDF डाउनलोड करें</button></div>
-  <div class="row"><button class="btn dk" id="waCv">WhatsApp पर शेयर</button><button class="btn ghost" id="smsCv">SMS से शेयर</button><button class="btn ghost" id="shCv">शेयर करें</button></div>
-  <div id="preview"></div>
+  <div class="card">
+    <div class="field"><label>नौकरी का विवरण पेस्ट करें (VIP: कीवर्ड चेक)</label><textarea id="jd"></textarea></div>
+    <button class="btn ghost" id="kwBtn">कीवर्ड चेक करें</button>
+    <div class="kw" id="kwOut"></div>
+  </div>
+  <div class="row"><button class="btn ghost" id="save">सेव करें</button><button class="btn" id="pdf">PDF डाउनलोड</button></div>
+  <div class="row"><button class="btn dk" id="waCv">WhatsApp</button><button class="btn ghost" id="smsCv">SMS</button><button class="btn ghost" id="shCv">शेयर</button></div>
+  <div class="fit" id="preview"></div>
 </section>
 
 <div id="printArea"></div>
@@ -203,12 +239,13 @@ body.light .sheet{box-shadow:0 2px 10px rgba(0,0,0,.1)}
 <div class="toast" id="toast"></div>
 
 <script>
-/* ===== CONFIG (payment: बैकएंड बनने के बाद भरें) ===== */
+/* ===== CONFIG: पेमेंट बैकएंड बनने के बाद भरें ===== */
 const RAZORPAY_KEY_ID = "REPLACE_WITH_KEY_ID";
 const CREATE_ORDER_URL = "REPLACE_WITH_CREATE_ORDER_URL";
 const PAYMENT_VERIFY_URL = "REPLACE_WITH_VERIFY_URL";
 const APP_URL = "https://royalrajawat247-rr.github.io/JobReady-Resume-CV-Maker/";
 const PLAN_PAISE = {weekly: 4900, lifetime: 9900};
+const FREE_SAVE_LIMIT = 3;
 
 /* ===== helpers ===== */
 const $ = s => document.querySelector(s);
@@ -218,85 +255,116 @@ const LS = {
   get(k, d){ try{ const v = localStorage.getItem(k); return v==null ? d : JSON.parse(v); }catch(e){ return d; } },
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 };
-function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2600); }
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2400); }
 const proPlan = () => LS.get("jr_pro", null); // सिर्फ़ verify के बाद सेट होता है
 const isVip = () => !!proPlan();
 
-/* ===== templates: 4 free + 10 VIP ===== */
+/* ===== 14 templates: हर एक का अलग layout, font, heading style और रंग ===== */
+const FONT = {sans:"system-ui,'Noto Sans Devanagari',sans-serif", serif:"Georgia,'Noto Serif Devanagari',serif", mono:"ui-monospace,Menlo,Consolas,monospace"};
 const TPL = [
- {id:"classic", name:"Classic Blue", d:"सभी नौकरियों के लिए बेस्ट", vip:false, ac:"#2563eb", L:"top"},
- {id:"ats", name:"ATS Clean White", d:"सरकारी व प्राइवेट फॉर्म हेतु", vip:false, ac:"#111827", L:"min"},
- {id:"gray", name:"Simple Gray", d:"सादा व साफ़ लेआउट", vip:false, ac:"#475569", L:"line"},
- {id:"black", name:"Minimal Black", d:"छोटे अनुभव वालों के लिए", vip:false, ac:"#000000", L:"min"},
- {id:"exec", name:"Executive Dark", d:"मैनेजर व ऑफिस जॉब हेतु", vip:true, ac:"#1e293b", L:"top"},
- {id:"emerald", name:"Modern Emerald", d:"IT, सेल्स व मार्केटिंग हेतु", vip:true, ac:"#059669", L:"top"},
- {id:"sidebar", name:"Sidebar Pro", d:"दो-कॉलम कलर्ड साइडबार", vip:true, ac:"#4f46e5", L:"side"},
- {id:"teal", name:"Teal Timeline", d:"टाइमलाइन स्टाइल अनुभव", vip:true, ac:"#0d9488", L:"line"},
- {id:"bold", name:"Bold Header", d:"बड़े नाम वाला हेडर ब्लॉक", vip:true, ac:"#7c3aed", L:"top"},
- {id:"corp", name:"Corporate Grey", d:"औपचारिक बैंकिंग स्टाइल", vip:true, ac:"#374151", L:"min"},
- {id:"coral", name:"Creative Coral", d:"डिज़ाइन व मीडिया रोल", vip:true, ac:"#f43f5e", L:"side"},
- {id:"mono", name:"Tech Mono", d:"डेवलपर्स के लिए साफ़ लेआउट", vip:true, ac:"#0ea5e9", L:"line"},
- {id:"gold", name:"Gold Premium", d:"गोल्ड एक्सेंट लाइन्स", vip:true, ac:"#b45309", L:"top"},
- {id:"twocol", name:"Two-Column Light", d:"कॉम्पैक्ट ATS दो-कॉलम", vip:true, ac:"#334155", L:"side"}
+ {id:"classic", name:"Classic Blue",     d:"सभी नौकरियों के लिए", vip:false, L:"band",   F:"sans",  H:"bar",   ac:"#2563eb"},
+ {id:"ats",     name:"ATS Clean White",  d:"सरकारी व प्राइवेट फॉर्म", vip:false, L:"min",    F:"sans",  H:"upper", ac:"#111827"},
+ {id:"gray",    name:"Simple Gray",      d:"सादा व साफ़ लेआउट", vip:false, L:"min",    F:"serif", H:"rule",  ac:"#475569"},
+ {id:"black",   name:"Minimal Black",    d:"छोटे अनुभव के लिए", vip:false, L:"min",    F:"serif", H:"dot",   ac:"#000000"},
+ {id:"exec",    name:"Executive Dark",   d:"मैनेजर व ऑफिस जॉब", vip:true,  L:"dark",   F:"sans",  H:"upper", ac:"#e6b450"},
+ {id:"emerald", name:"Modern Emerald",   d:"IT, सेल्स व मार्केटिंग", vip:true,  L:"line",   F:"sans",  H:"rule",  ac:"#059669"},
+ {id:"sidebar", name:"Sidebar Pro",      d:"बाईं ओर कलर्ड साइडबार", vip:true,  L:"side",   F:"sans",  H:"box",   ac:"#4f46e5"},
+ {id:"teal",    name:"Teal Timeline",    d:"टाइमलाइन अनुभव", vip:true,  L:"line",   F:"sans",  H:"bar",   ac:"#0d9488", tl:true},
+ {id:"bold",    name:"Bold Header",      d:"बड़ा नाम, बोल्ड हेडर", vip:true,  L:"band",   F:"sans",  H:"box",   ac:"#7c3aed", big:true},
+ {id:"corp",    name:"Corporate Grey",   d:"औपचारिक बैंकिंग स्टाइल", vip:true,  L:"min",    F:"serif", H:"box",   ac:"#374151"},
+ {id:"coral",   name:"Creative Coral",   d:"डिज़ाइन व मीडिया", vip:true,  L:"side",   F:"sans",  H:"dot",   ac:"#e11d48", rev:true},
+ {id:"mono",    name:"Tech Mono",        d:"डेवलपर्स के लिए", vip:true,  L:"line",   F:"mono",  H:"upper", ac:"#0284c7", tl:true},
+ {id:"gold",    name:"Gold Premium",     d:"सुनहरी लाइन्स, केंद्रित", vip:true,  L:"center", F:"serif", H:"rule",  ac:"#b45309"},
+ {id:"twocol",  name:"Two-Column Light", d:"कॉम्पैक्ट ATS दो-कॉलम", vip:true,  L:"side",   F:"sans",  H:"bar",   ac:"#334155", light:true}
 ];
 let curTpl = LS.get("jr_tpl", "classic");
 
-function tplPreview(t){
-  const ac=t.ac;
-  const head = t.L==="top" ? `<div style="background:${ac};color:#fff;padding:6px;margin:-6px -6px 4px">RAHUL SHARMA</div>` :
-               t.L==="side" ? `<div style="border-left:4px solid ${ac};padding-left:4px;font-weight:700;color:${ac}">RAHUL SHARMA</div>` :
-               `<div style="font-weight:800;color:${ac}">RAHUL SHARMA</div>`;
-  return `<div class="pv">${head}<div style="color:#555;margin-top:4px">Sales &amp; Office Executive</div><div style="border-top:1px solid #ddd;margin:6px 0"></div><div style="color:#888">Experience • Skills • Education</div></div>`;
+/* ===== CV sheet renderer ===== */
+let photo = "", sign = "";
+const FIELDS = ["name","title","email","phone","addr","sum","skills","exp","edu","lang","jd"];
+function readCv(){ const o={}; ["name","title","email","phone","addr","sum","skills","exp","edu","lang"].forEach(k=>o[k]=$("#f_"+k).value.trim()); o.photo=photo; o.sign=sign; return o; }
+function fillCv(o){ o=o||{}; ["name","title","email","phone","addr","sum","skills","exp","edu","lang"].forEach(k=>$("#f_"+k).value=o[k]||""); photo=o.photo||""; sign=o.sign||""; renderPreview(); }
+
+function sheetHTML(cv, t, wm){
+  const ac = t.ac, F = FONT[t.F];
+  const sec = title => {
+    switch(t.H){
+      case "box":   return `<div class="sh" style="background:${ac};color:#fff;padding:3px 8px">${title}</div>`;
+      case "bar":   return `<div class="sh" style="border-left:4px solid ${ac};padding-left:7px;color:${ac}">${title}</div>`;
+      case "upper": return `<div class="sh" style="color:${ac};letter-spacing:2px;border-bottom:1px solid ${ac}">${title}</div>`;
+      case "dot":   return `<div class="sh" style="color:${ac}">● ${title}</div>`;
+      default:      return `<div class="sh" style="color:${ac};border-bottom:2px solid ${ac}">${title}</div>`;
+    }
+  };
+  const skills = `<div class="skills">${cv.skills.split(",").map(x=>x.trim()).filter(Boolean).map(s=>`<span style="color:${ac}">${esc(s)}</span>`).join("")}</div>`;
+  const items = (s, tl) => s.split("\n").map(x=>x.trim()).filter(Boolean).map(x=>{
+    const [head, ...rest] = x.split(" – ");
+    return `<div class="it"><b>${esc(head)}</b>${rest.length?`<div>${esc(rest.join(" – "))}</div>`:""}</div>`;
+  }).join("");
+  const exp = t.tl ? `<div class="tl">${items(cv.exp)}</div>` : items(cv.exp);
+  const edu = items(cv.edu);
+  const ph = cv.photo ? `<img class="ph" src="${cv.photo}" alt="">` : "";
+  const sg = cv.sign ? `<img class="sig" src="${cv.sign}" alt="">` : "";
+  const contact = [cv.email, cv.phone, cv.addr].filter(Boolean).map(esc).join(" | ");
+  const main = `${sec("परिचय")}<p>${esc(cv.sum)}</p>${sec("अनुभव")}${exp}${sec("शिक्षा")}${edu}`;
+  let inner, cls = "";
+  if(t.L==="band"){
+    const nmSize = t.big ? "34px" : "26px";
+    inner = `<div class="hd" style="background:${ac};color:#fff">${ph}<div class="nm" style="font-size:${nmSize};${t.big?'text-transform:uppercase':''}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div></div>
+      <div class="bd">${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
+  } else if(t.L==="min"){
+    inner = `<div class="bd"><div class="nm" style="color:${ac}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div><div style="height:2px;background:${ac};margin:10px 0 0"></div>${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
+  } else if(t.L==="line"){
+    inner = `<div class="bd">${ph}<div class="nm" style="color:${ac}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div><div style="height:3px;background:${ac};margin:10px 0 0;width:60%"></div>${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
+  } else if(t.L==="dark"){
+    cls = "dark";
+    inner = `<div class="bd"><div class="nm" style="color:${ac}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div><div style="height:2px;background:${ac};margin:10px 0 0"></div>${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
+  } else if(t.L==="center"){
+    cls = "center";
+    inner = `<div class="hd" style="border-bottom:3px double ${ac}">${ph}<div class="nm" style="color:${ac}">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${contact}</div></div>
+      <div class="bd">${sec("कौशल")}${skills}${main}${sec("भाषाएं")}<p>${esc(cv.lang)}</p>${sg}</div>`;
+  } else { // side
+    cls = "side" + (t.rev ? " rev" : "");
+    const sbBg = t.light ? "#f1f5f9" : ac;
+    const sbTxt = t.light ? ac : "#fff";
+    inner = `<div class="sd" style="background:${sbBg};color:${sbTxt}">${ph}<div class="nm">${esc(cv.name||"आपका नाम")}</div><div class="tt">${esc(cv.title)}</div><div class="ct">${esc(cv.email)}<br>${esc(cv.phone)}<br>${esc(cv.addr)}</div>
+      <div class="sh" style="margin-top:14px">कौशल</div>${skills}<div class="sh">भाषाएं</div><p>${esc(cv.lang)}</p>${sg}</div>
+      <div class="mn">${main}</div>`;
+  }
+  return `<div class="sheet ${cls}" style="font-family:${F};${cls==="dark"?"":""}">${inner}${wm?'<div class="wm">Made with JobReady</div>':''}</div>`;
 }
+function fitBox(box){
+  const s = box.querySelector(".sheet"); if(!s) return;
+  s.style.transform = `scale(${box.clientWidth/600})`;
+  box.style.height = (box.clientWidth*297/210)+"px";
+}
+function fitAll(){ document.querySelectorAll(".thumb,.fit").forEach(fitBox); }
+window.addEventListener("resize", fitAll);
+
 function renderTpls(){
   $("#tplGrid").innerHTML = TPL.map(t => {
     const locked = t.vip && !isVip();
+    const sample = {name:"Rahul Sharma", title:"Sales Executive", email:"rahul@mail.com", phone:"98XXXXXX10", addr:"जयपुर", sum:"3 साल का अनुभव।", skills:"Excel, Tally, Sales", exp:"ABC Traders – Sales (2022-25)", edu:"B.Com – 2020", lang:"हिंदी, English"};
     return `<button class="tp ${t.id===curTpl?'sel':''}" data-tpl="${t.id}">
-      <span class="lbl ${t.vip?'vip':'free'}">${t.vip?'VIP':'मुफ़्त'}</span>${tplPreview(t)}
+      <span class="lbl ${t.vip?'vip':'free'}">${t.vip?'VIP':'मुफ़्त'}</span>
+      <div class="thumb">${sheetHTML(sample, t, false)}</div>
       <b>${esc(t.name)}</b><small>${esc(t.d)}</small>${locked?'<span class="lock">🔒</span>':''}</button>`;
   }).join("");
+  $$("#tplGrid .thumb").forEach(fitBox);
 }
 $("#tplGrid").addEventListener("click", e => {
   const b = e.target.closest("[data-tpl]"); if(!b) return;
   const t = TPL.find(x=>x.id===b.dataset.tpl);
   if(t.vip && !isVip()){ toast("यह टेम्प्लेट VIP प्लान में है"); show("plan"); return; }
-  curTpl = t.id; LS.set("jr_tpl", curTpl); renderTpls(); toast("टेम्प्लेट लागू: "+t.name);
+  curTpl = t.id; LS.set("jr_tpl", curTpl); renderTpls(); toast("लागू: "+t.name);
 });
 
-/* ===== CV form & preview ===== */
-const FIELDS = ["name","title","email","phone","addr","sum","skills","exp","edu","lang"];
-let photo = "", sign = "";
-function readCv(){
-  const o={}; FIELDS.forEach(k=>o[k]=$("#f_"+k).value.trim()); o.photo=photo; o.sign=sign; return o;
-}
-function fillCv(o){
-  o=o||{}; FIELDS.forEach(k=>$("#f_"+k).value=o[k]||""); photo=o.photo||""; sign=o.sign||"";
-  renderPreview();
-}
-function sheetHTML(cv, t, wm){
-  const lines = s => s.split("\n").map(x=>x.trim()).filter(Boolean).map(x=>`<div>• ${esc(x)}</div>`).join("");
-  const skills = cv.skills.split(",").map(x=>x.trim()).filter(Boolean).map(esc).join(" • ");
-  const ph = cv.photo ? `<img class="ph" src="${cv.photo}" alt="">` : "";
-  const sg = cv.sign ? `<div><img class="sig" src="${cv.sign}" alt=""></div>` : "";
-  const hd = `<div class="nm" style="color:${t.L==="top"?"#fff":t.ac}">${esc(cv.name||"आपका नाम")}</div><div style="font-weight:600;color:${t.ac}">${esc(cv.title)}</div><div class="cc">${esc(cv.email)} ${cv.phone?"| "+esc(cv.phone):""} ${cv.addr?"| "+esc(cv.addr):""}</div>`;
-  const body = `<h4 style="color:${t.ac}">परिचय</h4><div>${esc(cv.sum)}</div>
-    <h4 style="color:${t.ac}">कौशल</h4><div>${skills}</div>
-    <h4 style="color:${t.ac}">अनुभव</h4>${lines(cv.exp)}
-    <h4 style="color:${t.ac}">शिक्षा</h4>${lines(cv.edu)}
-    <h4 style="color:${t.ac}">भाषाएं</h4><div>${esc(cv.lang)}</div>${sg}`;
-  let inner;
-  if(t.L==="top") inner = `<div class="band" style="background:${t.ac}">${ph}${hd.replace(/color:#fff|color:[^;"]+;/, m=>m)}</div>${body}`;
-  else if(t.L==="side") inner = `<div class="t-side"><div class="sb" style="background:${t.ac}">${ph}<div style="font-weight:800;font-size:17px">${esc(cv.name||"आपका नाम")}</div><div style="font-size:12px;opacity:.9">${esc(cv.title)}</div><div style="font-size:11px;margin-top:10px">${esc(cv.email)}<br>${esc(cv.phone)}</div></div><div class="mn">${body}</div></div>`;
-  else if(t.L==="line") inner = `<div class="t-line" style="--ac:${t.ac}">${ph}${hd}${body.replace(/<h4/g,'<h4 class="sec"')}</div>`;
-  else inner = `${ph}${hd}${body}`;
-  return `<div class="sheet ${t.L==="side"?"t-side-wrap":""}" style="${t.L==="side"?"padding:0;":""}">${inner}${wm?'<div class="wm">Made with JobReady</div>':''}</div>`;
-}
 function renderPreview(){
   const t = TPL.find(x=>x.id===curTpl) || TPL[0];
-  const cv = readCv();
-  $("#preview").innerHTML = sheetHTML(cv, t, !isVip());
+  $("#preview").innerHTML = sheetHTML(readCv(), t, !isVip());
+  fitBox($("#preview"));
 }
-FIELDS.forEach(k=>$("#f_"+k).addEventListener("input", renderPreview));
+FIELDS.forEach(k=>{ const el=$("#f_"+k); if(el) el.addEventListener("input", renderPreview); });
 function toDataUrl(file, cb){
   if(!file) return cb("");
   const img = new Image(), url = URL.createObjectURL(file);
@@ -306,34 +374,48 @@ function toDataUrl(file, cb){
 $("#f_photo").addEventListener("change", e=>toDataUrl(e.target.files[0], d=>{ photo=d; renderPreview(); }));
 $("#f_sign").addEventListener("change", e=>toDataUrl(e.target.files[0], d=>{ sign=d; renderPreview(); }));
 
-const SAMPLE = {name:"Rahul Sharma", title:"Sales & Office Executive", email:"rahul@example.com", phone:"98XXXXXX10", addr:"जयपुर, राजस्थान", sum:"3 साल का अनुभव ग्राहक सेवा, बिक्री और ऑफिस प्रबंधन में।", skills:"MS Excel, Tally, Communication, Billing", exp:"ABC Traders – Sales Executive (2022-2025)\nXYZ Pvt Ltd – Office Assistant (2020-2022)", edu:"B.Com – Rajasthan University (2020)", lang:"हिंदी, English"};
+const SAMPLE = {name:"Rahul Sharma", title:"Sales & Office Executive", email:"rahul@example.com", phone:"98XXXXXX10", addr:"जयपुर, राजस्थान", sum:"3 साल का अनुभव ग्राहक सेवा, बिक्री और ऑफिस प्रबंधन में।", skills:"MS Excel, Tally, Communication, Billing", exp:"ABC Traders – Sales Executive – 2022-2025\nXYZ Pvt Ltd – Office Assistant – 2020-2022", edu:"B.Com – Rajasthan University – 2020", lang:"हिंदी, English"};
 
-/* ===== saved CVs ===== */
+/* ===== save / files ===== */
+function renderFiles(){
+  const list = LS.get("jr_cvs", []);
+  $("#saveCount").textContent = isVip() ? `${list.length} CV सेव हैं` : `${list.length} / ${FREE_SAVE_LIMIT} CV सेव हैं (मुफ़्त सीमा)`;
+  $("#fileList").innerHTML = list.length ? list.map(x=>`<div class="item"><div><b>${esc(x.cv.name)}</b><br><small>${esc(x.cv.title)} • ${x.date}</small></div>
+    <button class="btn ghost sm" data-open="${x.id}">खोलें</button><button class="btn ghost sm" data-del="${x.id}">डिलीट</button></div>`).join("")
+    : `<div class="empty">अभी कोई CV सेव नहीं है।</div>`;
+}
 function saveCv(){
   const cv = readCv(); if(!cv.name){ toast("कृपया नाम भरें"); return false; }
   const list = LS.get("jr_cvs", []);
+  if(!isVip() && list.length >= FREE_SAVE_LIMIT){ toast("मुफ़्त में 3 CV तक, ज़्यादा के लिए प्लान लें"); show("plan"); return false; }
   list.unshift({id:Date.now(), cv, tpl:curTpl, date:new Date().toLocaleDateString("en-GB")});
-  LS.set("jr_cvs", list.slice(0,50)); renderFiles(); toast("CV सेव हो गया"); return true;
+  LS.set("jr_cvs", list); renderFiles(); toast("CV सेव हो गया"); return true;
 }
-let undoItem=null, undoTimer=null;
-function renderFiles(){
-  const list = LS.get("jr_cvs", []);
-  $("#fileList").innerHTML = list.length ? list.map(x=>`<div class="item"><div><b>${esc(x.cv.name)}</b><br><small>${esc(x.cv.title)} • ${x.date}</small></div>
-    <button class="btn ghost sm" data-open="${x.id}">खोलें</button><button class="btn ghost sm" data-del="${x.id}">डिलीट</button></div>`).join("")
-    : `<div class="empty">अभी कोई रिज्यूमे सेव नहीं है।</div>`;
-}
+let undoItem=null;
 $("#fileList").addEventListener("click", e=>{
   const o=e.target.closest("[data-open]"), d=e.target.closest("[data-del]");
   if(o){ const x=LS.get("jr_cvs",[]).find(y=>y.id==o.dataset.open); if(x){ curTpl=x.tpl; fillCv(x.cv); openForm(); } }
   if(d){
     const list=LS.get("jr_cvs",[]); const i=list.findIndex(y=>y.id==d.dataset.del); if(i<0) return;
     undoItem={item:list[i], i}; list.splice(i,1); LS.set("jr_cvs",list); renderFiles();
-    toast("डिलीट हुआ। 5 सेकंड में वापस लाएं: "); clearTimeout(undoTimer);
-    undoTimer=setTimeout(()=>{ undoItem=null; }, 5000);
-    const t=$("#toast"); t.insertAdjacentHTML("beforeend", ' <b style="cursor:pointer;color:#f5b53c" id="undoBtn">UNDO</b>');
+    toast("डिलीट हुआ। वापस लाने के लिए UNDO दबाएं");
+    const t=$("#toast"); t.insertAdjacentHTML("beforeend", ' <b style="cursor:pointer;color:#e6b450" id="undoBtn">UNDO</b>');
     $("#undoBtn").onclick=()=>{ if(!undoItem) return; const l=LS.get("jr_cvs",[]); l.splice(undoItem.i,0,undoItem.item); LS.set("jr_cvs",l); undoItem=null; renderFiles(); t.classList.remove("on"); };
   }
 });
+
+/* ===== ATS keyword check (VIP) ===== */
+const STOP = new Set("the and for with you your our are will this that from have has was not but all can job work team role years year good must should using use new able".split(" "));
+$("#kwBtn").onclick = ()=>{
+  if(!isVip()){ toast("कीवर्ड चेक VIP में है"); show("plan"); return; }
+  const cv = readCv();
+  const jd = $("#jd").value.toLowerCase().match(/[a-z][a-z+#.]{2,}/g) || [];
+  const freq = {}; jd.forEach(w=>{ if(!STOP.has(w)) freq[w]=(freq[w]||0)+1; });
+  const top = Object.keys(freq).sort((a,b)=>freq[b]-freq[a]).slice(0,15);
+  const have = (cv.skills+" "+cv.exp+" "+cv.sum).toLowerCase();
+  const missing = top.filter(w=>!have.includes(w));
+  $("#kwOut").innerHTML = top.length ? (missing.length ? `<b>CV में कम कीवर्ड:</b> ${missing.map(esc).join(", ")}<br><span class="muted">इन्हें कौशल या अनुभव में जोड़ें (केवल अगर सच हो)।</span>` : "सभी मुख्य कीवर्ड आपके CV में हैं ✓") : "नौकरी का विवरण पेस्ट करें।";
+};
 
 /* ===== share ===== */
 const SHARE_TXT = `JobReady: Resume & CV Maker – फोन में ऑफ़लाइन रिज्यूमे बनाएं: ${APP_URL}`;
@@ -351,14 +433,14 @@ $("#waCv").onclick = ()=>window.open(waLink(cvText(readCv())),"_blank");
 $("#smsCv").onclick = ()=>location.href=smsLink(cvText(readCv()));
 $("#shCv").onclick = ()=>nativeShare(cvText(readCv()));
 
-/* ===== PDF (print): सिर्फ़ CV प्रिंट होगा ===== */
+/* ===== PDF: सिर्फ़ CV प्रिंट ===== */
 $("#pdf").onclick = ()=>{
   const t = TPL.find(x=>x.id===curTpl) || TPL[0];
   $("#printArea").innerHTML = sheetHTML(readCv(), t, !isVip());
   setTimeout(()=>window.print(), 100);
 };
 
-/* ===== payments (Razorpay; verify के बाद ही unlock) ===== */
+/* ===== payments: verify के बाद ही unlock ===== */
 function loadRzp(){
   return new Promise((res,rej)=>{ if(window.Razorpay) return res(); const s=document.createElement("script"); s.src="https://checkout.razorpay.com/v1/checkout.js"; s.onload=()=>res(); s.onerror=()=>rej(); document.head.appendChild(s); });
 }
@@ -382,19 +464,20 @@ $("#restore").onclick = async ()=>{
   try{ const v = await (await fetch(PAYMENT_VERIFY_URL+"?status=1")).json(); if(v.plan){ LS.set("jr_pro",v.plan); applyPlan(); toast("खरीद रिकवर हो गई"); } else toast("कोई खरीद नहीं मिली"); }catch(e){ toast("कनेक्शन में दिक्कत"); }
 };
 
-/* ===== plan / UI state ===== */
+/* ===== UI state ===== */
 function applyPlan(){
   const p = proPlan();
   $("#planBadge").textContent = p ? "VIP" : "मुफ़्त प्लान";
   $("#planBadge").classList.toggle("vip", !!p);
-  $("#banner").style.display = p ? "none" : "flex";
-  $("#payNote").textContent = p ? "आपका VIP प्लान चालू है।" : "पेमेंट UPI/कार्ड से होगा। समस्या हो तो सपोर्ट से संपर्क करें।";
-  renderTpls();
+  $("#banner").style.display = (p === "lifetime") ? "none" : "flex";
+  $("#payNote").textContent = p ? "आपका VIP प्लान चालू है।" : "पेमेंट UPI/कार्ड से होगा।";
+  renderTpls(); renderFiles();
 }
 function show(name){
   $$(".screen").forEach(s=>s.classList.toggle("on", s.id==="s-"+name));
   $$("nav button").forEach(b=>b.classList.toggle("on", b.dataset.go===name));
   if(name==="files") renderFiles();
+  if(name==="tpl") fitAll();
   window.scrollTo(0,0);
 }
 function openForm(){ $("#formOv").classList.add("on"); renderPreview(); window.scrollTo(0,0); }
@@ -411,7 +494,7 @@ $("#lightT").onchange = e=>{ LS.set("jr_light", e.target.checked); document.docu
 
 /* ===== init ===== */
 fillCv({});
-applyPlan(); renderFiles();
+applyPlan();
 if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>

@@ -1,4 +1,4 @@
-const CACHE = "jr-v1";
+const CACHE = "jr-v2";
 const FILES = ["./", "./index.html", "./manifest.json"];
 
 self.addEventListener("install", e => {

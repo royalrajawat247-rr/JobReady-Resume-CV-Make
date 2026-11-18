@@ -5,7 +5,11 @@ const { execFileSync } = require('child_process');
 const root = path.resolve(__dirname, '..');
 const dist = path.join(root, 'dist');
 
-execFileSync(process.execPath, [path.join(__dirname, 'generate-icons.js')], { stdio: 'inherit' });
+const icon192 = path.join(root, 'public', 'icons', 'icon-192x192.png');
+const icon512 = path.join(root, 'public', 'icons', 'icon-512x512.png');
+if (!fs.existsSync(icon192) || !fs.existsSync(icon512)) {
+  execFileSync(process.execPath, [path.join(__dirname, 'generate-icons.js')], { stdio: 'inherit' });
+}
 
 fs.rmSync(dist, { recursive: true, force: true });
 fs.mkdirSync(dist, { recursive: true });

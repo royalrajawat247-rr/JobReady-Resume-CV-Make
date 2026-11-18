@@ -12,6 +12,7 @@
 <title>JobReady: Resume & CV Maker</title>
 <link rel="manifest" href="/manifest.json" />
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
+<link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png" />
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
 <style>
 :root{
@@ -416,11 +417,6 @@ nav button.on{color:var(--a1);font-weight:700}
       </div>
     </div>
   </div>
-
-  <div class="ad-slot-wrap">
-    <div class="ad-box-300x250" id="adsterra-home-300x250" data-ad-zone="300x250" aria-label="Sponsored advertisement"></div>
-    <div class="ad-slot-lbl" id="adHomeLbl">Sponsored • RR Tech Labs</div>
-  </div>
 </section>
 
 <!-- TEMPLATES -->
@@ -824,20 +820,23 @@ nav button.on{color:var(--a1);font-weight:700}
   </div>
 </div>
 
-<!-- PRO TEMPLATE 15-SECOND SPONSOR UNLOCK MODAL -->
+<!-- PRO TEMPLATE 30-SECOND SPONSOR UNLOCK MODAL -->
 <div class="unlock-ov" id="unlockOv" role="dialog" aria-modal="true" aria-labelledby="unlockTitle">
   <div class="unlock-box">
     <span class="unlock-pill" id="unlockPill">PRO TEMPLATE</span>
-    <h3 id="unlockTitle">Unlock Pro Template Free</h3>
+    <h3 id="unlockTitle">Unlock This Pro Template Free — View Sponsor for 30 Seconds</h3>
     <p class="unlock-tpl" id="unlockTplName"></p>
+    <div class="unlock-ad-wrap">
+      <div class="ad-box-300x250" id="adsterra-unlock-300x250" data-ad-zone="300x250" aria-label="Sponsored advertisement"></div>
+      <div class="ad-slot-lbl" id="unlockAdLbl">Sponsored • RR Tech Labs</div>
+    </div>
     <div class="unlock-timer-box">
       <div class="unlock-timer-row">
-        <span class="unlock-timer-lbl" id="unlockTimerLbl">Tap below to view sponsor ad — unlocks after 15s</span>
-        <span class="unlock-timer" id="unlockTimer">15s</span>
+        <span class="unlock-timer-lbl" id="unlockTimerLbl">Unlocks automatically when countdown reaches 0s</span>
+        <span class="unlock-timer" id="unlockTimer">30s</span>
       </div>
       <div class="unlock-prog-track"><div class="unlock-prog-fill" id="unlockProg"></div></div>
     </div>
-    <button type="button" class="btn" id="unlockWatchBtn">Watch Sponsor Ad to Unlock</button>
     <button type="button" class="btn ghost" id="unlockCancelBtn">Cancel</button>
   </div>
 </div>
@@ -960,15 +959,12 @@ const I18N = {
     secRow1: "256-Bit Local File Storage",
     secRow2: "Zero Cloud Tracking",
     secRow3: "100% Offline PDF Engine",
-    tplHeadT: "Choose Template", tplHeadD: "4 templates are free & ready. Unlock any of the 12 Pro templates free with a 15s sponsor view.",
+    tplHeadT: "Choose Template", tplHeadD: "4 templates are free & ready. Unlock any of the 12 Pro templates free with a 30s sponsor view.",
     tplFree: "Free", tplPro: "PRO", tplApplied: "Applied: ",
-    quickViewBtn: "Quick View", qvClose: "Close", qvUseTpl: "Use Template", qvUnlockTpl: "Unlock Free (15s)", qvSelected: "Selected ✓",
+    quickViewBtn: "Quick View", qvClose: "Close", qvUseTpl: "Use Template", qvUnlockTpl: "Unlock Free (30s)", qvSelected: "Selected ✓",
     unlockPill: "PRO TEMPLATE",
-    unlockTitle: "Unlock Pro Template Free",
-    unlockTimerLblReady: "Tap below to watch sponsor ad — unlocks after 15s",
-    unlockTimerLblRunning: "Unlocks permanently when countdown reaches 0s",
-    unlockWatchBtn: "Watch Sponsor Ad to Unlock",
-    unlockWatchingBtn: sec => `Sponsor Opened • Unlocking in ${sec}s...`,
+    unlockTitle: "Unlock This Pro Template Free — View Sponsor for 30 Seconds",
+    unlockTimerLblRunning: "Unlocks automatically when countdown reaches 0s",
     unlockCancel: "Cancel",
     tplUnlockedToast: name => `Template Unlocked! (${name})`,
     filesHeadT: "My Saved Resumes", filesEmpty: "No saved CVs yet.",
@@ -1107,15 +1103,12 @@ const I18N = {
     secRow1: "256-बिट लोकल फ़ाइल स्टोरेज",
     secRow2: "शून्य क्लाउड ट्रैकिंग",
     secRow3: "100% ऑफ़लाइन PDF इंजन",
-    tplHeadT: "टेम्प्लेट चुनें", tplHeadD: "4 टेम्प्लेट मुफ़्त हैं। किसी भी 12 प्रो टेम्प्लेट को 15 सेकंड स्पॉन्सर व्यू से मुफ़्त अनलॉक करें।",
+    tplHeadT: "टेम्प्लेट चुनें", tplHeadD: "4 टेम्प्लेट मुफ़्त हैं। किसी भी 12 प्रो टेम्प्लेट को 30 सेकंड स्पॉन्सर व्यू से मुफ़्त अनलॉक करें।",
     tplFree: "मुफ़्त", tplPro: "PRO", tplApplied: "लागू: ",
-    quickViewBtn: "क्विक व्यू", qvClose: "बंद करें", qvUseTpl: "टेम्प्लेट चुनें", qvUnlockTpl: "मुफ़्त अनलॉक करें (15s)", qvSelected: "चयनित ✓",
+    quickViewBtn: "क्विक व्यू", qvClose: "बंद करें", qvUseTpl: "टेम्प्लेट चुनें", qvUnlockTpl: "मुफ़्त अनलॉक करें (30s)", qvSelected: "चयनित ✓",
     unlockPill: "PRO टेम्प्लेट",
-    unlockTitle: "प्रो टेम्प्लेट मुफ़्त अनलॉक करें",
-    unlockTimerLblReady: "स्पॉन्सर विज्ञापन देखने के लिए नीचे दबाएं — 15s में अनलॉक होगा",
+    unlockTitle: "प्रो टेम्प्लेट मुफ़्त अनलॉक करें — 30 सेकंड स्पॉन्सर देखें",
     unlockTimerLblRunning: "काउंटडाउन 0s होते ही हमेशा के लिए अनलॉक होगा",
-    unlockWatchBtn: "Watch Sponsor Ad to Unlock",
-    unlockWatchingBtn: sec => `स्पॉन्सर खुला • ${sec}s में अनलॉक होगा...`,
     unlockCancel: "रद्द करें",
     tplUnlockedToast: name => `टेम्प्लेट अनलॉक हो गया! (${name})`,
     filesHeadT: "मेरे सेव किए गए रिज्यूमे", filesEmpty: "अभी कोई CV सेव नहीं है।",
@@ -1354,14 +1347,23 @@ function renderTpls(){
   $$("#tplGrid .thumb").forEach(fitBox);
 }
 
-/* ===== Sandboxed Adsterra 300x250 Iframe Loader (Home + Career Hub) ===== */
+/* ===== Sandboxed Adsterra 300x250 Iframe Loader (Career Hub Bottom + 30s Unlock Modal) ===== */
 const ADSTERRA_300X250_SRCDOC = [
-  "<!doctype html><html><head><meta charset=\"utf-8\">",
-  "<style>html,body{margin:0;padding:0;width:300px;height:250px;overflow:hidden;background:transparent;display:flex;align-items:center;justify-content:center;}<\/style>",
-  "</head><body>",
-  "<script>atOptions = { 'key' : '3c871837a782b0b2e79d79d8fce4060f', 'format' : 'iframe', 'height' : 250, 'width' : 300, 'params' : {} };<\/script>",
-  "<script src=\"https://bauval.org\"><\/script>",
-  "</body></html>"
+  "<!DOCTYPE html>",
+  "<html>",
+  "<body style=\"margin:0;padding:0;overflow:hidden;background:transparent;\">",
+  "<script>",
+  "  atOptions = {",
+  "    'key' : '14f6a83347de3c4b26ce9fec4a239cd0',",
+  "    'format' : 'iframe',",
+  "    'height' : 250,",
+  "    'width' : 300,",
+  "    'params' : {}",
+  "  };",
+  "<\/script>",
+  "<script src=\"https://bauval.org/22/14f6a83347de3c4b26ce9fec4a239cd0\"><\/script>",
+  "</body>",
+  "</html>"
 ].join("\n");
 
 function mountAdsterraFrame(slotEl, title){
@@ -1371,35 +1373,31 @@ function mountAdsterraFrame(slotEl, title){
   ifr.width = "300";
   ifr.height = "250";
   ifr.title = title || "Sponsored Banner";
+  ifr.style.border = "none";
+  ifr.style.overflow = "hidden";
   ifr.setAttribute("scrolling", "no");
-  ifr.setAttribute("sandbox", "allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms allow-same-origin");
+  ifr.setAttribute("sandbox", "allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox");
   ifr.srcdoc = ADSTERRA_300X250_SRCDOC;
   slotEl.appendChild(ifr);
 }
 
-/* ===== Pro Template 15s Sponsor Unlock Modal ===== */
-const SPONSOR_AD_URL = "https://bauval.org";
-let unlockTimerId = null, unlockTargetTpl = null, unlockSecLeft = 15;
+/* ===== Pro Template 30s Sponsor Unlock Modal ===== */
+let unlockTimerId = null, unlockTargetTpl = null, unlockSecLeft = 30;
 function closeUnlockModal(){
   if(unlockTimerId){ clearInterval(unlockTimerId); unlockTimerId = null; }
   unlockTargetTpl = null;
-  unlockSecLeft = 15;
-  const watchBtn = $("#unlockWatchBtn");
-  if(watchBtn) watchBtn.disabled = false;
+  unlockSecLeft = 30;
+  const adSlot = $("#adsterra-unlock-300x250");
+  if(adSlot) adSlot.innerHTML = "";
   $("#unlockOv").classList.remove("on");
 }
 function startUnlockCountdown(){
   if(unlockTimerId || !unlockTargetTpl) return;
   const tx = T();
-  const watchBtn = $("#unlockWatchBtn");
-  unlockSecLeft = 15;
+  unlockSecLeft = 30;
   $("#unlockTimerLbl").textContent = tx.unlockTimerLblRunning;
   $("#unlockTimer").textContent = unlockSecLeft + "s";
   $("#unlockProg").style.width = "0%";
-  if(watchBtn){
-    watchBtn.disabled = true;
-    watchBtn.textContent = tx.unlockWatchingBtn(unlockSecLeft);
-  }
   unlockTimerId = setInterval(()=>{
     unlockSecLeft -= 1;
     if(unlockSecLeft <= 0){
@@ -1423,31 +1421,26 @@ function startUnlockCountdown(){
       return;
     }
     $("#unlockTimer").textContent = unlockSecLeft + "s";
-    $("#unlockProg").style.width = Math.round(((15 - unlockSecLeft) / 15) * 100) + "%";
-    if(watchBtn) watchBtn.textContent = T().unlockWatchingBtn(unlockSecLeft);
+    $("#unlockProg").style.width = Math.round(((30 - unlockSecLeft) / 30) * 100) + "%";
   }, 1000);
 }
 function openUnlockModal(t){
   closeUnlockModal();
   const tx = T();
   unlockTargetTpl = t;
-  unlockSecLeft = 15;
+  unlockSecLeft = 30;
   $("#unlockPill").textContent = tx.unlockPill;
   $("#unlockTitle").textContent = tx.unlockTitle;
   $("#unlockTplName").textContent = t.name;
-  $("#unlockTimerLbl").textContent = tx.unlockTimerLblReady;
-  $("#unlockTimer").textContent = "15s";
+  $("#unlockAdLbl").textContent = tx.adSponsorLbl;
+  $("#unlockTimerLbl").textContent = tx.unlockTimerLblRunning;
+  $("#unlockTimer").textContent = "30s";
   $("#unlockProg").style.width = "0%";
-  const watchBtn = $("#unlockWatchBtn");
-  watchBtn.disabled = false;
-  watchBtn.textContent = tx.unlockWatchBtn;
   $("#unlockCancelBtn").textContent = tx.unlockCancel;
+  mountAdsterraFrame($("#adsterra-unlock-300x250"), "Sponsor Unlock Banner");
   $("#unlockOv").classList.add("on");
-}
-$("#unlockWatchBtn").addEventListener("click", ()=>{
-  try{ window.open(SPONSOR_AD_URL, "_blank", "noopener,noreferrer"); }catch(e){}
   startUnlockCountdown();
-});
+}
 /* ===== Template Quick View Full-Screen Modal ===== */
 let qvTargetTpl = null;
 function fitQuickView(){
@@ -2381,7 +2374,6 @@ function applyLang(){
   setTxt("#tAtsT", tx.tAtsT); setTxt("#tAtsD", tx.tAtsD);
   setTxt("#secLabsTitle", tx.secLabsTitle);
   setTxt("#secRow1", tx.secRow1); setTxt("#secRow2", tx.secRow2); setTxt("#secRow3", tx.secRow3);
-  setTxt("#adHomeLbl", tx.adSponsorLbl);
 
   setTxt("#tplHeadT", tx.tplHeadT); setTxt("#tplHeadD", tx.tplHeadD);
   setTxt("#filesHeadT", tx.filesHeadT);
@@ -2399,9 +2391,9 @@ function applyLang(){
   setTxt("#hubFaqTitle", tx.hubFaqTitle);
   const hb = $("#hubFaqBody"); if(hb) hb.innerHTML = esc(tx.hubFaqBody).replace(/\n/g, "<br>");
   setTxt("#adHubLbl", tx.adSponsorLbl);
+  setTxt("#unlockAdLbl", tx.adSponsorLbl);
   setTxt("#unlockPill", tx.unlockPill); setTxt("#unlockTitle", tx.unlockTitle);
-  setTxt("#unlockTimerLbl", unlockTimerId ? tx.unlockTimerLblRunning : tx.unlockTimerLblReady);
-  setTxt("#unlockWatchBtn", unlockTimerId ? tx.unlockWatchingBtn(unlockSecLeft) : tx.unlockWatchBtn);
+  setTxt("#unlockTimerLbl", tx.unlockTimerLblRunning);
   setTxt("#unlockCancelBtn", tx.unlockCancel);
 
   setTxt("#fmBack", tx.fmBack); setTxt("#fmTitle", tx.fmTitle);
@@ -2670,14 +2662,9 @@ $("#faqWrap").addEventListener("click", e=>{
 });
 
 /* ===== UI state ===== */
-function ensureHomeAd(){
-  const homeSlot = $("#adsterra-home-300x250");
-  if(homeSlot && !homeSlot.querySelector("iframe")) mountAdsterraFrame(homeSlot, "Home Sponsored Banner");
-}
 function show(name){
   $$(".screen").forEach(s=>s.classList.toggle("on", s.id==="s-"+name));
   $$("nav button").forEach(b=>b.classList.toggle("on", b.dataset.go===name));
-  if(name==="home") ensureHomeAd();
   if(name==="files") renderFiles();
   if(name==="tpl") fitAll();
   if(name==="hub"){
@@ -2710,7 +2697,6 @@ applyTheme(LS.get("jr_dark", false));
 applyPdfQualityUI();
 fillCv({});
 applyLang();
-ensureHomeAd();
 if(isPinEnabled()) openPinModal("unlock");
 if("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(()=>{});
 </script>

@@ -1,4 +1,4 @@
-const CACHE = "jr-v3";
+const CACHE = "jr-v4";
 const FILES = [
   "/",
   "/index.html",

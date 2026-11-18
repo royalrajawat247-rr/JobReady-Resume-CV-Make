@@ -6,9 +6,13 @@ const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
 const staticOpts = {
+  dotfiles: 'allow',
   setHeaders(res, filePath) {
     if (filePath.endsWith('sw.js')) {
       res.setHeader('Cache-Control', 'no-cache');
+    }
+    if (filePath.endsWith('assetlinks.json')) {
+      res.setHeader('Content-Type', 'application/json');
     }
   }
 };

@@ -30,6 +30,16 @@
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI","Noto Sans Devanagari",sans-serif;font-size:13.5px;-webkit-tap-highlight-color:transparent;transition:background-color .18s ease,color .18s ease}
 body{min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom));overflow-x:hidden}
+html,body{overscroll-behavior-y:none;user-select:none;-webkit-user-select:none}
+input,textarea,select,.cl-preview,.qr-json-pre,.qa-card{user-select:text;-webkit-user-select:text}
+.card{padding:12px;margin-bottom:10px;border-radius:14px}
+.hdr-in{min-height:52px;padding:6px 12px}
+nav{height:58px;padding:4px 0 calc(4px + env(safe-area-inset-bottom))}
+nav button{min-height:50px;position:relative}
+nav button.on::after{content:'';position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:22px;height:3px;border-radius:999px;background:var(--a1)}
+button:active,.btn:active,.tp:active,.hero-card:active,.item:active,.card:active{transform:scale(.97);transition:transform .08s ease}
+.screen{display:none;opacity:0;transition:opacity .15s ease}
+.screen.on{display:block;opacity:1}
 button,input,textarea,select{font:inherit}
 button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .hdr{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line);box-shadow:0 1px 2px rgba(15,23,42,.03)}
@@ -778,13 +788,32 @@ nav button.on{color:var(--a1);font-weight:700}
 <!-- FORM OVERLAY -->
 <section class="ov" id="formOv">
   <div class="row" style="align-items:center;margin:0 0 8px"><button class="btn ghost sm" data-close id="fmBack">← वापस</button><b style="margin-left:auto" id="fmTitle">CV बनाएं</b></div>
+  
+  <!-- 1-Click Job Role Auto-Fill Presets Card -->
+  <div class="card" style="background:var(--card2);padding:10px;margin-bottom:8px">
+    <div style="font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:6px" id="rolePresetsLbl">⚡ 1-Click Job Role Auto-Fill:</div>
+    <div class="chips" id="roleChips">
+      <button type="button" class="chip" data-role="data_entry" style="cursor:pointer">Data Entry</button>
+      <button type="button" class="chip" data-role="sales" style="cursor:pointer">Sales & Mktg</button>
+      <button type="button" class="chip" data-role="delivery" style="cursor:pointer">Delivery Exec</button>
+      <button type="button" class="chip" data-role="accountant" style="cursor:pointer">Accountant</button>
+      <button type="button" class="chip" data-role="fresher" style="cursor:pointer">Fresher Grad</button>
+    </div>
+  </div>
+
   <div class="card">
     <div class="field"><label id="lb_name">पूरा नाम</label><input id="f_name"></div>
     <div class="field"><label id="lb_title">पद (Job title)</label><input id="f_title"></div>
     <div class="field"><label id="lb_email">ईमेल</label><input id="f_email" type="email"></div>
     <div class="field"><label id="lb_phone">फ़ोन</label><input id="f_phone" type="tel"></div>
     <div class="field"><label id="lb_addr">पता</label><input id="f_addr"></div>
-    <div class="field"><label id="lb_sum">परिचय</label><textarea id="f_sum"></textarea></div>
+    <div class="field">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <label id="lb_sum" style="margin:0">परिचय</label>
+        <button type="button" class="btn soft sm" id="sumMagicBtn" style="padding:3px 8px;font-size:11px">✨ Smart Rewrite</button>
+      </div>
+      <textarea id="f_sum"></textarea>
+    </div>
     <div class="field"><label id="lb_skills">कौशल (कॉमा से अलग)</label><input id="f_skills"></div>
     <div class="field"><label id="lb_exp">अनुभव (हर लाइन में एक)</label><textarea id="f_exp"></textarea></div>
     <div class="field"><label id="lb_edu">शिक्षा (हर लाइन में एक)</label><textarea id="f_edu"></textarea></div>
@@ -797,8 +826,12 @@ nav button.on{color:var(--a1);font-weight:700}
     <button class="btn ghost" id="kwBtn">कीवर्ड चेक करें</button>
     <div class="kw" id="kwOut"></div>
   </div>
-  <div class="row"><button class="btn ghost" id="save">सेव करें</button><button class="btn" id="pdf">PDF डाउनलोड</button></div>
-  <div class="row"><button class="btn dk" id="waCv">WhatsApp</button><button class="btn ghost" id="smsCv">SMS</button><button class="btn soft" id="qrCv">QR Code</button><button class="btn ghost" id="shCv">शेयर</button></div>
+  <div class="row">
+    <button class="btn ghost" id="save">सेव करें</button>
+    <button class="btn" id="pdf">PDF डाउनलोड</button>
+    <button class="btn dk" id="waCv" style="background:#25d366;color:#fff">WhatsApp</button>
+  </div>
+  <div class="row"><button class="btn ghost" id="smsCv">SMS</button><button class="btn soft" id="qrCv">QR Code</button><button class="btn ghost" id="shCv">शेयर</button></div>
   <div class="fit" id="preview"></div>
 </section>
 
@@ -1065,6 +1098,12 @@ const I18N = {
     pqBalT: "Balanced", pqBalD: "Crisp & fast",
     pqCompT: "Portal Ready", pqCompD: "Under 500 KB (Best for Naukri/LinkedIn)",
     stLangT: "App Language", stLangD: "Switch interface language instantaneously",
+    rolePresetsLbl: "⚡ 1-Click Job Role Auto-Fill:",
+    sumMagicBtn: "✨ Smart Rewrite",
+    waCvBtn: "WhatsApp",
+    waSharedToast: "Opening WhatsApp share...",
+    sumRewrittenToast: "Summary polished with AI Smart Template ✨",
+    rolePresetLoaded: role => `Loaded preset: ${role}`,
     stInstallT: "Install JobReady App",
     stInstallD: "Add to Home Screen for 1-tap offline access",
     installBtn: "Install",
@@ -1218,6 +1257,12 @@ const I18N = {
     pqBalT: "संतुलित", pqBalD: "साफ़ और तेज़",
     pqCompT: "पोर्टल रेडी", pqCompD: "500 KB से कम (Naukri/LinkedIn के लिए बेस्ट)",
     stLangT: "ऐप की भाषा", stLangD: "ऐप की भाषा तुरंत बदलें",
+    rolePresetsLbl: "⚡ 1-क्लिक जॉब रोल ऑटो-फिल:",
+    sumMagicBtn: "✨ स्मार्ट रीराइट",
+    waCvBtn: "व्हाट्सएप",
+    waSharedToast: "व्हाट्सएप शेयर खुल रहा है...",
+    sumRewrittenToast: "समरी को AI स्मार्ट टेम्पलेट से पॉलिश किया गया ✨",
+    rolePresetLoaded: role => `प्रेसेट लोड हुआ: ${role}`,
     stInstallT: "JobReady ऐप इंस्टॉल करें",
     stInstallD: "एक-टैप ऑफ़लाइन पहुँच के लिए होम स्क्रीन पर जोड़ें",
     installBtn: "इंस्टॉल करें",
@@ -2440,6 +2485,9 @@ function applyLang(){
   setTxt("#unlockCancelBtn", tx.unlockCancel);
 
   setTxt("#fmBack", tx.fmBack); setTxt("#fmTitle", tx.fmTitle);
+  setTxt("#rolePresetsLbl", tx.rolePresetsLbl);
+  setTxt("#sumMagicBtn", tx.sumMagicBtn);
+  setTxt("#waCv", tx.waCvBtn);
   ["name","title","email","phone","addr","sum","skills","exp","edu","lang","photo","sign","jd"].forEach(k=>setTxt("#lb_"+k, tx["lb_"+k]));
   setTxt("#kwBtn", tx.kwBtn); setTxt("#save", tx.saveBtn); setTxt("#pdf", tx.pdfBtn); setTxt("#qrCv", tx.qrBtn); setTxt("#shCv", tx.shBtn);
   setTxt("#importQrBtn", tx.qrImportBtn);
@@ -2787,6 +2835,76 @@ $("#installGuideCloseBtn").onclick = () => {
 $("#installGuideOv").addEventListener("click", e => {
   if(e.target === $("#installGuideOv")) $("#installGuideOv").classList.remove("on");
 });
+
+/* ===== High-Demand Features: Role Presets, Smart Summary Rewrite, WhatsApp Share ===== */
+const ROLE_PRESETS = {
+  en: {
+    data_entry: { title: "Data Entry & Back Office Executive", summary: "Detail-oriented Back Office & Data Entry professional with 2+ years of experience in fast-paced office environments. Proficient in MS Excel, rapid typing (55 WPM), data verification, and maintaining confidential records with 99.8% accuracy.", skills: "MS Excel, Data Entry, Typing, Google Sheets, Document Verification, Record Keeping, Filing" },
+    sales: { title: "Sales & Marketing Executive", summary: "Results-driven Sales & Marketing professional with proven track record in client acquisition, lead generation, field sales, and achieving monthly revenue targets. Strong communication, negotiation, and relationship-building skills.", skills: "Field Sales, B2B Sales, Lead Generation, Client Relationship, Negotiation, CRM, Marketing" },
+    delivery: { title: "Delivery & Field Operations Executive", summary: "Punctual and reliable Field Operations & Logistics Executive skilled in route optimization, prompt package delivery, customer verification, and handling cash collections securely.", skills: "Logistics, Route Planning, Time Management, Customer Service, Fleet Management, Cash Handling" },
+    accountant: { title: "Junior Accountant & Tally Operator", summary: "Detail-focused Accounting professional well-versed in Tally ERP, GST filing, accounts payable/receivable, ledger reconciliation, and daily financial record maintenance.", skills: "Tally ERP, GST, Ledger Reconciliation, Accounts Payable, MS Excel, Bookkeeping, Taxation" },
+    fresher: { title: "Graduate / Fresher Career Professional", summary: "Enthusiastic and adaptable graduate with strong academic foundation, excellent problem-solving abilities, and eagerness to contribute to dynamic team environments. Quick learner with high dedication.", skills: "Communication, Problem Solving, Teamwork, MS Office, Adaptability, Time Management, Quick Learner" }
+  },
+  hi: {
+    data_entry: { title: "डेटा एंट्री और बैक ऑफिस एक्जीक्यूटिव", summary: "तेज़-तर्रार कार्यालय वातावरण में 2+ वर्ष के अनुभव के साथ डेटा एंट्री और बैक ऑफिस प्रोफेशनल। MS Excel, टाइपिंग (55 WPM), डेटा सत्यापन और रिकॉर्ड रखने में कुशल।", skills: "MS Excel, Data Entry, Typing, Google Sheets, Record Keeping, Filing" },
+    sales: { title: "सेल्स एंड मार्केटिंग एक्जीक्यूटिव", summary: "ग्राहक अधिग्रहण, लीड जनरेशन, फील्ड सेल्स और मासिक राजस्व लक्ष्यों को प्राप्त करने में सिद्ध ट्रैक रिकॉर्ड के साथ परिणाम-उन्मुख सेल्स प्रोफेशनल।", skills: "Field Sales, B2B Sales, Lead Generation, Client Relationship, Negotiation, CRM" },
+    delivery: { title: "डिलीवरी और फील्ड ऑपरेशंस एक्जीक्यूटिव", summary: "रूट ऑप्टिमाइजेशन, त्वरित पैकेज डिलीवरी, ग्राहक सत्यापन और सुरक्षित नकद संग्रह में कुशल विश्वसनीय फील्ड ऑपरेशंस एक्जीक्यूटिव।", skills: "Logistics, Route Planning, Time Management, Customer Service, Cash Handling" },
+    accountant: { title: "जूनियर अकाउंटेंट और टैली ऑपरेटर", summary: "टैली ERP, GST फाइलिंग, खातों के लेन-देन, लेजर मिलान और दैनिक वित्तीय रिकॉर्ड रखरखाव में पारंगत अकाउंटिंग प्रोफेशनल।", skills: "Tally ERP, GST, Ledger Reconciliation, Accounts Payable, MS Excel, Bookkeeping" },
+    fresher: { title: "ग्रेजुएट / फ्रेशर करियर प्रोफेशनल", summary: "मजबूत अकादमिक नींव, उत्कृष्ट समस्या-समाधान क्षमताओं और गतिशील टीमों में योगदान देने की उत्सुकता के साथ उत्साही और अनुकूलनीय ग्रेजुएट।", skills: "Communication, Problem Solving, Teamwork, MS Office, Adaptability, Quick Learner" }
+  }
+};
+
+$("#roleChips").addEventListener("click", e => {
+  const chip = e.target.closest("[data-role]");
+  if(!chip) return;
+  const roleKey = chip.dataset.role;
+  const presets = ROLE_PRESETS[curLang] || ROLE_PRESETS.en;
+  const p = presets[roleKey];
+  if(!p) return;
+  $("#f_title").value = p.title;
+  $("#f_sum").value = p.summary;
+  $("#f_skills").value = p.skills;
+  renderPreview();
+  toast(T().rolePresetLoaded(chip.textContent.trim()));
+});
+
+let summaryIndex = 0;
+$("#sumMagicBtn").onclick = () => {
+  const title = $("#f_title").value.trim() || (curLang === "hi" ? "प्रोफेशनल" : "Professional");
+  const summaries = curLang === "hi" ? [
+    `परिणाम-उन्मुख ${title} जो उच्च दक्षता के साथ निष्पादन, समस्या समाधान और संगठनात्मक लक्ष्यों को पार करने में सिद्ध विशेषज्ञता रखते हैं।`,
+    `समर्पित ${title} जो मजबूत तकनीकी दक्षताओं, विस्तार पर बारीकी से ध्यान और सहयोगी टीम संचार को जोड़ते हैं।`,
+    `गतिशील ${title} जो वर्कफ़्लो को सुव्यवस्थित करने, गुणवत्तापूर्ण परिणाम देने और निरंतर परिचालन सुधार लाने पर केंद्रित हैं।`,
+    `मजबूत आधारभूत कौशल, तीव्र सीखने की क्षमता और उत्कृष्टता के प्रति अटूट प्रतिबद्धता के साथ प्रेरित ${title}।`,
+    `जटिल कार्यों को प्रबंधित करने, प्रक्रियाओं को अनुकूलित करने और सकारात्मक संबंध विकसित करने में कुशल ${title} अनुभवी।`
+  ] : [
+    `Results-driven ${title} with proven expertise in execution, problem solving, and exceeding organizational goals with high efficiency.`,
+    `Dedicated ${title} combining strong technical competencies, meticulous attention to detail, and collaborative team communication.`,
+    `Dynamic ${title} focused on streamlining workflows, delivering quality outcomes, and driving continuous operational improvement.`,
+    `Motivated ${title} with robust foundational skills, rapid learning curve, and unwavering commitment to excellence and growth.`,
+    `Experienced ${title} adept at managing complex tasks, optimizing processes, and fostering positive stakeholder relationships.`
+  ];
+  $("#f_sum").value = summaries[summaryIndex % summaries.length];
+  summaryIndex++;
+  renderPreview();
+  toast(T().sumRewrittenToast);
+};
+
+$("#waCv").onclick = async () => {
+  const cv = readCv();
+  const text = `*${cv.name || "My Resume"}* - ${cv.title || "Professional CV"}\n\n*Summary:* ${cv.sum || ""}\n\n*Skills:* ${cv.skills || ""}\n\nBuilt with JobReady Resume Maker.`;
+  const waUrl = `https://api.whatsapp.com/send?text=` + encodeURIComponent(text);
+  try {
+    if(navigator.share && navigator.canShare && navigator.canShare({ text })) {
+      await navigator.share({ title: cv.name || "Resume", text });
+    } else {
+      window.open(waUrl, "_blank");
+    }
+    toast(T().waSharedToast);
+  } catch(e) {
+    window.open(waUrl, "_blank");
+  }
+};
 
 /* ===== init ===== */
 applyTheme(LS.get("jr_dark", false));

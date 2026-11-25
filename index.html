@@ -653,6 +653,20 @@ nav button.on{color:var(--a1);font-weight:700}
       </div>
     </div>
 
+    <!-- Install App Card -->
+    <div class="st-card" id="installCard">
+      <div class="st-row">
+        <div class="st-ic" style="background:var(--accent-soft);color:var(--accent)" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/><path d="M12 6v6m0 0l-3-3m3 3l3-3"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="stInstallT">Install JobReady App</b>
+          <span id="stInstallD">Add to Home Screen for 1-tap offline access</span>
+        </div>
+        <button type="button" class="btn sm" id="stInstallBtn" style="background:var(--a2);color:#fff;border:none;border-radius:10px;padding:7px 14px;font-weight:700">Install</button>
+      </div>
+    </div>
+
     <!-- 4. Backup, Share & Support -->
     <div class="st-sec-lbl" id="stSecData">Backup &amp; Sharing</div>
 
@@ -873,6 +887,16 @@ nav button.on{color:var(--a1);font-weight:700}
   </div>
 </div>
 
+<!-- PWA INSTALL GUIDE MODAL -->
+<div class="qr-ov" id="installGuideOv" role="dialog" aria-modal="true" aria-labelledby="installGuideTitle">
+  <div class="qr-box">
+    <span class="qr-pill" id="installGuidePill">PWA INSTALL GUIDE</span>
+    <h3 id="installGuideTitle">How to Install JobReady</h3>
+    <p class="qr-meta" id="installGuideDesc" style="line-height:1.6;margin-bottom:14px">Tap your browser's Menu (⋮ or Share icon) and select 'Add to Home Screen' or 'Install App'.</p>
+    <button type="button" class="btn" id="installGuideCloseBtn">Got it</button>
+  </div>
+</div>
+
 <!-- TEMPLATE QUICK VIEW FULL-SCREEN MODAL -->
 <div class="qv-ov" id="qvOv" role="dialog" aria-modal="true" aria-labelledby="qvTitle">
   <div class="qv-hdr">
@@ -1041,6 +1065,15 @@ const I18N = {
     pqBalT: "Balanced", pqBalD: "Crisp & fast",
     pqCompT: "Portal Ready", pqCompD: "Under 500 KB (Best for Naukri/LinkedIn)",
     stLangT: "App Language", stLangD: "Switch interface language instantaneously",
+    stInstallT: "Install JobReady App",
+    stInstallD: "Add to Home Screen for 1-tap offline access",
+    installBtn: "Install",
+    installedBtn: "Installed ✓",
+    installGuidePill: "PWA INSTALL GUIDE",
+    installGuideTitle: "How to Install JobReady",
+    installGuideDesc: "Tap your browser's Menu (⋮ or Share icon) and select 'Add to Home Screen' or 'Install App'.",
+    installGuideClose: "Got it",
+    pdfPrintToast: "Opening print dialog... Choose 'Save as PDF'",
     stPinT: "App Security Lock (4-Digit PIN)",
     stPinDOff: "Protect saved resumes & CVs on this device",
     stPinDOn: "Active — Resume vault protected with 4-digit PIN",
@@ -1185,6 +1218,15 @@ const I18N = {
     pqBalT: "संतुलित", pqBalD: "साफ़ और तेज़",
     pqCompT: "पोर्टल रेडी", pqCompD: "500 KB से कम (Naukri/LinkedIn के लिए बेस्ट)",
     stLangT: "ऐप की भाषा", stLangD: "ऐप की भाषा तुरंत बदलें",
+    stInstallT: "JobReady ऐप इंस्टॉल करें",
+    stInstallD: "एक-टैप ऑफ़लाइन पहुँच के लिए होम स्क्रीन पर जोड़ें",
+    installBtn: "इंस्टॉल करें",
+    installedBtn: "इंस्टॉल हो गया ✓",
+    installGuidePill: "PWA इंस्टॉल गाइड",
+    installGuideTitle: "JobReady कैसे इंस्टॉल करें",
+    installGuideDesc: "अपने ब्राउज़र के मेनू (⋮ या शेयर आइकॉन) पर टैप करें और 'Add to Home Screen' या 'Install App' चुनें।",
+    installGuideClose: "समझ गए",
+    pdfPrintToast: "प्रिंट डायलॉग खुल रहा है... 'Save as PDF' चुनें",
     stPinT: "ऐप सुरक्षा लॉक (4-अंकों का PIN)",
     stPinDOff: "अपने फ़ोन में सेव किए गए CV सुरक्षित रखें",
     stPinDOn: "चालू — रिज़्यूमे वॉल्ट 4-अंकों के PIN से सुरक्षित है",
@@ -2079,7 +2121,8 @@ $("#pdf").onclick = ()=>{
   const t = TPL.find(x=>x.id===curTpl) || TPL[0];
   $("#printArea").setAttribute("data-pdf-quality", pdfQuality);
   $("#printArea").innerHTML = sheetHTML(readCv(), t, false);
-  setTimeout(()=>window.print(), 100);
+  toast(T().pdfPrintToast);
+  setTimeout(()=>window.print(), 250);
 };
 
 /* ===== Career Hub: Cover Letter Generator, Interview Q&A, Live ATS Score ===== */
@@ -2422,6 +2465,14 @@ function applyLang(){
 
   setTxt("#stPinT", tx.stPinT);
   setTxt("#pinChangeBtn", tx.pinChangeBtn); setTxt("#pinLockNowBtn", tx.pinLockNowBtn);
+  setTxt("#stInstallT", tx.stInstallT);
+  setTxt("#stInstallD", tx.stInstallD);
+  const isStandaloneNow = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  setTxt("#stInstallBtn", (isStandaloneNow || !deferredInstallPrompt) ? tx.installedBtn : tx.installBtn);
+  setTxt("#installGuidePill", tx.installGuidePill);
+  setTxt("#installGuideTitle", tx.installGuideTitle);
+  setTxt("#installGuideDesc", tx.installGuideDesc);
+  setTxt("#installGuideCloseBtn", tx.installGuideClose);
   setTxt("#stSecData", tx.stSecData);
   setTxt("#stBakT", tx.stBakT); setTxt("#stBakD", tx.stBakD);
   setTxt("#exportBackupBtn", tx.exportBackupBtn); setTxt("#restoreBackupBtn", tx.restoreBackupBtn);
@@ -2691,6 +2742,51 @@ document.addEventListener("click", e=>{
 });
 $("#sample").onclick = ()=>{ fillCv(SAMPLE); openForm(); toast(T().sampleLoaded); };
 $("#save").onclick = saveCv;
+
+/* ===== PWA Install Logic ===== */
+let deferredInstallPrompt = null;
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = $("#stInstallBtn");
+  if(btn){ btn.textContent = T().installBtn; btn.disabled = false; btn.style.background = "var(--a2)"; }
+});
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  const btn = $("#stInstallBtn");
+  if(btn){ btn.textContent = T().installedBtn; btn.disabled = true; btn.style.background = "var(--ok)"; }
+});
+function checkStandaloneStatus(){
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+  if(isStandalone){
+    const btn = $("#stInstallBtn");
+    if(btn){ btn.textContent = T().installedBtn; btn.disabled = true; btn.style.background = "var(--ok)"; }
+  }
+}
+checkStandaloneStatus();
+$("#stInstallBtn").addEventListener("click", async () => {
+  if(window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone){
+    toast(T().installedBtn);
+    return;
+  }
+  if(deferredInstallPrompt){
+    deferredInstallPrompt.prompt();
+    const choice = await deferredInstallPrompt.userChoice;
+    if(choice.outcome === 'accepted'){
+      deferredInstallPrompt = null;
+      const btn = $("#stInstallBtn");
+      if(btn){ btn.textContent = T().installedBtn; btn.disabled = true; btn.style.background = "var(--ok)"; }
+    }
+  } else {
+    $("#installGuideOv").classList.add("on");
+  }
+});
+$("#installGuideCloseBtn").onclick = () => {
+  $("#installGuideOv").classList.remove("on");
+};
+$("#installGuideOv").addEventListener("click", e => {
+  if(e.target === $("#installGuideOv")) $("#installGuideOv").classList.remove("on");
+});
 
 /* ===== init ===== */
 applyTheme(LS.get("jr_dark", false));

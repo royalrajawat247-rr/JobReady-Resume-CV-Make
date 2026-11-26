@@ -363,8 +363,8 @@ nav button.on{color:var(--a1);font-weight:700}
   left: -9999px;
   top: 0;
 }
-.ov{position:fixed;inset:0;background:var(--bg);z-index:20;overflow:auto;display:none;padding:12px 12px 40px}
-.ov.on{display:block}
+.ov{position:fixed;inset:0;background:var(--bg);z-index:20;overflow:auto;opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .22s cubic-bezier(.16,1,.3,1), transform .22s cubic-bezier(.16,1,.3,1), visibility .22s;padding:12px 12px 40px;pointer-events:none}
+.ov.on{opacity:1;visibility:visible;transform:translateY(0);pointer-events:auto}
 .fit{width:100%;aspect-ratio:210/297;position:relative;overflow:hidden;border-radius:6px;background:#fff;margin-top:8px}
 .fit .sheet{position:absolute;left:0;top:0;transform-origin:0 0}
 .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#111827;color:#fff;padding:9px 16px;border-radius:10px;font-size:12.5px;font-weight:600;z-index:60;display:none;max-width:90%;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.35)}
@@ -671,6 +671,39 @@ nav button.on{color:var(--a1);font-weight:700}
       </div>
     </div>
 
+    <!-- More Apps by RR Tech Labs -->
+    <div class="st-card">
+      <div class="st-row" style="margin-bottom:12px">
+        <div class="st-ic ok" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l9 4.9V17L12 22 3 17V6.9z"/><path d="M12 22V12"/><path d="M21 6.9L12 12 3 6.9"/></svg>
+        </div>
+        <div class="st-meta">
+          <b id="moreAppsT">More Apps by RR Tech Labs</b>
+          <span id="moreAppsD">100% offline, privacy-first utility apps</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <!-- App 1: PurePDF -->
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--card2);border:1px solid var(--line);border-radius:12px">
+          <div style="width:34px;height:34px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;font-size:12px;flex:none">PDF</div>
+          <div style="flex:1;min-width:0">
+            <b style="font-size:13px;display:block;color:var(--text)">PurePDF</b>
+            <span style="font-size:11.5px;color:var(--muted);display:block">Offline PDF Scanner &amp; Tools</span>
+          </div>
+          <button type="button" class="btn sm" onclick="window.open('https://purepdf-offline-pdf-scan-72f70.web.app/','_blank')" style="background:var(--a2);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer">Open App ↗</button>
+        </div>
+        <!-- App 2: Royal Vault -->
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(--card2);border:1px solid var(--line);border-radius:12px">
+          <div style="width:34px;height:34px;border-radius:9px;background:rgba(230,180,80,.15);color:var(--gold);display:grid;place-items:center;font-weight:800;font-size:12px;flex:none">RV</div>
+          <div style="flex:1;min-width:0">
+            <b style="font-size:13px;display:block;color:var(--text)">Royal Vault</b>
+            <span style="font-size:11.5px;color:var(--muted);display:block">Offline Calculator Privacy Locker</span>
+          </div>
+          <button type="button" class="btn sm" onclick="window.open('https://calculator-royal-vault.web.app/','_blank')" style="background:var(--a2);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:11.5px;font-weight:700;cursor:pointer">Open App ↗</button>
+        </div>
+      </div>
+    </div>
+
     <!-- App Language Switcher -->
     <div class="st-card">
       <div class="st-row">
@@ -857,7 +890,14 @@ nav button.on{color:var(--a1);font-weight:700}
       </div>
       <textarea id="f_sum"></textarea>
     </div>
-    <div class="field"><label id="lb_skills">कौशल (कॉमा से अलग)</label><input id="f_skills"></div>
+    <div class="field">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <label id="lb_skills" style="margin:0">कौशल (कॉमा से अलग)</label>
+        <button type="button" class="btn soft sm" id="skillsAutoBtn" style="padding:3px 8px;font-size:11px">✨ Auto-Suggest Skills</button>
+      </div>
+      <input id="f_skills">
+      <div id="skillSuggWrap" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px"></div>
+    </div>
     <div class="field"><label id="lb_exp">अनुभव (हर लाइन में एक)</label><textarea id="f_exp"></textarea></div>
     <div class="field"><label id="lb_edu">शिक्षा (हर लाइन में एक)</label><textarea id="f_edu"></textarea></div>
     <div class="field"><label id="lb_lang">भाषाएं</label><input id="f_lang"></div>
@@ -1028,6 +1068,19 @@ const LS = {
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 };
 function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("on"),2400); }
+function haptic(ms = 15){
+  try{
+    if(navigator.vibrate){
+      navigator.vibrate(ms);
+    }
+  }catch(e){}
+}
+document.addEventListener('pointerdown', (e)=>{
+  const el = e.target.closest('button, .btn, .hero-card, .tile, .tp, .q-opt, .qa-chip, .hub-tab, .st-row-btn, [role="button"]');
+  if(el){
+    haptic(15);
+  }
+}, {passive: true});
 const isVip = () => true; // All 16 pro templates & tools unlocked free for all users
 
 /* ===== Bilingual EN / HI Dictionary ===== */
@@ -2843,6 +2896,71 @@ document.addEventListener("click", e=>{
 });
 $("#sample").onclick = ()=>{ fillCv(SAMPLE); openForm(); toast(T().sampleLoaded); };
 $("#save").onclick = saveCv;
+
+/* ===== Skills Auto-Complete & Suggestion Feature ===== */
+const SKILL_DATABASE = {
+  it: ["React.js", "Node.js", "TypeScript", "JavaScript", "Python", "Java", "SQL", "AWS", "Docker", "Git", "REST APIs", "Agile", "HTML/CSS", "MongoDB"],
+  banking: ["Retail Banking", "Loan Processing", "Wealth Management", "Risk Assessment", "CRM", "Customer Service", "Compliance", "Financial Analysis", "Tally"],
+  data: ["MS Excel", "Advanced Data Entry", "Typing (60 WPM)", "Google Sheets", "Document Verification", "Record Keeping", "Filing", "Data Cleaning"],
+  sales: ["Field Sales", "B2B Sales", "Lead Generation", "Client Relationship", "Negotiation", "CRM", "Digital Marketing", "Market Research"],
+  accountant: ["Tally Prime", "GST & TDS Filing", "Ledger Reconciliation", "Accounts Payable/Receivable", "MS Excel", "Bookkeeping", "Taxation", "Auditing"],
+  design: ["Figma", "Adobe Photoshop", "Illustrator", "UI/UX Design", "Wireframing", "Prototyping", "Branding"],
+  hr: ["Talent Acquisition", "Employee Relations", "Payroll", "Operations Management", "Vendor Management", "Scheduling", "HRIS"],
+  general: ["Communication", "Problem Solving", "Project Management", "Team Leadership", "Time Management", "Critical Thinking", "Adaptability"]
+};
+
+function getSuggestedSkillsForTitle(title){
+  const t = (title || "").toLowerCase();
+  if(t.includes("software") || t.includes("engineer") || t.includes("developer") || t.includes("it") || t.includes("tech") || t.includes("programmer")) return SKILL_DATABASE.it;
+  if(t.includes("bank") || t.includes("finance") || t.includes("loan") || t.includes("cfo") || t.includes("cashier")) return SKILL_DATABASE.banking;
+  if(t.includes("data") || t.includes("entry") || t.includes("back office") || t.includes("operator") || t.includes("typist")) return SKILL_DATABASE.data;
+  if(t.includes("sales") || t.includes("marketing") || t.includes("exec") || t.includes("business") || t.includes("growth")) return SKILL_DATABASE.sales;
+  if(t.includes("account") || t.includes("tally") || t.includes("gst") || t.includes("audit") || t.includes("tax")) return SKILL_DATABASE.accountant;
+  if(t.includes("design") || t.includes("ui") || t.includes("ux") || t.includes("graphic")) return SKILL_DATABASE.design;
+  if(t.includes("hr") || t.includes("human") || t.includes("recruit") || t.includes("talent")) return SKILL_DATABASE.hr;
+  return [...SKILL_DATABASE.it, ...SKILL_DATABASE.sales, ...SKILL_DATABASE.general].slice(0, 8);
+}
+
+function renderSkillSuggestions(){
+  const title = $("#f_title").value;
+  const skills = getSuggestedSkillsForTitle(title);
+  const wrap = $("#skillSuggWrap");
+  if(!wrap) return;
+  const currentSkills = $("#f_skills").value.split(",").map(s=>s.trim().toLowerCase());
+  wrap.innerHTML = skills.map(skill => {
+    const isAdded = currentSkills.includes(skill.toLowerCase());
+    return `<button type="button" class="chip ${isAdded ? 'on' : ''}" style="cursor:pointer;font-size:11px;padding:3px 8px;background:${isAdded ? 'var(--a1)' : 'var(--card2)'};color:${isAdded ? '#fff' : 'var(--muted)'}" data-skill="${esc(skill)}">${isAdded ? '✓ ' : '+ '}${esc(skill)}</button>`;
+  }).join("");
+}
+
+const sAutoBtn = $("#skillsAutoBtn");
+if(sAutoBtn) sAutoBtn.onclick = ()=>{
+  renderSkillSuggestions();
+  toast(curLang === "hi" ? "कौशल सुझाव अपडेट किए गए!" : "Skill suggestions updated based on job title!");
+};
+
+const fTitleInput = $("#f_title");
+if(fTitleInput) fTitleInput.oninput = ()=>renderSkillSuggestions();
+
+const fSkillsInput = $("#f_skills");
+if(fSkillsInput) fSkillsInput.onfocus = ()=>renderSkillSuggestions();
+
+document.addEventListener("click", (e)=>{
+  const btn = e.target.closest("[data-skill]");
+  if(btn){
+    const skill = btn.getAttribute("data-skill");
+    const input = $("#f_skills");
+    if(!input) return;
+    const val = input.value.trim();
+    const arr = val ? val.split(",").map(s=>s.trim()).filter(Boolean) : [];
+    if(!arr.some(s => s.toLowerCase() === skill.toLowerCase())){
+      arr.push(skill);
+      input.value = arr.join(", ");
+      renderSkillSuggestions();
+      toast(curLang === "hi" ? `कौशल जोड़ा गया: ${skill}` : `Added skill: ${skill}`);
+    }
+  }
+});
 
 /* ===== PWA Install Logic ===== */
 let deferredInstallPrompt = null;

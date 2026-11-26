@@ -14,6 +14,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192x192.png" />
 <link rel="icon" type="image/png" sizes="512x512" href="/icons/icon-512x512.png" />
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+<script src="/samples.js"></script>
 <style>
 :root{
   --bg:#f8fafc;--card:#ffffff;--card2:#f1f5f9;--input-bg:#ffffff;--line:#e2e8f0;--text:#0f172a;--muted:#475569;
@@ -312,14 +313,56 @@ nav button.on{color:var(--a1);font-weight:700}
 .sheet .tl{border-left:2px solid currentColor;padding-left:12px;margin-left:4px}
 .sheet .tl .it{position:relative}
 .sheet .tl .it:before{content:"";position:absolute;left:-17px;top:4px;width:8px;height:8px;border-radius:50%;background:currentColor}
-@media print{
-  body *{visibility:hidden}
-  #printArea,#printArea *{visibility:visible}
-  #printArea{position:absolute;left:0;top:0;width:100%}
-  #printArea .sheet{width:210mm;height:297mm;transform:none}
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  body * {
+    visibility: hidden !important;
+  }
+  #printArea, #printArea * {
+    visibility: visible !important;
+  }
+  #printArea {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: 99999 !important;
+  }
+  #printArea .sheet {
+    width: 210mm !important;
+    height: 297mm !important;
+    max-width: none !important;
+    max-height: none !important;
+    transform: none !important;
+    box-shadow: none !important;
+    margin: 0 auto !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
 }
-#printArea{position:absolute;left:-9999px;top:0}
-@media print{#printArea{position:absolute;left:0}}
+#printArea {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+}
 .ov{position:fixed;inset:0;background:var(--bg);z-index:20;overflow:auto;display:none;padding:12px 12px 40px}
 .ov.on{display:block}
 .fit{width:100%;aspect-ratio:210/297;position:relative;overflow:hidden;border-radius:6px;background:#fff;margin-top:8px}
@@ -793,11 +836,11 @@ nav button.on{color:var(--a1);font-weight:700}
   <div class="card" style="background:var(--card2);padding:10px;margin-bottom:8px">
     <div style="font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:6px" id="rolePresetsLbl">⚡ 1-Click Job Role Auto-Fill:</div>
     <div class="chips" id="roleChips">
+      <button type="button" class="chip" data-role="it_engineer" style="cursor:pointer">IT Engineer</button>
+      <button type="button" class="chip" data-role="banking_executive" style="cursor:pointer">Banking Exec</button>
       <button type="button" class="chip" data-role="data_entry" style="cursor:pointer">Data Entry</button>
       <button type="button" class="chip" data-role="sales" style="cursor:pointer">Sales & Mktg</button>
-      <button type="button" class="chip" data-role="delivery" style="cursor:pointer">Delivery Exec</button>
       <button type="button" class="chip" data-role="accountant" style="cursor:pointer">Accountant</button>
-      <button type="button" class="chip" data-role="fresher" style="cursor:pointer">Fresher Grad</button>
     </div>
   </div>
 
@@ -974,7 +1017,7 @@ nav button.on{color:var(--a1);font-weight:700}
 <div class="toast" id="toast"></div>
 
 <script>
-const APP_URL = "https://royalrajawat247-rr.github.io/JobReady-Resume-CV-Maker/";
+const APP_URL = "https://jobready-resume-cv-maker.web.app/";
 
 /* ===== helpers ===== */
 const $ = s => document.querySelector(s);
@@ -1767,7 +1810,7 @@ $("#kwBtn").onclick = ()=>{
 };
 
 /* ===== share ===== */
-const SHARE_TXT = `JobReady: Resume & CV Maker – Create offline ATS-ready resumes on your phone: ${APP_URL}`;
+const SHARE_TXT = "Create ATS-Friendly HD Resumes 100% Free & Offline with JobReady App! Install now: https://jobready-resume-cv-maker.web.app/";
 function cvText(cv){ return `${cv.name} – ${cv.title}\n${cv.email} ${cv.phone}\n\n${cv.sum}\n\nCreated with JobReady`; }
 async function nativeShare(text){
   const tx = T();
@@ -1779,7 +1822,7 @@ const smsLink = t => "sms:?&body="+encodeURIComponent(t);
 $("#shareApp").onclick = ()=>nativeShare(SHARE_TXT);
 $("#waApp").onclick = ()=>window.open(waLink(SHARE_TXT),"_blank");
 $("#copyAppLink").onclick = async ()=>{
-  try{ await navigator.clipboard.writeText(APP_URL); toast(T().linkCopied); }
+  try{ await navigator.clipboard.writeText(SHARE_TXT); toast(T().linkCopied); }
   catch(e){ toast(T().shareUnsupported); }
 };
 $("#waCv").onclick = ()=>window.open(waLink(cvText(readCv())),"_blank");
@@ -2516,7 +2559,17 @@ function applyLang(){
   setTxt("#stInstallT", tx.stInstallT);
   setTxt("#stInstallD", tx.stInstallD);
   const isStandaloneNow = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-  setTxt("#stInstallBtn", (isStandaloneNow || !deferredInstallPrompt) ? tx.installedBtn : tx.installBtn);
+  setTxt("#stInstallBtn", isStandaloneNow ? tx.installedBtn : tx.installBtn);
+  const stBtn = $("#stInstallBtn");
+  if(stBtn){
+    if(isStandaloneNow){
+      stBtn.disabled = true;
+      stBtn.style.background = "var(--ok)";
+    } else {
+      stBtn.disabled = false;
+      stBtn.style.background = "var(--a2)";
+    }
+  }
   setTxt("#installGuidePill", tx.installGuidePill);
   setTxt("#installGuideTitle", tx.installGuideTitle);
   setTxt("#installGuideDesc", tx.installGuideDesc);
@@ -2837,33 +2890,26 @@ $("#installGuideOv").addEventListener("click", e => {
 });
 
 /* ===== High-Demand Features: Role Presets, Smart Summary Rewrite, WhatsApp Share ===== */
-const ROLE_PRESETS = {
-  en: {
-    data_entry: { title: "Data Entry & Back Office Executive", summary: "Detail-oriented Back Office & Data Entry professional with 2+ years of experience in fast-paced office environments. Proficient in MS Excel, rapid typing (55 WPM), data verification, and maintaining confidential records with 99.8% accuracy.", skills: "MS Excel, Data Entry, Typing, Google Sheets, Document Verification, Record Keeping, Filing" },
-    sales: { title: "Sales & Marketing Executive", summary: "Results-driven Sales & Marketing professional with proven track record in client acquisition, lead generation, field sales, and achieving monthly revenue targets. Strong communication, negotiation, and relationship-building skills.", skills: "Field Sales, B2B Sales, Lead Generation, Client Relationship, Negotiation, CRM, Marketing" },
-    delivery: { title: "Delivery & Field Operations Executive", summary: "Punctual and reliable Field Operations & Logistics Executive skilled in route optimization, prompt package delivery, customer verification, and handling cash collections securely.", skills: "Logistics, Route Planning, Time Management, Customer Service, Fleet Management, Cash Handling" },
-    accountant: { title: "Junior Accountant & Tally Operator", summary: "Detail-focused Accounting professional well-versed in Tally ERP, GST filing, accounts payable/receivable, ledger reconciliation, and daily financial record maintenance.", skills: "Tally ERP, GST, Ledger Reconciliation, Accounts Payable, MS Excel, Bookkeeping, Taxation" },
-    fresher: { title: "Graduate / Fresher Career Professional", summary: "Enthusiastic and adaptable graduate with strong academic foundation, excellent problem-solving abilities, and eagerness to contribute to dynamic team environments. Quick learner with high dedication.", skills: "Communication, Problem Solving, Teamwork, MS Office, Adaptability, Time Management, Quick Learner" }
-  },
-  hi: {
-    data_entry: { title: "डेटा एंट्री और बैक ऑफिस एक्जीक्यूटिव", summary: "तेज़-तर्रार कार्यालय वातावरण में 2+ वर्ष के अनुभव के साथ डेटा एंट्री और बैक ऑफिस प्रोफेशनल। MS Excel, टाइपिंग (55 WPM), डेटा सत्यापन और रिकॉर्ड रखने में कुशल।", skills: "MS Excel, Data Entry, Typing, Google Sheets, Record Keeping, Filing" },
-    sales: { title: "सेल्स एंड मार्केटिंग एक्जीक्यूटिव", summary: "ग्राहक अधिग्रहण, लीड जनरेशन, फील्ड सेल्स और मासिक राजस्व लक्ष्यों को प्राप्त करने में सिद्ध ट्रैक रिकॉर्ड के साथ परिणाम-उन्मुख सेल्स प्रोफेशनल।", skills: "Field Sales, B2B Sales, Lead Generation, Client Relationship, Negotiation, CRM" },
-    delivery: { title: "डिलीवरी और फील्ड ऑपरेशंस एक्जीक्यूटिव", summary: "रूट ऑप्टिमाइजेशन, त्वरित पैकेज डिलीवरी, ग्राहक सत्यापन और सुरक्षित नकद संग्रह में कुशल विश्वसनीय फील्ड ऑपरेशंस एक्जीक्यूटिव।", skills: "Logistics, Route Planning, Time Management, Customer Service, Cash Handling" },
-    accountant: { title: "जूनियर अकाउंटेंट और टैली ऑपरेटर", summary: "टैली ERP, GST फाइलिंग, खातों के लेन-देन, लेजर मिलान और दैनिक वित्तीय रिकॉर्ड रखरखाव में पारंगत अकाउंटिंग प्रोफेशनल।", skills: "Tally ERP, GST, Ledger Reconciliation, Accounts Payable, MS Excel, Bookkeeping" },
-    fresher: { title: "ग्रेजुएट / फ्रेशर करियर प्रोफेशनल", summary: "मजबूत अकादमिक नींव, उत्कृष्ट समस्या-समाधान क्षमताओं और गतिशील टीमों में योगदान देने की उत्सुकता के साथ उत्साही और अनुकूलनीय ग्रेजुएट।", skills: "Communication, Problem Solving, Teamwork, MS Office, Adaptability, Quick Learner" }
-  }
-};
-
 $("#roleChips").addEventListener("click", e => {
   const chip = e.target.closest("[data-role]");
   if(!chip) return;
   const roleKey = chip.dataset.role;
-  const presets = ROLE_PRESETS[curLang] || ROLE_PRESETS.en;
-  const p = presets[roleKey];
+  const samples = window.JOB_SAMPLES || {};
+  const langData = samples[curLang] || samples.en || {};
+  const p = langData[roleKey];
   if(!p) return;
-  $("#f_title").value = p.title;
-  $("#f_sum").value = p.summary;
-  $("#f_skills").value = p.skills;
+
+  if(p.name) $("#f_name").value = p.name;
+  $("#f_title").value = p.title || "";
+  if(p.email) $("#f_email").value = p.email;
+  if(p.phone) $("#f_phone").value = p.phone;
+  if(p.addr) $("#f_addr").value = p.addr;
+  $("#f_sum").value = p.sum || "";
+  $("#f_skills").value = p.skills || "";
+  if(p.exp) $("#f_exp").value = p.exp;
+  if(p.edu) $("#f_edu").value = p.edu;
+  if(p.lang) $("#f_lang").value = p.lang;
+
   renderPreview();
   toast(T().rolePresetLoaded(chip.textContent.trim()));
 });

@@ -14,7 +14,7 @@ if (!fs.existsSync(icon192) || !fs.existsSync(icon512)) {
 fs.rmSync(dist, { recursive: true, force: true });
 fs.mkdirSync(dist, { recursive: true });
 
-const staticFiles = ['index.html', 'manifest.json', 'sw.js', 'favicon.ico'];
+const staticFiles = ['index.html', 'manifest.json', 'sw.js', 'favicon.ico', 'samples.js'];
 for (const file of staticFiles) {
   const src = path.join(root, file);
   if (fs.existsSync(src)) {
